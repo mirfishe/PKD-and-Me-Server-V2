@@ -1,0 +1,29 @@
+{
+  "name": "pkd-and-me-server",
+  "version": "0.2.0",
+  "private": true,
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirfishe/PKD-and-Me-Server-V2"
+  },
+  "author": "Michael Fisher",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.1",
+    "mysql2": "^2.2.5",
+    "pg": "^7.11.0",
+    "tedious": "^11.0.5"
+  }
+}
