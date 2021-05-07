@@ -29,7 +29,7 @@ app.use('/category', category);
 
 
 
-app.listen(process.env.PORT || 4000, function() { 
+app.listen(process.env.PORT || 4000, function () {
   console.log(`App is listening on port ${process.env.PORT}`);
 }
 );
