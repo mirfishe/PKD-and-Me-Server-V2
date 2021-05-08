@@ -1,10 +1,16 @@
-const router = require('express').Router();
-const Edition = require('../db').import('../models/edition');
-const Media = require("../db").import("../models/media");
-const Title = require("../db").import("../models/title");
-const { Op } = require("sequelize");
+const router = require("express").Router();
+const dbConfig = require("../db");
+const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
+
+const controllerName = "edition";
+const tableName = "editions";
+const select = "*";
+const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
+const activeDataWhere = { "titles.active": true, "media.active": true };
+const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
+
 
 /******************************
  ***** Get Edition List *********
@@ -12,130 +18,125 @@ const validateAdmin = require("../middleware/validate-admin");
 // * Returns all editions active or not
 router.get("/list", (req, res) => {
 
-  const query = {/*where: {
-        active: {[Op.eq]: true}
-    },*/ include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        // where: {
-        //     active: {[Op.eq]: true}
-        // }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        // where: {
-        //     active: {[Op.eq]: true}
-        // }
-      }
-    ],
-    order: [["publicationDate", 'DESC']]
-  };
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .orderBy(orderBy)
+    .then((records) => {
 
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get / editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved editions." });
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /list " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("edition-controller get / No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get /list No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("edition-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /list error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
+
 
 /******************************
  ***** Get Editions *********
  ******************************/
 router.get("/", (req, res) => {
 
-  const query = {
-    where: {
-      active: { [Op.eq]: true }
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["publicationDate", 'DESC']]
-  };
+  // let sqlQuery = db.select(select)
+  //   .from(tableName)
+  //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+  //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+  //   .where(activeWhere)
+  //   .orderBy(orderBy)
+  //   .toSQL();
+  // // .toString();
 
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get / editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved editions." });
+  // * .replace() and .replaceAll() are not working
+  // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
+
+  // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editions.active = 1 and titles.active = 1 and media.active = 1 order by editions.publicationDate desc
+
+  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(activeWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get / " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("edition-controller get / No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get / No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("edition-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+      console.log(controllerName + "-controller get / err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Edition By EditionID *****
 ***************************************/
 router.get("/:editionID", (req, res) => {
 
-  const query = {
-    where: {
-      editionID: { [Op.eq]: req.params.editionID }
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ]
-  };
+  const where = { editionID: req.params.editionID };
 
-  // Edition.findOne(query)
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get /:editionID editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved edition." });
+  // let sqlQuery = db.select(select)
+  //   .from(tableName)
+  //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+  //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+  //   .where(where)
+  //   // .where("editions.active", true)
+  //   .where("titles.active", true)
+  //   .where("media.active", true)
+  //   .orderBy(orderBy)
+  //   .toSQL();
+  // // .toString();
+
+  // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editionID = 1 and titles.active = true and media.active = true order by editions.publicationDate desc
+
+  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(where)
+    // .where("editions.active", true)
+    .where(activeDataWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
         // res.status(200).json({
         // editionID:  edition.editionID,
         // titleID:    edition.titleID,
@@ -151,56 +152,47 @@ router.get("/:editionID", (req, res) => {
         // imageLinkLarge:     edition.imageLinkLarge,
         // textImageLink:     edition.textImageLink,
         // active:     edition.active,
-        // message:    'Successfully retrieved edition.'
+        // message:    "Successfully retrieved edition."
         // });
+
       } else {
-        // console.log("edition-controller get /:editionID No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("edition-controller get /:editionID err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Edition By ASIN *****
 ***************************************/
 router.get("/ASIN/:ASIN", (req, res) => {
 
-  const query = {
-    where: {
-      ASIN: { [Op.eq]: req.params.ASIN }
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ]
-  };
+  const where = { ASIN: req.params.ASIN };
 
-  // Edition.findOne(query)
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get /:editionID editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved edition." });
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(where)
+    // .where("editions.active", true)
+    .where(activeDataWhere)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
         // res.status(200).json({
         // editionID:  edition.editionID,
         // titleID:    edition.titleID,
@@ -216,123 +208,104 @@ router.get("/ASIN/:ASIN", (req, res) => {
         // imageLinkLarge:     edition.imageLinkLarge,
         // textImageLink:     edition.textImageLink,
         // active:     edition.active,
-        // message:    'Successfully retrieved edition.'
+        // message:    "Successfully retrieved edition."
         // });
+
       } else {
-        // console.log("edition-controller get /:editionID No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("edition-controller get /:editionID err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Editions By TitleID *****
 ***************************************/
 router.get("/title/:titleID", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { titleID: { [Op.eq]: req.params.titleID } },
-        { active: { [Op.eq]: true } }
-      ]
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["publicationDate", 'DESC']]
-  };
+  const where = { "editions.titleID": req.params.titleID };
 
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get /title/:titleID editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved editions." });
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(where)
+    .where(activeWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /title/:titleID " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("edition-controller get /title/:titleID No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get /title/:titleID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("edition-controller get /title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+      console.log(controllerName + "-controller get /title/:titleID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Editions By MediaID *****
 ***************************************/
 router.get("/media/:mediaID", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { mediaID: { [Op.eq]: req.params.mediaID } },
-        { active: { [Op.eq]: true } }
-      ]
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: Media,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["publicationDate", 'DESC']]
-  };
+  const where = { "editions.mediaID": req.params.mediaID };
 
-  Edition.findAll(query)
-    .then((editions) => {
-      if (editions.length > 0) {
-        // console.log("edition-controller get /media/:mediaID editions", editions);
-        res.status(200).json({ editions: editions, resultsFound: true, message: "Successfully retrieved editions." });
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(where)
+    .where(activeWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /media/:mediaID " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("edition-controller get /media/:mediaID No Results");
-        // res.status(200).send("No editions found.");
-        // res.status(200).send({resultsFound: false, message: "No editions found."})
-        res.status(200).json({ resultsFound: false, message: "No editions found." });
+        // console.log(controllerName + "-controller get /media/:mediaID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("edition-controller get /media/:mediaID err", err);
-      res.status(500).json({ resultsFound: false, message: "No editions found.", error: err });
+      console.log(controllerName + "-controller get /media/:mediaID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Editions By CategoryID *****
@@ -347,27 +320,28 @@ router.get("/media/:mediaID", (req, res) => {
 //             {categoryID: {[Op.eq]: req.params.categoryID}},
 //             {active: {[Op.eq]: true}}
 //             ]
-//     }, order: [["publicationDate", 'DESC']]};
+//     }, order: [["publicationDate", "DESC"]]};
 
 //     Edition.findAll(query)
-//     .then((editions) => {
-//         // console.log("edition-controller get /category/:categoryID editions", editions);
-//         res.status(200).json({editions: editions, message: "Successfully retrieved editions."});
+//     .then((records) => {
+//         // console.log(controllerName + "-controller get /category/:categoryID " + tableName, records);
+//         res.status(200).json({records: records, message: "Successfully retrieved " + tableName + "."});
 //     })
 //     .catch((err) => {
-//         console.log("edition-controller get /category/:categoryIDerr", err);
-//         res.status(500).json({resultsFound: false, message: "No editions found.", error: err});
+//         console.log(controllerName + "-controller get /category/:categoryID err", err);
+//         res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //     });
 
 // });
+
 
 /* ******************************
  *** Add Edition ***************
 *********************************/
 // * Allows an admin to add a new edition
-router.post('/', validateAdmin, (req, res) => {
+router.post("/", validateAdmin, (req, res) => {
 
-  const createEdition = {
+  const recordObject = {
     titleID: req.body.edition.titleID,
     mediaID: req.body.edition.mediaID,
     publicationDate: req.body.edition.publicationDate,
@@ -381,47 +355,51 @@ router.post('/', validateAdmin, (req, res) => {
     textImageLink: req.body.edition.textImageLink
   };
 
-  Edition.create(createEdition)
-    .then((edition) => {
-      // console.log("edition-controller post / edition", edition);
-      res.status(200).json({
-        editionID: edition.editionID,
-        titleID: edition.titleID,
-        mediaID: edition.mediaID,
-        publicationDate: edition.publicationDate,
-        imageName: edition.imageName,
-        ASIN: edition.ASIN,
-        textLinkShort: edition.textLinkShort,
-        textLinkFull: edition.textLinkFull,
-        imageLinkSmall: edition.imageLinkSmall,
-        imageLinkMedium: edition.imageLinkMedium,
-        imageLinkLarge: edition.imageLinkLarge,
-        textImageLink: edition.textImageLink,
-        active: edition.active,
-        createdAt: edition.createdAt,
-        updatedAt: edition.updatedAt,
-        recordAdded: true,
-        message: 'Edition successfully created.'
-      });
+  db(tableName)
+    .returning(select)
+    .insert(recordObject)
+    .then((records) => {
+      // console.log(controllerName + "-controller post / records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller post / records", records);
+
+        res.status(200).json({ records: records, recordAdded: true, message: "Successfully created " + tableName + "." });
+
+      } else {
+        console.log(controllerName + "-controller post / No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordAdded: false, message: "Nothing to add." });
+
+      };
+
     })
-    .catch((err) => {
-      console.log("edition-controller post / err", err);
-      // console.log("edition-controller post / err.name", err.name);
-      // console.log("edition-controller post / err.errors[0].message", err.errors[0].message);
+    .catch((error) => {
+      console.log(controllerName + "-controller post / error", error);
+      // console.log(controllerName + "-controller post / error.name", error.name);
+      // console.log(controllerName + "-controller post / error.errors[0].message", error.errors[0].message);
 
       let errorMessages = "";
-      for (let i = 0; i < err.errors.length; i++) {
-        //console.log("edition-controller post / err.errors[i].message", err.errors[i].message);
+
+      for (let i = 0; i < error.errors.length; i++) {
+        //console.log(controllerName + "-controller post / error.errors[i].message", error.errors[i].message);
+
         if (i > 1) {
           errorMessages = errorMessages + ", ";
         };
-        errorMessages = errorMessages + err.errors[i].message;
+
+        errorMessages = errorMessages + error.errors[i].message;
+
       };
 
-      res.status(500).json({ recordAdded: false, message: "Edition not successfully created.", errorMessages: errorMessages, error: err });
+      res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName + ".", errorMessages: errorMessages, error: error });
+
     });
 
 });
+
 
 /***************************
  ******* Update Edition *******
@@ -429,7 +407,7 @@ router.post('/', validateAdmin, (req, res) => {
 // * Allows the admin to update the edition including soft delete it
 router.put("/:editionID", validateAdmin, (req, res) => {
 
-  const updateEdition = {
+  const recordObject = {
     titleID: req.body.edition.titleID,
     mediaID: req.body.edition.mediaID,
     publicationDate: req.body.edition.publicationDate,
@@ -444,57 +422,37 @@ router.put("/:editionID", validateAdmin, (req, res) => {
     active: req.body.edition.active
   };
 
-  const query = {
-    where: {
-      editionID: { [Op.eq]: req.params.editionID }
-    }
-  };
+  const where = { editionID: req.params.editionID };
 
-  Edition.update(updateEdition, query)
-    // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
-    // .then((edition) => res.status(200).json({message: edition + " edition record(s) successfully updated."}))
-    .then((edition) => {
-      if (edition > 0) {
-        res.status(200).json({
-          editionID: parseInt(req.params.editionID), // * The parameter value is passed as a string unless converted
-          titleID: req.body.edition.titleID,
-          mediaID: req.body.edition.mediaID,
-          publicationDate: req.body.edition.publicationDate,
-          imageName: req.body.edition.imageName,
-          ASIN: req.body.edition.ASIN,
-          textLinkShort: req.body.edition.textLinkShort,
-          textLinkFull: req.body.edition.textLinkFull,
-          imageLinkSmall: req.body.edition.imageLinkSmall,
-          imageLinkMedium: req.body.edition.imageLinkMedium,
-          imageLinkLarge: req.body.edition.imageLinkLarge,
-          textImageLink: req.body.edition.textImageLink,
-          active: req.body.edition.active,
-          recordUpdated: true,
-          // message:    'Edition successfully updated.'
-          message: edition + " edition record(s) successfully updated."
-        });
+  db(tableName)
+    .where(where)
+    .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+
       } else {
-        res.status(200).json({ recordUpdated: false, message: edition + " edition record(s) successfully updated." });
+        console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("edition-controller put /:editionID err", err);
-      // console.log("edition-controller put /:editionID  err.name", err.name);
-      // console.log("edition-controller put /:editionID  err.errors[0].message", err.errors[0].message);
-
-      let errorMessages = "";
-      for (let i = 0; i < err.errors.length; i++) {
-        //console.log("edition-controller put /:editionID  err.errors[i].message", err.errors[i].message);
-        if (i > 1) {
-          errorMessages = errorMessages + ", ";
-        };
-        errorMessages = errorMessages + err.errors[i].message;
-      };
-
-      res.status(500).json({ recordUpdated: false, message: "Edition not successfully updated.", errorMessages: errorMessages, error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
 });
+
 
 /***************************
  ******* Delete Edition *******
@@ -502,19 +460,36 @@ router.put("/:editionID", validateAdmin, (req, res) => {
 // * Allows an admin to hard delete an edition
 router.delete("/:editionID", validateAdmin, (req, res) => {
 
-  const query = {
-    where: {
-      editionID: { [Op.eq]: req.params.editionID }
-    }
-  };
+  const where = { editionID: req.params.editionID };
 
-  Edition.destroy(query)
-    .then(() => res.status(200).json({ recordDeleted: true, message: "Edition successfully deleted." }))
-    .catch((err) => {
-      console.log("edition-controller delete /:editionID err", err);
-      res.status(500).json({ recordDeleted: false, message: "Edition not successfully deleted.", error: err });
+  db(tableName)
+    .where(where)
+    .returning(select)
+    .del()
+    .then((records) => {
+      console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ records: records, recordDeleted: true, message: "Successfully deleted " + tableName + "." });
+
+      } else {
+        console.log(controllerName + "-controller delete /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordDeleted: false, message: "Nothing to delete." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(controllerName + "-controller delete /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
     });
 
 });
+
 
 module.exports = router;

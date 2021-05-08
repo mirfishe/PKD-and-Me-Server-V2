@@ -1,11 +1,14 @@
 const router = require("express").Router();
-const UserReview = require("../db").import("../models/userReview");
-const User = require("../db").import("../models/user");
-const Title = require("../db").import("../models/title");
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+const dbConfig = require("../db");
+const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
+
+const controllerName = "userReview";
+const tableName = "userReviews";
+const select = "*";
+const orderBy = [{ column: "updatedAt", order: "desc" }];
+
 
 // ! Function doesn't work because it needs to wait on the results of the query
 // function hasReviewedTitle (userID, titleID) {
@@ -21,157 +24,128 @@ const validateAdmin = require("../middleware/validate-admin");
 //     UserReview.findAll(query)
 //     .then((userReviews) => {
 //         if (userReviews.length > 0) {
-//             // console.log("userReview-controller get /user/:userID/title/:titleID userReviews", userReviews);
-//             // res.status(200).json({userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews."});
-//             // console.log("userReview-controller hasReviewedTitle", true);
-//             return {hasReviewedTitle: true, resultsFound: true, message: "Successfully retrieved user reviews."};
+//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID userReviews", userReviews);
+//             // res.status(200).json({userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+//             // console.log(controllerName + "-controller hasReviewedTitle", true);
+//             return {hasReviewedTitle: true, resultsFound: true, message: "Successfully retrieved " + tableName + "."};
 //         } else {
-//             // console.log("userReview-controller get /user/:userID/title/:titleID No Results");
-//             // res.status(200).json({resultsFound: false, message: "No user reviews found."});
-//             // console.log("userReview-controller hasReviewedTitle", false);
-//             return {hasReviewedTitle: false, resultsFound: false, message: "No user reviews found."};
+//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID No Results");
+//             // res.status(200).json({resultsFound: false, message: "No " + tableName + " found."});
+//             // console.log(controllerName + "-controller hasReviewedTitle", false);
+//             return {hasReviewedTitle: false, resultsFound: false, message: "No " + tableName + " found."};
 //         };
 //     })
 //     .catch((err) => {
-//         console.log("userReview-controller hasReviewedTitle err", err);
-//         // res.status(500).json({resultsFound: false, message: "No user reviews found.", error: err});
+//         console.log(controllerName + "-controller hasReviewedTitle err", err);
+//         // res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         return {hasReviewedTitle: false, resultsFound: false, message: "An error occurred.", error: err};
 //     });
 
 // };
+
 
 /******************************
  ***** Get User Review List *********
  ******************************/
 router.get("/list", (req, res) => {
 
-  const query = {/*where: {
-        active: {[Op.eq]: true}
-    },*/ include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        // where: {
-        //     active: {[Op.eq]: true}
-        // }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        // where: {
-        //     active: {[Op.eq]: true}
-        // }
-      }
-    ],
-    order: [["updatedAt", "DESC"]]
-  };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    // .where("titles.active", true)
+    // .where("userReviews.active", true)
+    // .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
+
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get / userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews." });
+
+        // console.log(controllerName + "-controller get /list userReviews", userReviews);
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("userReview-controller get / No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get /list No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get /list err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /******************************
  ***** Get User Reviews *********
  ******************************/
 router.get("/", (req, res) => {
 
-  const query = {
-    where: {
-      active: { [Op.eq]: true }
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["updatedAt", "DESC"]]
-  };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .where("titles.active", true)
+    .where("userReviews.active", true)
+    .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
+
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get / userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews." });
+        // console.log(controllerName + "-controller get / userReviews", userReviews);
+
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("userReview-controller get / No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get / No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get / err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get User Review By ReviewID *****
 ***************************************/
 router.get("/:reviewID", (req, res) => {
 
-  const query = {
-    where: {
-      reviewID: { [Op.eq]: req.params.reviewID }
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ]
-  };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  // UserReview.findOne(query)
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .where("userReviews.reviewID", req.params.reviewID)
+    .where("titles.active", true)
+    .where("userReviews.active", true)
+    .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
+
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /:reviewID userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user review." });
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID userReviews", userReviews);
+
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
         // res.status(200).json({
         // reviewID:   userReview.reviewID,
         // userID:     userReview.userID,
@@ -185,19 +159,24 @@ router.get("/:reviewID", (req, res) => {
         // active:     userReview.active,
         // message:    "Successfully retrieved user review information."
         // });
+
       } else {
-        // console.log("userReview-controller get /:reviewID No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get /:reviewID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get Total Average Rating By TitleID *****
@@ -219,11 +198,12 @@ router.get("/:reviewID", (req, res) => {
 //         message:    "Successfully retrieved user overall rating."
 //         }))
 //         .catch((err) => {
-//             console.log("userReview-controller get /rating/:titleID err", err);
-//             res.status(500).json({resultsFound: false, message: "No user reviews found.", error: err});
+//             console.log(controllerName + "-controller get /rating/:titleID err", err);
+//             res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         });
 
 // });
+
 
 /**************************************
  ***** Get User Review Count Rating By TitleID *****
@@ -241,17 +221,18 @@ router.get("/:reviewID", (req, res) => {
 
 //     UserReview.count(query)
 //     .then((userReview) => {
-//         // console.log("userReview-controller get /count/:titleID userReview", userReview);
+//         // console.log(controllerName + "-controller get /count/:titleID userReview", userReview);
 //         res.status(200).json({
 //         userReviewCount:    userReview,
 //         message:    "Successfully retrieved user review count."});
 //     })
 //     .catch((err) => {
-//         console.log("userReview-controller get /count/:titleID err", err);
-//         res.status(500).json({resultsFound: false, message: "No user reviews found.", error: err});
+//         console.log(controllerName + "-controller get /count/:titleID err", err);
+//         res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //     });
 
 // });
+
 
 /**************************************
  ***** Get User Review Rating Sum By TitleID *****
@@ -270,14 +251,14 @@ router.get("/:reviewID", (req, res) => {
 //     UserReview.sum("rating", query)
 //     .then((userRatingSum) => {
 //         if (!isNaN(userRatingSum)) {
-//             // console.log("userReview-controller get /sum/:titleID userRatingSum", userRatingSum);
+//             // console.log(controllerName + "-controller get /sum/:titleID userRatingSum", userRatingSum);
 //             res.status(200).json({
 //                 userRatingSum:    userRatingSum,
 //                 resultsFound: true,
 //                 message:    "Successfully retrieved user review sum."
 //             });
 //         } else {
-//             // console.log("userReview-controller get /sum/:titleID userRatingSum", userRatingSum);
+//             // console.log(controllerName + "-controller get /sum/:titleID userRatingSum", userRatingSum);
 //             // res.status(200).json({resultsFound: false, message: "There are no user ratings."});
 //             res.status(200).json({
 //                 userRatingSum:    0,
@@ -288,11 +269,12 @@ router.get("/:reviewID", (req, res) => {
 //         };
 //     })
 //     .catch((err) => {
-//         console.log("userReview-controller get /sum/:titleID err", err);
+//         console.log(controllerName + "-controller get /sum/:titleID err", err);
 //         res.status(500).json({resultsFound: false, message: "Did not successfully retrieved user review sum.", error: err});
 //     });
 
 // });
+
 
 /**************************************
  ***** Get User Review Rating List *****
@@ -321,21 +303,22 @@ router.get("/rating/list", (req, res) => {
   UserReview.findAll(query)
     .then((userReviews) => {
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /rating/:titleID userReviews", userReviews);
+        // console.log(controllerName + "-controller get /rating/:titleID userReviews", userReviews);
         res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user ratings." });
       } else {
-        // console.log("userReview-controller get /rating/:titleID  No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
+        // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
         res.status(200).json({ resultsFound: false, message: "No user ratings found." });
       };
     })
     .catch((err) => {
-      console.log("userReview-controller get /rating/:titleID err", err);
+      console.log(controllerName + "-controller get /rating/:titleID err", err);
       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get User Review Rating By TitleID *****
@@ -361,21 +344,22 @@ router.get("/rating/:titleID", (req, res) => {
   UserReview.findAll(query)
     .then((userReviews) => {
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /rating/:titleID userReviews", userReviews);
+        // console.log(controllerName + "-controller get /rating/:titleID userReviews", userReviews);
         res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user ratings." });
       } else {
-        // console.log("userReview-controller get /rating/:titleID  No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
+        // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
         res.status(200).json({ resultsFound: false, message: "No user ratings found." });
       };
     })
     .catch((err) => {
-      console.log("userReview-controller get /rating/:titleID err", err);
+      console.log(controllerName + "-controller get /rating/:titleID err", err);
       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get User Reviews By TitleID *****
@@ -384,125 +368,84 @@ router.get("/rating/:titleID", (req, res) => {
 // TODO: Would like to add the overall rating for the title
 router.get("/title/:titleID", (req, res) => {
 
-  // * Not being used because the SQL query doesn't come out correctly
-  // SELECT fields not in GROUP BY
-  // const attributes = {
-  //     attributes: [
-  //     "reviewID", "userID", "updatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "active", 
-  //     // [Sequelize.fn("count", Sequelize.col("reviewID")), "userReviewCount"],
-  //     [Sequelize.fn("sum", Sequelize.col("rating")), "userReviewSum"]
-  //     // count("rating"),
-  //     // sum("rating")
-  //     ]
-  // };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  // const groupBy = {
-  //     group: ["rating"]
-  // };
-
-  const query = {
-    where: {
-      [Op.and]: [
-        { titleID: { [Op.eq]: req.params.titleID } },
-        { active: { [Op.eq]: true } }
-      ]
-      // }, include: {all: true, nested: true}, order: [["updatedAt", "DESC"]]};
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["updatedAt", "DESC"]]
-  };
-
-  // * Removed findAndCountAll because the rating endpoiont is working
-  // UserReview.findAndCountAll(query)
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .where("titles.titleID", req.params.titleID)
+    .where("titles.active", true)
+    .where("userReviews.active", true)
+    .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
-      // console.log("userReview-controller get /title/:titleID userReviews", userReviews);
+      // console.log(controllerName + "-controller get /title/:titleID userReviews", userReviews);
+
       // if (userReviews.rows.length > 0) {
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /title/:titleID userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews." });
+        // console.log(controllerName + "-controller get /title/:titleID userReviews", userReviews);
+
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("userReview-controller get /title/:titleID No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get /title/:titleID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get /title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get /title/:titleID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get User Reviews By UserID *****
 ***************************************/
 router.get("/user/:userID", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { userID: { [Op.eq]: req.params.userID } },
-        { active: { [Op.eq]: true } }
-      ]
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["updatedAt", "DESC"]]
-  };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .where("users.userID", req.params.userID)
+    .where("titles.active", true)
+    .where("userReviews.active", true)
+    .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
+
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /user/:userID" userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews." });
+        // console.log(controllerName + "-controller get /user/:userID" userReviews", userReviews);
+
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("userReview-controller get /user/:userID No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get /user/:userID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get /user/:userID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get /user/:userID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /**************************************
  ***** Get User Reviews By UserID and TitleID *****
@@ -513,53 +456,42 @@ router.get("/user/:userID/title/:titleID", (req, res) => {
   // ! Function doesn't work because it needs to wait on the results of the query
   // console.log("hasReviewedTitle", hasReviewedTitle(req.params.userID, req.params.titleID));
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { userID: { [Op.eq]: req.params.userID } },
-        { titleID: { [Op.eq]: req.params.titleID } },
-        { active: { [Op.eq]: true } }
-      ]
-    }, include: [
-      {
-        model: Title,
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      },
-      {
-        model: User,
-        attributes: ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"],
-        // right: true,
-        required: false,
-        where: {
-          active: { [Op.eq]: true }
-        }
-      }
-    ],
-    order: [["updatedAt", "DESC"]]
-  };
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  UserReview.findAll(query)
+  db.select(select)
+    .from(tableName)
+    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .where("users.userID", req.params.userID)
+    .where("titles.titleID", req.params.titleID)
+    .where("titles.active", true)
+    .where("userReviews.active", true)
+    .where("users.active", true)
+    .orderBy(orderBy)
     .then((userReviews) => {
+
       if (userReviews.length > 0) {
-        // console.log("userReview-controller get /user/:userID/title/:titleID userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user reviews." });
+        // console.log(controllerName + "-controller get /user/:userID/title/:titleID userReviews", userReviews);
+
+        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("userReview-controller get /user/:userID/title/:titleID No Results");
-        // res.status(200).send("No user reviews found.");
-        // res.status(200).send({resultsFound: false, message: "No user reviews found."})
-        res.status(200).json({ resultsFound: false, message: "No user reviews found." });
+        // console.log(controllerName + "-controller get /user/:userID/title/:titleID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
     .catch((err) => {
-      console.log("userReview-controller get /user/:userID/title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user reviews found.", error: err });
+      console.log(controllerName + "-controller get /user/:userID/title/:titleID err", err);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
     });
 
 });
+
 
 /* ******************************
  *** Add User Review  ***************
@@ -567,7 +499,7 @@ router.get("/user/:userID/title/:titleID", (req, res) => {
 // * Allows a user to add a new user review
 router.post("/", validateSession, (req, res) => {
 
-  const createUserReview = {
+  const recordObject = {
     userID: req.user.userID,
     updatedBy: req.user.userID,
     titleID: req.body.userReview.titleID,
@@ -578,32 +510,34 @@ router.post("/", validateSession, (req, res) => {
     longReview: req.body.userReview.longReview
   };
 
-  UserReview.create(createUserReview)
-    .then((userReview) => {
-      // console.log("userReview-controller post / userReview", userReview);
-      res.status(200).json({
-        reviewID: userReview.reviewID,
-        userID: userReview.userID,
-        updatedBy: userReview.updatedBy,
-        titleID: userReview.titleID,
-        read: userReview.read,
-        dateRead: userReview.dateRead,
-        rating: userReview.rating,
-        shortReview: userReview.shortReview,
-        longReview: userReview.longReview,
-        active: userReview.active,
-        createdAt: userReview.createdAt,
-        updatedAt: userReview.updatedAt,
-        recordAdded: true,
-        message: "User review successfully created."
-      });
+  db(tableName)
+    .returning(select)
+    .insert(recordObject)
+    .then((records) => {
+      // console.log(controllerName + "-controller post / records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller post / records", records);
+
+        res.status(200).json({ records: records, recordAdded: true, message: "Successfully created " + tableName + "." });
+
+      } else {
+        console.log(controllerName + "-controller post / No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordAdded: false, message: "Nothing to add." });
+
+      };
+
     })
-    .catch((err) => {
-      console.log("userReview-controller post / err", err);
-      res.status(500).json({ recordAdded: false, message: "User review not successfully created.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller post / error", error);
+      res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
     });
 
 });
+
 
 /***************************
  ******* Update User Review  *******
@@ -611,7 +545,7 @@ router.post("/", validateSession, (req, res) => {
 // * Allows the user to update the user review including soft delete it
 router.put("/:reviewID", validateSession, (req, res) => {
 
-  const updateUserReview = {
+  const recordObject = {
     userID: req.user.userID,
     updatedBy: req.user.userID,
     titleID: req.body.userReview.titleID,
@@ -623,45 +557,37 @@ router.put("/:reviewID", validateSession, (req, res) => {
     active: req.body.userReview.active
   };
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { reviewID: { [Op.eq]: req.params.reviewID } },
-        { userID: { [Op.eq]: req.user.userID } }
-      ]
-    }
-  };
+  const where = { reviewID: req.params.reviewID, userID: req.user.userID };
 
-  UserReview.update(updateUserReview, query)
-    // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
-    // .then((userReview) => res.status(200).json({message: userReview + " user review record(s) successfully updated."}))
-    .then((userReview) => {
-      if (userReview > 0) {
-        res.status(200).json({
-          reviewID: parseInt(req.params.reviewID), // * The parameter value is passed as a string unless converted
-          userID: req.user.userID,
-          updatedBy: req.user.userID,
-          titleID: req.body.userReview.titleID,
-          read: req.body.userReview.read,
-          dateRead: req.body.userReview.dateRead,
-          rating: req.body.userReview.rating,
-          shortReview: req.body.userReview.shortReview,
-          longReview: req.body.userReview.longReview,
-          active: req.body.userReview.active,
-          recordUpdated: true,
-          // message:    "User review successfully updated."
-          message: userReview + " user review record(s) successfully updated."
-        });
+  db(tableName)
+    .where(where)
+    .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+
       } else {
-        res.status(200).json({ recordUpdated: false, message: userReview + " user review record(s) successfully updated." });
+        console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("userReview-controller put /:reviewID err", err);
-      res.status(500).json({ recordUpdated: false, message: "User review not successfully updated.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
 });
+
 
 /***************************
  ******* Update User Review  *******
@@ -669,7 +595,7 @@ router.put("/:reviewID", validateSession, (req, res) => {
 // * Allows the admin to update the user review including soft delete it
 router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
-  const updateUserReview = {
+  const recordObject = {
     userID: req.body.userReview.userID,
     updatedBy: req.user.userID,
     titleID: req.body.userReview.titleID,
@@ -681,42 +607,37 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     active: req.body.userReview.active
   };
 
-  const query = {
-    where: {
-      reviewID: { [Op.eq]: req.params.reviewID }
-    }
-  };
+  const where = { reviewID: req.params.reviewID };
 
-  UserReview.update(updateUserReview, query)
-    // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
-    // .then((userReview) => res.status(200).json({message: userReview + " user review record(s) successfully updated."}))
-    .then((userReview) => {
-      if (userReview > 0) {
-        res.status(200).json({
-          reviewID: parseInt(req.params.reviewID), // * The parameter value is passed as a string unless converted
-          userID: req.user.userID,
-          updatedBy: req.user.userID,
-          titleID: req.body.userReview.titleID,
-          read: req.body.userReview.read,
-          dateRead: req.body.userReview.dateRead,
-          rating: req.body.userReview.rating,
-          shortReview: req.body.userReview.shortReview,
-          longReview: req.body.userReview.longReview,
-          active: req.body.userReview.active,
-          recordUpdated: true,
-          // message:    "User review successfully updated."
-          message: userReview + " user review record(s) successfully updated."
-        });
+  db(tableName)
+    .where(where)
+    .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+
       } else {
-        res.status(200).json({ recordUpdated: false, message: userReview + " user review record(s) successfully updated." });
+        console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("userReview-controller put /admin/:reviewID err", err);
-      res.status(500).json({ recordUpdated: false, message: "User review not successfully updated.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
 });
+
 
 /***************************
  ******* Delete User Review *******
@@ -724,19 +645,36 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 // * Allows an admin to hard delete a review
 router.delete("/:reviewID", validateAdmin, (req, res) => {
 
-  const query = {
-    where: {
-      reviewID: { [Op.eq]: req.params.reviewID }
-    }
-  };
+  const where = { reviewID: req.params.reviewID };
 
-  UserReview.destroy(query)
-    .then(() => res.status(200).json({ recordDeleted: true, message: "User review successfully deleted." }))
-    .catch((err) => {
-      console.log("userReview-controller delete /:reviewID err", err);
-      res.status(500).json({ recordDeleted: false, message: "User review not successfully deleted.", error: err });
+  db(tableName)
+    .where(where)
+    .returning(select)
+    .del()
+    .then((records) => {
+      console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ records: records, recordDeleted: true, message: "Successfully deleted " + tableName + "." });
+
+      } else {
+        console.log(controllerName + "-controller delete /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordDeleted: false, message: "Nothing to delete." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(controllerName + "-controller delete /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
     });
 
 });
+
 
 module.exports = router;

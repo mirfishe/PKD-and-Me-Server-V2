@@ -1,86 +1,117 @@
 const router = require("express").Router();
-const Error = require("../db").import("../models/error");
-const { Op } = require("sequelize");
+const dbConfig = require("../db");
+const db = require("knex")(dbConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
+
+const controllerName = "error";
+const tableName = "errors";
+const select = "*";
+const orderBy = [{ column: "errorDate", order: "desc" }];
+
 
 /******************************
  ***** Get Errors *********
  ******************************/
 router.get("/", validateAdmin, (req, res) => {
 
-  const query = { order: [["errorDate", "DESC"]] };
+  db.select(select)
+    .from(tableName)
+    .orderBy(orderBy)
+    .then((records) => {
 
-  Error.findAll(query)
-    .then((errors) => {
-      if (errors.length > 0) {
-        // console.log("error-controller get / errors", errors);
-        res.status(200).json({ errors: errors, resultsFound: true, message: "Successfully retrieved errors." });
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get / " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+
       } else {
-        // console.log("error-controller get / No Results");
-        // res.status(200).send("No errors found.");
-        // res.status(200).send({resultsFound: false, message: "No errors found."})
-        res.status(200).json({ resultsFound: false, message: "No errors found." });
+        // console.log(controllerName + "-controller get / No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("error-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No errors found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
+
 
 /**************************************
  ***** Get Error By ErrorID *****
 ***************************************/
 router.get("/:errorID", validateAdmin, (req, res) => {
 
-  const query = {
-    where: {
-      errorID: { [Op.eq]: req.params.errorID }
-    }
-  };
+  const where = { errorID: req.params.errorID };
 
-  Error.findAll(query)
-    .then((errors) => {
-      if (errors.length > 0) {
-        // console.log("error-controller get /:errorID errors", errors);
-        res.status(200).json({ errors: errors, resultsFound: true, message: "Successfully retrieved error." });
+  db.select(select)
+    .from(tableName)
+    .where(where)
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get / " + tableName, records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + controllerName + "." });
+
       } else {
-        // console.log("error-controller get /:errorID No Results");
-        // res.status(200).send("No errors found.");
-        // res.status(200).send({resultsFound: false, message: "No errors found."})
-        res.status(200).json({ resultsFound: false, message: "No errors found." });
+        // console.log(controllerName + "-controller get / No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("error-controller get /:errorID err", err);
-      res.status(500).json({ resultsFound: false, message: "No errors found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
+
 
 /* ******************************
  *** Add Error ***************
 *********************************/
 router.post("/", (req, res) => {
 
-  Error.create(createTitle)
-    .then((error) => {
-      // console.log("error-controller post / error", error);
-      res.status(200).json({
-        errorID: error.errorID,
-        errorDate: error.errorDate,
-        errorMessage: error.errorMessage,
-        errorPage: error.errorPage,
-        recordAdded: true,
-        message: "Error successfully created."
-      });
+  const createError = {
+    errorName: req.body.error.errorName
+  };
+
+  db(tableName)
+    .returning("*")
+    .insert(createError)
+    .then((records) => {
+      // console.log(controllerName + "-controller post / records", records);
+
+      if (records.length > 0) {
+        console.log(controllerName + "-controller post / records", records);
+        res.status(200).json({ records: records, recordAdded: true, message: "Successfully created " + controllerName + "." });
+
+      } else {
+        console.log(controllerName + "-controller post / No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ records: records, recordAdded: false, message: "Nothing to add." });
+
+      };
+
     })
     .catch((err) => {
-      console.log("error-controller post / err", err);
-      res.status(500).json({ recordAdded: false, message: "Error not successfully created.", error: err });
+      console.log(controllerName + "-controller post / err", err);
+      res.status(500).json({ recordAdded: false, message: "Not successfully created " + controllerName + ".", error: err });
     });
 
 });
+
 
 module.exports = router;
