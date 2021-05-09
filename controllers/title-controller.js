@@ -8,6 +8,7 @@ const controllerName = "title";
 const tableName = "titles";
 const select = "*";
 const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true, "categories.active": true, "editions.active": true, "media.active": true };
+const activeChecklist = { "titles.active": true, "userReviews.active": true, "users.active": true, "categories.active": true };
 const orderBy = [{ column: "titleSort", order: "asc" }];
 
 
@@ -22,12 +23,12 @@ router.get("/list", (req, res) => {
     .from(tableName)
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .orderBy(orderBy)
-    .then((titles) => {
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /list titles", titles);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /list records", records);
 
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /list No Results");
@@ -39,9 +40,9 @@ router.get("/list", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /list err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /list error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -64,12 +65,12 @@ router.get("/", (req, res) => {
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
     .where(activeWhere)
     .orderBy(orderBy)
-    .then((titles) => {
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get / titles", titles);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get / records", records);
 
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get / No Results");
@@ -81,9 +82,9 @@ router.get("/", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -95,6 +96,8 @@ router.get("/", (req, res) => {
 // ? ADD OVERALL RATING TO GET TITLE?
 router.get("/:titleID", (req, res) => {
 
+  const where = { "titles.titleID": req.params.titleID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
@@ -104,13 +107,13 @@ router.get("/:titleID", (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where("titles.titleID", req.params.titleID)
+    .where(where)
     .where(activeWhere)
     .orderBy(orderBy)
-    .then((titles) => {
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID title", title);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
 
         // res.status(200).json({
         // titleID:   title.titleID,
@@ -126,7 +129,7 @@ router.get("/:titleID", (req, res) => {
         // active:     title.active,
         // message:    "Successfully retrieved " + tableName + "."
         // });
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
@@ -138,9 +141,9 @@ router.get("/:titleID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -171,12 +174,12 @@ router.get("/:titleID", (req, res) => {
 //     }, order: [["titleSort", "DESC"]]};
 
 //     Title.findAll(query)
-//     .then((titles) => {
-//         // console.log(controllerName + "-controller get /media/:mediaID" titles", titles);
-//         res.status(200).json({titles: titles, message: "Successfully retrieved " + tableName + "."});
+//     .then((records) => {
+//         // console.log(controllerName + "-controller get /media/:mediaID" records", records);
+//         res.status(200).json({records: records, message: "Successfully retrieved " + tableName + "."});
 //     })
-//         .catch((err) => {
-//             console.log(controllerName + "-controller get /media/:mediaID err", err);
+//         .catch((error) => {
+//             console.log(controllerName + "-controller get /media/:mediaID error", error);
 //             res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         });
 
@@ -197,6 +200,10 @@ router.get("/category/:categoryID/:sort?", (req, res) => {
     orderByColumn = "titleSort";
   };
 
+  const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+
+  const where = { "titles.categoryID": req.params.categoryID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
@@ -206,15 +213,15 @@ router.get("/category/:categoryID/:sort?", (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where("titles.categoryID", req.params.categoryID)
+    .where(where)
     .where(activeWhere)
-    .orderBy([{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }])
-    .then((titles) => {
+    .orderBy(orderByDynamic)
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /category/:categoryID titles", titles);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /category/:categoryID records", records);
 
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /category/:categoryID No Results");
@@ -226,9 +233,9 @@ router.get("/category/:categoryID/:sort?", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /category/:categoryID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /category/:categoryID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -248,6 +255,10 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
     orderByColumn = "titleSort";
   };
 
+  const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+
+  const where = { "titles.categoryID": req.params.categoryID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
@@ -257,20 +268,20 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where("titles.categoryID", req.params.categoryID)
+    .where(where)
     // .where("titles.active", true)
     .where("userReviews.active", true)
     .where("users.active", true)
     .where("categories.active", true)
     // .where("editions.active", true)
     // .where("media.active", true)
-    .orderBy([{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }])
-    .then((titles) => {
+    .orderBy(orderByDynamic)
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /category/:categoryID titles", titles);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /category/:categoryID records", records);
 
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /category/:categoryID No Results");
@@ -282,9 +293,9 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /category/:categoryID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /category/:categoryID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -303,6 +314,8 @@ router.get("/checklist/list", validateSession, (req, res) => {
     orderByColumn = "titleSort";
   };
 
+  const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
@@ -312,20 +325,17 @@ router.get("/checklist/list", validateSession, (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where("titles.active", true)
-    .where("userReviews.active", true)
     .where("users.userID", req.user.userID)
-    .where("users.active", true)
-    .where("categories.active", true)
+    .where(activeChecklist)
     // .where("editions.active", true)
     // .where("media.active", true)
-    .orderBy([{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }])
-    .then((titles) => {
+    .orderBy(orderByDynamic)
+    .then((records) => {
 
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /checklist/:categoryID titles", titles);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /checklist/:categoryID records", records);
 
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /checklist/:categoryID No Results");
@@ -337,9 +347,9 @@ router.get("/checklist/list", validateSession, (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /checklist/:categoryID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /checklist/:categoryID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -358,6 +368,10 @@ router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
     orderByColumn = "titleSort";
   };
 
+  const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+
+  const where = { "titles.categoryID": req.params.categoryID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
@@ -367,19 +381,16 @@ router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where("titles.categoryID", req.params.categoryID)
-    .where("titles.active", true)
-    .where("userReviews.active", true)
+    .where(where)
     .where("users.userID", req.user.userID)
-    .where("users.active", true)
-    .where("categories.active", true)
+    .where(activeChecklist)
     // .where("editions.active", true)
     // .where("media.active", true)
-    .orderBy([{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }])
-    .then((titles) => {
-      if (titles.length > 0) {
-        // console.log(controllerName + "-controller get /checklist/:categoryID titles", titles);
-        res.status(200).json({ titles: titles, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+    .orderBy(orderByDynamic)
+    .then((records) => {
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /checklist/:categoryID records", records);
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
       } else {
         // console.log(controllerName + "-controller get /checklist/:categoryID No Results");
         // res.status(200).send("No " + tableName + " found.");
@@ -387,9 +398,9 @@ router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
       };
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /checklist/:categoryID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /checklist/:categoryID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });

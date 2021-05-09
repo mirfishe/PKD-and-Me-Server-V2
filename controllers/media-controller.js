@@ -151,9 +151,9 @@ router.get("/:mediaID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });

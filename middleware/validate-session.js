@@ -3,32 +3,37 @@ const dbConfig = require("../db");
 const db = require("knex")(dbConfig.config);
 
 
+const controllerName = "validateSession";
+const tableName = "users";
+const select = "*";
+
+
 const validateSession = (req, res, next) => {
+
 
   const token = req.headers.authorization;
 
   jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
-    // console.log("validateSession token: ", token);
-    // console.log("validateSession decoded: ", decoded);
+    // console.log("controllerName + " token: ", token);
+    // console.log("controllerName + " decoded: ", decoded);
 
     if (!error && decoded) {
 
-      db.select("*")
-        .from("users")
-        .where({
-          userID: decoded.userID,
-          active: true
-        })
-        .then(user => {
+      const where = { userID: decoded.userID, active: true };
 
-          // if (!user) throw "Unauthorized."; // "error";
-          if (!user) {
+      db.select(select)
+        .from(tableName)
+        .where(where)
+        .then(records => {
+
+          // if (!records) throw "Unauthorized."; // "error";
+          if (!records) {
             return res.status(401).json({ isLoggedIn: false, message: "Unauthorized." });
           };
 
           // ? Need to return all the properties of the user?
-          // req.user = user;
-          req.user = { userID: user.userID };
+          // req.user = records;
+          req.user = { userID: records.userID };
           return next();
 
         })

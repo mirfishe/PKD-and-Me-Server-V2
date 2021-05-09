@@ -106,9 +106,9 @@ router.post("/", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller post / err", err);
-      res.status(500).json({ recordAdded: false, message: "Not successfully created " + controllerName + ".", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller post / error", error);
+      res.status(500).json({ recordAdded: false, message: "Not successfully created " + controllerName + ".", error: error });
     });
 
 });

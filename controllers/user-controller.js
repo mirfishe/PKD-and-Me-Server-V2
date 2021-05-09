@@ -19,7 +19,7 @@ const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", o
 *********************************** */
 router.post("/register", (req, res) => {
 
-  const createUser = {
+  const recordObject = {
     firstName: req.body.user.firstName,
     lastName: req.body.user.lastName,
     email: req.body.user.email,
@@ -28,46 +28,60 @@ router.post("/register", (req, res) => {
 
   if (req.body.user.email.match(emailRegExp)) {
 
-    User.create(createUser)
+    db(tableName)
+      .returning(select)
+      .insert(recordObject)
       .then(
-        createSuccess = (user) => {
-          let token = jwt.sign({ userID: user.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+        createSuccess = (records) => {
+
+          let token = jwt.sign({ userID: records.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
           res.json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   user,
-            userID: user.userID,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            updatedBy: user.updatedBy,
-            admin: user.admin,
-            active: user.active,
+            // user:   records,
+            userID: records.userID,
+            firstName: records.firstName,
+            lastName: records.lastName,
+            email: records.email,
+            updatedBy: records.updatedBy,
+            admin: records.admin,
+            active: records.active,
             isLoggedIn: true,
-            isAdmin: user.admin,
+            isAdmin: records.admin,
             recordAdded: true,
-            message: "User successfully created " + tableName + ".",
+            message: "Successfully created " + controllerName + ".",
             sessionToken: token
           });
+
         },
-        createError = (err) => {
-          // console.log(controllerName + "-controller post /register createError err", err);
-          // console.log(controllerName + "-controller post /register createError err.name", err.name);
-          // console.log(controllerName + "-controller post /register createError err.errors[0].message", err.errors[0].message);
+
+        createError = (error) => {
+          // console.log(controllerName + "-controller post /register createError error", error);
+          // console.log(controllerName + "-controller post /register createError error.name", error.name);
+          // console.log(controllerName + "-controller post /register createError error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
-          for (let i = 0; i < err.errors.length; i++) {
-            //console.log(controllerName + "-controller post /register createError err.errors[i].message", err.errors[i].message);
+
+          for (let i = 0; i < error.errors.length; i++) {
+            //console.log(controllerName + "-controller post /register createError error.errors[i].message", error.errors[i].message);
+
             if (i > 1) {
               errorMessages = errorMessages + ", ";
             };
-            errorMessages = errorMessages + err.errors[i].message;
+
+            errorMessages = errorMessages + error.errors[i].message;
+
           };
 
-          res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + tableName + ".", errorMessages: errorMessages, error: err });
+          res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + controllerName + ".", errorMessages: errorMessages, error: error });
+
         })
-      .catch(err => {
-        console.log(controllerName + "-controller post /register err", err);
-        res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + tableName + ".", error: err });
+      .catch((error) => {
+
+        console.log(controllerName + "-controller post /register error", error);
+        res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + controllerName + ".", error: error });
+
       });
 
   } else {
@@ -82,56 +96,68 @@ router.post("/register", (req, res) => {
 *********************************** */
 router.post("/login", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { email: { [Op.eq]: req.body.user.email } },
-        { active: { [Op.eq]: true } }
-      ]
-    }
-  };
+  const where = { email: req.body.user.email, active: true };
 
-  User.findOne(query)
+  db.select(select)
+    .from(tableName)
+    .where(where)
     .then(
-      loginSuccess = (user) => {
-        if (user) {
-          bcrypt.compare(req.body.user.password, user.password, (err, matches) => {
+      loginSuccess = (records) => {
+
+        if (records) {
+
+          bcrypt.compare(req.body.user.password, records.password, (error, matches) => {
+
             if (matches) {
-              let token = jwt.sign({ userID: user.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+              let token = jwt.sign({ userID: records.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
               res.status(200).json({
                 // ? Need to return all the properties of the user to the browser?
-                // user:   user,
-                userID: user.userID,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                updatedBy: user.updatedBy,
-                admin: user.admin,
-                active: user.active,
+                // user:   records,
+                userID: records.userID,
+                firstName: records.firstName,
+                lastName: records.lastName,
+                email: records.email,
+                updatedBy: records.updatedBy,
+                admin: records.admin,
+                active: records.active,
                 isLoggedIn: true,
-                isAdmin: user.admin,
+                isAdmin: records.admin,
                 resultsFound: true,
-                message: "Successfully authenticated user.",
+                message: "Successfully authenticated " + controllerName + ".",
                 sessionToken: token
               });
+
             } else {
+
               console.log(controllerName + "-controller post /login Login failed. 401");
               res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
+
             };
+
           });
+
         } else {
+
           // console.log(controllerName + "-controller post /login Failed to authenticate. 401");
           res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
+
         };
+
       },
-      err => {
-        console.log(controllerName + "-controller post /login Failed to process. 501 err", err);
+      error => {
+
+        console.log(controllerName + "-controller post /login Failed to process. 501 error", error);
         res.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
+
       }
     )
-    .catch(err => {
-      console.log(controllerName + "-controller post /login err", err);
-      res.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: err });
+    .catch((error) => {
+
+      console.log(controllerName + "-controller post /login error", error);
+      res.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
+
     });
 });
 
@@ -144,13 +170,13 @@ router.get("/admin", validateAdmin, (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .orderBy([{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }])
-    .then((users) => {
+    .orderBy(orderBy)
+    .then((records) => {
 
-      if (users.length > 0) {
-        // console.log(controllerName + "-controller get /admin users", users);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /admin records", records);
 
-        res.status(200).json({ users: users, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /admin No Results");
@@ -162,9 +188,9 @@ router.get("/admin", validateAdmin, (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /admin err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /admin error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -176,28 +202,30 @@ router.get("/admin", validateAdmin, (req, res) => {
 // * Returns User information for the logged in user
 router.get("/", validateSession, (req, res) => {
 
+  const where = { userID: req.user.userID };
+
   db.select(select)
     .from(tableName)
-    .where({ userID: req.user.userID })
-    .then((user) => {
+    .where(where)
+    .then((records) => {
 
-      // if (user.length > 0) {
-      if (user != null) {
-        // console.log(controllerName + "-controller get / user", user);
+      // if (records.length > 0) {
+      if (records != null) {
+        // console.log(controllerName + "-controller get / records", records);
 
-        // res.status(200).json({users: users, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
-          // user:   user,
-          userID: user.userID,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          updatedBy: user.updatedBy,
-          admin: user.admin,
-          active: user.active,
+          // user:   records,
+          userID: records.userID,
+          firstName: records.firstName,
+          lastName: records.lastName,
+          email: records.email,
+          updatedBy: records.updatedBy,
+          admin: records.admin,
+          active: records.active,
           resultsFound: true,
-          message: "Successfully retrieved user information."
+          message: "Successfully retrieved " + controllerName + " information."
         });
 
       } else {
@@ -210,9 +238,9 @@ router.get("/", validateSession, (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -224,28 +252,30 @@ router.get("/", validateSession, (req, res) => {
 // Returns User information for the admin
 router.get("/:userID", validateAdmin, (req, res) => {
 
+  const where = { userID: req.params.userID };
+
   db.select(select)
     .from(tableName)
-    .where({ userID: req.params.userID })
-    .then((user) => {
+    .where(where)
+    .then((records) => {
 
-      // if (user.length > 0) {
-      if (user != null) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID user", user);
+      // if (records.length > 0) {
+      if (records != null) {
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
 
-        // res.status(200).json({users: users, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
-          // user:   user,
-          userID: user.userID,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          updatedBy: user.updatedBy,
-          admin: user.admin,
-          active: user.active,
+          // user:   records,
+          userID: records.userID,
+          firstName: records.firstName,
+          lastName: records.lastName,
+          email: records.email,
+          updatedBy: records.updatedBy,
+          admin: records.admin,
+          active: records.active,
           resultsFound: true,
-          message: "Successfully retrieved user information."
+          message: "Successfully retrieved " + controllerName + " information."
         });
 
       } else {
@@ -258,9 +288,9 @@ router.get("/:userID", validateAdmin, (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -273,7 +303,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
 // * The admin column is not included here as an extra security feature
 router.put("/:userID", validateAdmin, (req, res) => {
 
-  const updateUser = {
+  const recordObject = {
     firstName: req.body.user.firstName,
     lastName: req.body.user.lastName,
     email: req.body.user.email,
@@ -283,53 +313,63 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
   // If the user doesn't enter a password, then it isn't updated
   if (req.body.user.password) {
-    Object.assign(updateUser, { password: bcrypt.hashSync(req.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
   };
 
-  const query = {
-    where: {
-      userID: { [Op.eq]: req.params.userID }
-    }
-  };
+  const where = { userID: req.params.userID };
 
   if (req.body.user.email.match(emailRegExp)) {
 
-    User.update(updateUser, query)
+    db(tableName)
+      .where(where)
+      .returning(select)
+      .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
-      .then((user) => {
-        if (user > 0) {
+      .then((records) => {
+
+        if (records > 0) {
+
           res.status(200).json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   user,
-            userID: user.userID,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            updatedBy: user.updatedBy,
-            admin: user.admin,
-            active: user.active,
+            // user:   records,
+            userID: records.userID,
+            firstName: records.firstName,
+            lastName: records.lastName,
+            email: records.email,
+            updatedBy: records.updatedBy,
+            admin: records.admin,
+            active: records.active,
             recordUpdated: true,
-            message: user + " user record(s) successfully updated."
+            message: "Successfully updated" + controllerName + "."
           });
+
         } else {
-          res.status(200).json({ recordUpdated: false, message: user + " user record(s) successfully updated." });
+
+          res.status(200).json({ recordUpdated: false, message: "Not successfully updated" + tableName + "." });
+
         };
+
       })
-      .catch((err) => {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID err", err);
-        // console.log(controllerName + "-controller put /:" + controllerName + "ID err.name", err.name);
-        // console.log(controllerName + "-controller put /:" + controllerName + "ID err.errors[0].message", err.errors[0].message);
+      .catch((error) => {
+        console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+        // console.log(controllerName + "-controller put /:" + controllerName + "ID error.name", error.name);
+        // console.log(controllerName + "-controller put /:" + controllerName + "ID error.errors[0].message", error.errors[0].message);
 
         let errorMessages = "";
-        for (let i = 0; i < err.errors.length; i++) {
-          //console.log(controllerName + "-controller put /:" + controllerName + "ID err.errors[i].message", err.errors[i].message);
+
+        for (let i = 0; i < error.errors.length; i++) {
+          //console.log(controllerName + "-controller put /:" + controllerName + "ID error.errors[i].message", error.errors[i].message);
+
           if (i > 1) {
             errorMessages = errorMessages + ", ";
           };
-          errorMessages = errorMessages + err.errors[i].message;
+
+          errorMessages = errorMessages + error.errors[i].message;
+
         };
 
-        res.status(500).json({ recordUpdated: false, message: "User not successfully updated.", errorMessages: errorMessages, error: err });
+        res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", errorMessages: errorMessages, error: error });
+
       });
 
   } else {
@@ -346,7 +386,7 @@ router.put("/:userID", validateAdmin, (req, res) => {
 // * The admin column is not included here as an extra security feature
 router.put("/", validateSession, (req, res) => {
 
-  const updateUser = {
+  const recordObject = {
     firstName: req.body.user.firstName,
     lastName: req.body.user.lastName,
     email: req.body.user.email,
@@ -356,61 +396,74 @@ router.put("/", validateSession, (req, res) => {
 
   // * If the user doesn't enter a password, then it isn't updated
   if (req.body.user.password) {
-    Object.assign(updateUser, { password: bcrypt.hashSync(req.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
   };
 
-  const query = {
-    where: {
-      userID: { [Op.eq]: req.user.userID }
-    }
-  };
+  const where = { userID: req.user.userID };
 
   if (req.body.user.email.match(emailRegExp)) {
 
-    User.update(updateUser, query)
+    db(tableName)
+      .where(where)
+      .returning(select)
+      .update(recordObject)
       .then(
-        updateSuccess = (user) => {
-          if (user > 0) {
-            // let token = jwt.sign({userID: user.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
+
+        updateSuccess = (records) => {
+
+          if (records > 0) {
+
+            // let token = jwt.sign({userID: records.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
             res.json({
               // ? Need to return all the properties of the user to the browser?
-              // user:   user,
-              userID: user.userID,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              updatedBy: user.updatedBy,
-              admin: user.admin,
-              active: user.active,
+              // user:   records,
+              userID: records.userID,
+              firstName: records.firstName,
+              lastName: records.lastName,
+              email: records.email,
+              updatedBy: records.updatedBy,
+              admin: records.admin,
+              active: records.active,
               isLoggedIn: true,
               recordUpdated: true,
-              message: user + " user record(s) successfully updated.",
+              message: "Successfully updated" + controllerName + ".",
               // sessionToken:   token // User gets a new sessionToken even if they haven't updated their password
             });
+
           } else {
-            res.status(200).json({ recordUpdated: false, isLoggedIn: true, message: user + " user record(s) successfully updated." });
+
+            res.status(200).json({ recordUpdated: false, isLoggedIn: true, message: "Successfully updated" + tableName + "." });
+
           };
+
         },
-        updateError = (err) => {
-          console.log(controllerName + "-controller put / err", err);
-          // console.log(controllerName + "-controller put / err.name", err.name);
-          // console.log(controllerName + "-controller put / err.errors[0].message", err.errors[0].message);
+
+        updateError = (error) => {
+          console.log(controllerName + "-controller put / error", error);
+          // console.log(controllerName + "-controller put / error.name", error.name);
+          // console.log(controllerName + "-controller put / error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
-          for (let i = 0; i < err.errors.length; i++) {
-            //console.log(controllerName + "-controller put / err.errors[i].message", err.errors[i].message);
+
+          for (let i = 0; i < error.errors.length; i++) {
+            //console.log(controllerName + "-controller put / error.errors[i].message", error.errors[i].message);
+
             if (i > 1) {
               errorMessages = errorMessages + ", ";
             };
-            errorMessages = errorMessages + err.errors[i].message;
+
+            errorMessages = errorMessages + error.errors[i].message;
+
           };
 
-          res.status(500).json({ recordUpdated: false, message: "User not successfully updated.", errorMessages: errorMessages, error: err });
+          res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", errorMessages: errorMessages, error: error });
+
         }
+
       )
-      .catch((err) => {
-        console.log(controllerName + "-controller put / err", err);
-        res.status(500).json({ recordUpdated: false, message: "User not successfully updated.", error: err });
+      .catch((error) => {
+        console.log(controllerName + "-controller put / error", error);
+        res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", error: error });
       });
 
   } else {

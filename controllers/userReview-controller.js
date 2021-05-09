@@ -7,6 +7,7 @@ const validateAdmin = require("../middleware/validate-admin");
 const controllerName = "userReview";
 const tableName = "userReviews";
 const select = "*";
+const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };
 const orderBy = [{ column: "updatedAt", order: "desc" }];
 
 
@@ -22,10 +23,10 @@ const orderBy = [{ column: "updatedAt", order: "desc" }];
 //     }};
 
 //     UserReview.findAll(query)
-//     .then((userReviews) => {
-//         if (userReviews.length > 0) {
-//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID userReviews", userReviews);
-//             // res.status(200).json({userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+//     .then((records) => {
+//         if (records.length > 0) {
+//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID records", records);
+//             // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
 //             // console.log(controllerName + "-controller hasReviewedTitle", true);
 //             return {hasReviewedTitle: true, resultsFound: true, message: "Successfully retrieved " + tableName + "."};
 //         } else {
@@ -35,8 +36,8 @@ const orderBy = [{ column: "updatedAt", order: "desc" }];
 //             return {hasReviewedTitle: false, resultsFound: false, message: "No " + tableName + " found."};
 //         };
 //     })
-//     .catch((err) => {
-//         console.log(controllerName + "-controller hasReviewedTitle err", err);
+//     .catch((error) => {
+//         console.log(controllerName + "-controller hasReviewedTitle error", error);
 //         // res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         return {hasReviewedTitle: false, resultsFound: false, message: "An error occurred.", error: err};
 //     });
@@ -59,12 +60,12 @@ router.get("/list", (req, res) => {
     // .where("userReviews.active", true)
     // .where("users.active", true)
     .orderBy(orderBy)
-    .then((userReviews) => {
+    .then((records) => {
 
-      if (userReviews.length > 0) {
+      if (records.length > 0) {
 
-        // console.log(controllerName + "-controller get /list userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        // console.log(controllerName + "-controller get /list records", records);
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /list No Results");
@@ -76,9 +77,9 @@ router.get("/list", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /list err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /list error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -95,16 +96,14 @@ router.get("/", (req, res) => {
     .from(tableName)
     .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .where("titles.active", true)
-    .where("userReviews.active", true)
-    .where("users.active", true)
+    .where(activeWhere)
     .orderBy(orderBy)
-    .then((userReviews) => {
+    .then((records) => {
 
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get / userReviews", userReviews);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get / records", records);
 
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get / No Results");
@@ -116,9 +115,9 @@ router.get("/", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -129,23 +128,23 @@ router.get("/", (req, res) => {
 ***************************************/
 router.get("/:reviewID", (req, res) => {
 
+  const where = { "userReviews.reviewID": req.params.reviewID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
     .from(tableName)
     .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .where("userReviews.reviewID", req.params.reviewID)
-    .where("titles.active", true)
-    .where("userReviews.active", true)
-    .where("users.active", true)
+    .where(where)
+    .where(activeWhere)
     .orderBy(orderBy)
-    .then((userReviews) => {
+    .then((records) => {
 
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID userReviews", userReviews);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
 
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
         // res.status(200).json({
         // reviewID:   userReview.reviewID,
         // userID:     userReview.userID,
@@ -170,9 +169,9 @@ router.get("/:reviewID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -197,8 +196,8 @@ router.get("/:reviewID", (req, res) => {
 //         overallRating:     userReview.overallRating,
 //         message:    "Successfully retrieved user overall rating."
 //         }))
-//         .catch((err) => {
-//             console.log(controllerName + "-controller get /rating/:titleID err", err);
+//         .catch((error) => {
+//             console.log(controllerName + "-controller get /rating/:titleID error", error);
 //             res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         });
 
@@ -226,8 +225,8 @@ router.get("/:reviewID", (req, res) => {
 //         userReviewCount:    userReview,
 //         message:    "Successfully retrieved user review count."});
 //     })
-//     .catch((err) => {
-//         console.log(controllerName + "-controller get /count/:titleID err", err);
+//     .catch((error) => {
+//         console.log(controllerName + "-controller get /count/:titleID error", error);
 //         res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //     });
 
@@ -268,8 +267,8 @@ router.get("/:reviewID", (req, res) => {
 //             });
 //         };
 //     })
-//     .catch((err) => {
-//         console.log(controllerName + "-controller get /sum/:titleID err", err);
+//     .catch((error) => {
+//         console.log(controllerName + "-controller get /sum/:titleID error", error);
 //         res.status(500).json({resultsFound: false, message: "Did not successfully retrieved user review sum.", error: err});
 //     });
 
@@ -282,39 +281,51 @@ router.get("/:reviewID", (req, res) => {
 // * Gets the sum and count of ratings for the title
 router.get("/rating/list", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        // {titleID: {[Op.eq]: req.params.titleID}},
-        { rating: { [Op.ne]: 0 } },
-        { rating: { [Op.not]: null } },
-        { active: { [Op.eq]: true } }
-      ]
-    },
-    group: ["titleID"],
-    attributes: [
-      // Sequelize.col("titleID"),
-      [Sequelize.col("titleID"), "titleID"],
-      [Sequelize.fn("count", Sequelize.col("rating")), "userReviewCount"],
-      [Sequelize.fn("sum", Sequelize.col("rating")), "userReviewSum"]
-    ]
-  };
+  // let sqlQuery = db.select("titleID")
+  //   .from(tableName)
+  //   .count("rating", { as: "userReviewCount" })
+  //   .sum({ userReviewSum: "rating" })
+  //   .where({ active: true })
+  //   .whereNotNull("rating")
+  //   .whereNot({ rating: 0 })
+  //   .groupBy("titleID")
+  //   .toSQL();
+  // // .toString();
 
-  UserReview.findAll(query)
-    .then((userReviews) => {
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /rating/:titleID userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user ratings." });
+  // * .replace() and .replaceAll() are not working
+  // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
+
+  // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where active = ? and rating is not null and not rating = ? group by titleID
+
+  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+
+  db.select("titleID")
+    .from(tableName)
+    .count("rating", { as: "userReviewCount" })
+    .sum({ userReviewSum: "rating" })
+    .where({ active: true })
+    .whereNotNull("rating")
+    .whereNot({ rating: 0 })
+    .groupBy("titleID")
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /rating/:titleID records", records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved user ratings." });
+
       } else {
         // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
         res.status(200).json({ resultsFound: false, message: "No user ratings found." });
+
       };
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /rating/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /rating/:titleID error", error);
+      res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
     });
 
 });
@@ -326,36 +337,56 @@ router.get("/rating/list", (req, res) => {
 // * Gets the sum and count of ratings for the title
 router.get("/rating/:titleID", (req, res) => {
 
-  const query = {
-    where: {
-      [Op.and]: [
-        { titleID: { [Op.eq]: req.params.titleID } },
-        { rating: { [Op.ne]: 0 } },
-        { rating: { [Op.not]: null } },
-        { active: { [Op.eq]: true } }
-      ]
-      // }, group: ["rating"]
-    }, attributes: [
-      [Sequelize.fn("count", Sequelize.col("rating")), "userReviewCount"],
-      [Sequelize.fn("sum", Sequelize.col("rating")), "userReviewSum"]
-    ]
-  };
+  // let sqlQuery = db.select("titleID")
+  //   .from(tableName)
+  //   .count("rating", { as: "userReviewCount" })
+  //   .sum({ userReviewSum: "rating" })
+  //   .where({ titleID: req.params.titleID })
+  //   .where({ active: true })
+  //   .whereNotNull("rating")
+  //   .whereNot({ rating: 0 })
+  //   .groupBy("titleID")
+  //   .toSQL();
+  // // .toString();
 
-  UserReview.findAll(query)
-    .then((userReviews) => {
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /rating/:titleID userReviews", userReviews);
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved user ratings." });
+  // * .replace() and .replaceAll() are not working
+  // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
+
+  // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where titleID = ? and active = ? and rating is not null and not rating = ? group by titleID
+
+  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+
+  const where = { "userReviews.titleID": req.params.titleID };
+
+  db.select("titleID")
+    .from(tableName)
+    .count("rating", { as: "userReviewCount" })
+    .sum({ userReviewSum: "rating" })
+    .where(where)
+    .where({ active: true })
+    .whereNotNull("rating")
+    .whereNot({ rating: 0 })
+    .groupBy("titleID")
+    .then((records) => {
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /rating/:titleID records", records);
+
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved user ratings." });
+
       } else {
         // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
         res.status(200).json({ resultsFound: false, message: "No user ratings found." });
+
       };
+
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /rating/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /rating/:titleID error", error);
+      res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
     });
 
 });
@@ -368,25 +399,25 @@ router.get("/rating/:titleID", (req, res) => {
 // TODO: Would like to add the overall rating for the title
 router.get("/title/:titleID", (req, res) => {
 
+  const where = { "userReviews.titleID": req.params.titleID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
     .from(tableName)
     .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .where("titles.titleID", req.params.titleID)
-    .where("titles.active", true)
-    .where("userReviews.active", true)
-    .where("users.active", true)
+    .where(where)
+    .where(activeWhere)
     .orderBy(orderBy)
-    .then((userReviews) => {
-      // console.log(controllerName + "-controller get /title/:titleID userReviews", userReviews);
+    .then((records) => {
+      // console.log(controllerName + "-controller get /title/:titleID records", records);
 
-      // if (userReviews.rows.length > 0) {
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /title/:titleID userReviews", userReviews);
+      // if (records.rows.length > 0) {
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /title/:titleID records", records);
 
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /title/:titleID No Results");
@@ -398,9 +429,9 @@ router.get("/title/:titleID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /title/:titleID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -411,23 +442,23 @@ router.get("/title/:titleID", (req, res) => {
 ***************************************/
 router.get("/user/:userID", (req, res) => {
 
+  const where = { "userReviews.userID": req.params.userID };
+
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(select)
     .from(tableName)
     .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .where("users.userID", req.params.userID)
-    .where("titles.active", true)
-    .where("userReviews.active", true)
-    .where("users.active", true)
+    .where(where)
+    .where(activeWhere)
     .orderBy(orderBy)
-    .then((userReviews) => {
+    .then((records) => {
 
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /user/:userID" userReviews", userReviews);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /user/:userID" records", records);
 
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /user/:userID No Results");
@@ -439,9 +470,9 @@ router.get("/user/:userID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /user/:userID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /user/:userID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -453,6 +484,8 @@ router.get("/user/:userID", (req, res) => {
 // * Don't need because the front end restricts user reviews to one per title
 router.get("/user/:userID/title/:titleID", (req, res) => {
 
+  const where = { "userReviews.titleID": req.params.titleID, "userReviews.userID": req.params.userID };
+
   // ! Function doesn't work because it needs to wait on the results of the query
   // console.log("hasReviewedTitle", hasReviewedTitle(req.params.userID, req.params.titleID));
 
@@ -462,18 +495,15 @@ router.get("/user/:userID/title/:titleID", (req, res) => {
     .from(tableName)
     .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .where("users.userID", req.params.userID)
-    .where("titles.titleID", req.params.titleID)
-    .where("titles.active", true)
-    .where("userReviews.active", true)
-    .where("users.active", true)
+    .where(where)
+    .where(activeWhere)
     .orderBy(orderBy)
-    .then((userReviews) => {
+    .then((records) => {
 
-      if (userReviews.length > 0) {
-        // console.log(controllerName + "-controller get /user/:userID/title/:titleID userReviews", userReviews);
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller get /user/:userID/title/:titleID records", records);
 
-        res.status(200).json({ userReviews: userReviews, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
       } else {
         // console.log(controllerName + "-controller get /user/:userID/title/:titleID No Results");
@@ -485,9 +515,9 @@ router.get("/user/:userID/title/:titleID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /user/:userID/title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /user/:userID/title/:titleID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });

@@ -92,9 +92,9 @@ router.get("/", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get / error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -165,9 +165,9 @@ router.get("/:editionID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -221,9 +221,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -260,9 +260,9 @@ router.get("/title/:titleID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /title/:titleID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /title/:titleID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -299,9 +299,9 @@ router.get("/media/:mediaID", (req, res) => {
       };
 
     })
-    .catch((err) => {
-      console.log(controllerName + "-controller get /media/:mediaID err", err);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller get /media/:mediaID error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
@@ -327,8 +327,8 @@ router.get("/media/:mediaID", (req, res) => {
 //         // console.log(controllerName + "-controller get /category/:categoryID " + tableName, records);
 //         res.status(200).json({records: records, message: "Successfully retrieved " + tableName + "."});
 //     })
-//     .catch((err) => {
-//         console.log(controllerName + "-controller get /category/:categoryID err", err);
+//     .catch((error) => {
+//         console.log(controllerName + "-controller get /category/:categoryID error", error);
 //         res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //     });
 
