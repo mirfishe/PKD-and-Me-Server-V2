@@ -4,6 +4,8 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
+const convertBitTrueFalse = require("../utilities/sharedFunctions");
+
 const controllerName = "category";
 const tableName = "categories";
 const select = "*";
@@ -21,8 +23,10 @@ router.get("/list", (req, res) => {
     .orderBy(orderBy)
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get /list " + tableName, records);
+        console.log(controllerName + "-controller get /list " + tableName, records);
 
         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
@@ -59,8 +63,10 @@ router.get("/", (req, res) => {
     .orderBy(orderBy)
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get / " + tableName, records);
+        console.log(controllerName + "-controller get / " + tableName, records);
 
         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 

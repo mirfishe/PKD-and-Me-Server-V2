@@ -4,12 +4,17 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
+const convertBitTrueFalse = require("../utilities/sharedFunctions");
+
 const controllerName = "title";
 const tableName = "titles";
 const select = "*";
-const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true, "categories.active": true, "editions.active": true, "media.active": true };
+const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
 const activeChecklist = { "titles.active": true, "userReviews.active": true, "users.active": true, "categories.active": true };
 const orderBy = [{ column: "titleSort", order: "asc" }];
+
+
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createdAt, updatedAt
 
 
 /******************************
@@ -24,6 +29,8 @@ router.get("/list", (req, res) => {
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /list records", records);
@@ -58,14 +65,16 @@ router.get("/", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
-    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    // .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
+    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get / records", records);
@@ -102,8 +111,8 @@ router.get("/:titleID", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
-    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    // .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
+    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
@@ -111,6 +120,8 @@ router.get("/:titleID", (req, res) => {
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
@@ -208,8 +219,8 @@ router.get("/category/:categoryID/:sort?", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
-    .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    // .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
+    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
@@ -217,6 +228,8 @@ router.get("/category/:categoryID/:sort?", (req, res) => {
     .where(activeWhere)
     .orderBy(orderByDynamic)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /category/:categoryID records", records);
@@ -263,7 +276,7 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
+    .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
@@ -277,6 +290,8 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
     // .where("media.active", true)
     .orderBy(orderByDynamic)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /category/:categoryID records", records);
@@ -306,21 +321,25 @@ router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
 ***************************************/
 router.get("/checklist/list", validateSession, (req, res) => {
 
-  let orderByColumn = "titleSort";
+  // let orderByColumn = "titleSort";
+  let orderByDynamic;
 
   if (req.params.sort == "publicationDate") {
-    orderByColumn = "publicationDate";
+    // orderByColumn = "publicationDate";
+    orderByDynamic = [{ column: "publicationDate", order: "asc" }, { column: "titleSort", order: "asc" }];
   } else {
-    orderByColumn = "titleSort";
+    // orderByColumn = "titleSort";
+    orderByDynamic = [{ column: "titleSort", order: "asc" }];
   };
 
-  const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+  // const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
+  // * title-controller get /checklist/:categoryID error Error: Undefined binding(s) detected when compiling SELECT. Undefined column(s): [users.userID] query: select * from `titles` left outer join `userReviews` on `userReviews`.`titleID` = `titles`.`titleID` left outer join `users` on `users`.`userID` = `userReviews`.`userID` left outer join `categories` on `categories`.`categoryID` = `titles`.`categoryID` where `users`.`userID` = ? and `titles`.`active` = ? and `userReviews`.`active` = ? and `users`.`active` = ? and `categories`.`active` = ? order by `titleSort` asc
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
+    .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
@@ -331,6 +350,8 @@ router.get("/checklist/list", validateSession, (req, res) => {
     // .where("media.active", true)
     .orderBy(orderByDynamic)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /checklist/:categoryID records", records);
@@ -376,7 +397,7 @@ router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.reviewID", "titles.reviewID")
+    .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
@@ -388,6 +409,9 @@ router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
     // .where("media.active", true)
     .orderBy(orderByDynamic)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /checklist/:categoryID records", records);
         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
@@ -426,10 +450,13 @@ router.post("/", validateAdmin, (req, res) => {
   };
 
   db(tableName)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(controllerName + "-controller post / records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller post / records", records);
@@ -478,10 +505,13 @@ router.put("/:titleID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .update(recordObject)
     .then((records) => {
       console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
@@ -516,10 +546,13 @@ router.delete("/:titleID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .del()
     .then((records) => {
       console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);

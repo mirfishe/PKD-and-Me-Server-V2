@@ -32,6 +32,7 @@ module.exports = {
   //   }
   // }
 
+  // ! pm2 doesn't see the .env variables being used here and then isn't able to access MySql.
   config: {
     client: "mysql2",
     connection: {

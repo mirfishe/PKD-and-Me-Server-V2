@@ -4,11 +4,16 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
+const convertBitTrueFalse = require("../utilities/sharedFunctions");
+
 const controllerName = "userReview";
 const tableName = "userReviews";
 const select = "*";
 const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };
-const orderBy = [{ column: "updatedAt", order: "desc" }];
+const orderBy = [{ column: "userReviews.updatedAt", order: "desc" }];
+
+
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createdAt, updatedAt
 
 
 // ! Function doesn't work because it needs to wait on the results of the query
@@ -54,13 +59,15 @@ router.get("/list", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     // .where("titles.active", true)
     // .where("userReviews.active", true)
     // .where("users.active", true)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
 
@@ -94,11 +101,13 @@ router.get("/", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get / records", records);
@@ -134,12 +143,14 @@ router.get("/:reviewID", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .where(where)
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
@@ -309,6 +320,8 @@ router.get("/rating/list", (req, res) => {
     .groupBy("titleID")
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /rating/:titleID records", records);
 
@@ -369,6 +382,8 @@ router.get("/rating/:titleID", (req, res) => {
     .groupBy("titleID")
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /rating/:titleID records", records);
 
@@ -405,13 +420,15 @@ router.get("/title/:titleID", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .where(where)
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
       // console.log(controllerName + "-controller get /title/:titleID records", records);
+
+      records = convertBitTrueFalse(records);
 
       // if (records.rows.length > 0) {
       if (records.length > 0) {
@@ -448,12 +465,14 @@ router.get("/user/:userID", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .where(where)
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /user/:userID" records", records);
@@ -493,12 +512,14 @@ router.get("/user/:userID/title/:titleID", (req, res) => {
 
   db.select(select)
     .from(tableName)
-    .leftOuterJoin("titles", "titles.reviewID", "userReviews.reviewID")
+    .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
     .leftOuterJoin("users", "users.userID", "userReviews.userID")
     .where(where)
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /user/:userID/title/:titleID records", records);
@@ -541,10 +562,13 @@ router.post("/", validateSession, (req, res) => {
   };
 
   db(tableName)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(controllerName + "-controller post / records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller post / records", records);
@@ -591,10 +615,13 @@ router.put("/:reviewID", validateSession, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .update(recordObject)
     .then((records) => {
       console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
@@ -641,10 +668,13 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .update(recordObject)
     .then((records) => {
       console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
@@ -679,10 +709,13 @@ router.delete("/:reviewID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .del()
     .then((records) => {
       console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);

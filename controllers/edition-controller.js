@@ -4,12 +4,17 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
+const convertBitTrueFalse = require("../utilities/sharedFunctions");
+
 const controllerName = "edition";
 const tableName = "editions";
 const select = "*";
 const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
 const activeDataWhere = { "titles.active": true, "media.active": true };
 const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
+
+
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createdAt, updatedAt
 
 
 /******************************
@@ -24,6 +29,8 @@ router.get("/list", (req, res) => {
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /list " + tableName, records);
@@ -76,6 +83,8 @@ router.get("/", (req, res) => {
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get / " + tableName, records);
@@ -133,6 +142,8 @@ router.get("/:editionID", (req, res) => {
     .orderBy(orderBy)
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
 
@@ -188,6 +199,8 @@ router.get("/ASIN/:ASIN", (req, res) => {
     // .where("editions.active", true)
     .where(activeDataWhere)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
@@ -245,6 +258,8 @@ router.get("/title/:titleID", (req, res) => {
     .orderBy(orderBy)
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /title/:titleID " + tableName, records);
 
@@ -283,6 +298,8 @@ router.get("/media/:mediaID", (req, res) => {
     .where(activeWhere)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /media/:mediaID " + tableName, records);
@@ -356,10 +373,13 @@ router.post("/", validateAdmin, (req, res) => {
   };
 
   db(tableName)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(controllerName + "-controller post / records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller post / records", records);
@@ -426,10 +446,13 @@ router.put("/:editionID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .update(recordObject)
     .then((records) => {
       console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
@@ -464,10 +487,13 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .del()
     .then((records) => {
       console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);

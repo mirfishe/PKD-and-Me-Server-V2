@@ -6,12 +6,18 @@ const jwt = require("jsonwebtoken");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
+const convertBitTrueFalse = require("../utilities/sharedFunctions");
+
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 
 const controllerName = "user";
 const tableName = "users";
 const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];
+
+
+// TODO: Fix all the user adminsitration routes below. They assume that no records are returned after the add, update or delete.
+
 
 
 /* ***********************************
@@ -29,7 +35,8 @@ router.post("/register", (req, res) => {
   if (req.body.user.email.match(emailRegExp)) {
 
     db(tableName)
-      .returning(select)
+      // ! .returning() is not supported by mysql and will not have any effect.
+      // .returning(select)
       .insert(recordObject)
       .then(
 
@@ -104,26 +111,26 @@ router.post("/login", (req, res) => {
     .then(
       loginSuccess = (records) => {
 
-        if (records) {
+        if (records.length > 0) {
 
-          bcrypt.compare(req.body.user.password, records.password, (error, matches) => {
+          bcrypt.compare(req.body.user.password, records[0].password, (error, matches) => {
 
             if (matches) {
 
-              let token = jwt.sign({ userID: records.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+              let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
               res.status(200).json({
                 // ? Need to return all the properties of the user to the browser?
-                // user:   records,
-                userID: records.userID,
-                firstName: records.firstName,
-                lastName: records.lastName,
-                email: records.email,
-                updatedBy: records.updatedBy,
-                admin: records.admin,
-                active: records.active,
+                // user:   records[0],
+                userID: records[0].userID,
+                firstName: records[0].firstName,
+                lastName: records[0].lastName,
+                email: records[0].email,
+                updatedBy: records[0].updatedBy,
+                admin: records[0].admin,
+                active: records[0].active,
                 isLoggedIn: true,
-                isAdmin: records.admin,
+                isAdmin: records[0].admin,
                 resultsFound: true,
                 message: "Successfully authenticated " + controllerName + ".",
                 sessionToken: token
@@ -172,6 +179,8 @@ router.get("/admin", validateAdmin, (req, res) => {
     .from(tableName)
     .orderBy(orderBy)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(controllerName + "-controller get /admin records", records);
@@ -322,7 +331,10 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
     db(tableName)
       .where(where)
-      .returning(select)
+      // !       // ! .returning() is not supported by mysql and will not have any effect.
+      // .returning() is not supported by mysql and will not have any effect.
+      //       // ! .returning() is not supported by mysql and will not have any effect.
+      // .returning(select)
       .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
       .then((records) => {
@@ -405,7 +417,8 @@ router.put("/", validateSession, (req, res) => {
 
     db(tableName)
       .where(where)
-      .returning(select)
+      // ! .returning() is not supported by mysql and will not have any effect.
+      // .returning(select)
       .update(recordObject)
       .then(
 
@@ -483,7 +496,8 @@ router.delete("/:userID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    .returning(select)
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
     .del()
     .then((records) => {
       console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);

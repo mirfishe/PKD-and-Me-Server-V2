@@ -87,7 +87,8 @@ router.post("/", (req, res) => {
   };
 
   db(tableName)
-    .returning("*")
+    // ! .returning() is not supported by mysql and will not have any effect.
+    // .returning("*")
     .insert(createError)
     .then((records) => {
       // console.log(controllerName + "-controller post / records", records);
