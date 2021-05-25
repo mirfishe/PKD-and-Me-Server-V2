@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const convertBitTrueFalse = require("../utilities/sharedFunctions");
+const isEmpty = require("../utilities/isEmpty");
+const getDateTime = require("../utilities/getDateTime");
+const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 
@@ -42,20 +44,20 @@ router.post("/register", (req, res) => {
 
         createSuccess = (records) => {
 
-          let token = jwt.sign({ userID: records.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+          let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
           res.json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   records,
-            userID: records.userID,
-            firstName: records.firstName,
-            lastName: records.lastName,
-            email: records.email,
-            updatedBy: records.updatedBy,
-            admin: records.admin,
-            active: records.active,
+            // user:   records[0],
+            userID: records[0].userID,
+            firstName: records[0].firstName,
+            lastName: records[0].lastName,
+            email: records[0].email,
+            updatedBy: records[0].updatedBy,
+            admin: records[0].admin,
+            active: records[0].active,
             isLoggedIn: true,
-            isAdmin: records.admin,
+            isAdmin: records[0].admin,
             recordAdded: true,
             message: "Successfully created " + controllerName + ".",
             sessionToken: token
@@ -220,19 +222,19 @@ router.get("/", validateSession, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller get / records", records);
+        // console.log(controllerName + "-controller get / records", records[0]);
 
-        // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
-          // user:   records,
-          userID: records.userID,
-          firstName: records.firstName,
-          lastName: records.lastName,
-          email: records.email,
-          updatedBy: records.updatedBy,
-          admin: records.admin,
-          active: records.active,
+          // user:   records[0],
+          userID: records[0].userID,
+          firstName: records[0].firstName,
+          lastName: records[0].lastName,
+          email: records[0].email,
+          updatedBy: records[0].updatedBy,
+          admin: records[0].admin,
+          active: records[0].active,
           resultsFound: true,
           message: "Successfully retrieved " + controllerName + " information."
         });
@@ -270,19 +272,19 @@ router.get("/:userID", validateAdmin, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records[0]);
 
-        // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
-          // user:   records,
-          userID: records.userID,
-          firstName: records.firstName,
-          lastName: records.lastName,
-          email: records.email,
-          updatedBy: records.updatedBy,
-          admin: records.admin,
-          active: records.active,
+          // user:   records[0],
+          userID: records[0].userID,
+          firstName: records[0].firstName,
+          lastName: records[0].lastName,
+          email: records[0].email,
+          updatedBy: records[0].updatedBy,
+          admin: records[0].admin,
+          active: records[0].active,
           resultsFound: true,
           message: "Successfully retrieved " + controllerName + " information."
         });
@@ -339,18 +341,18 @@ router.put("/:userID", validateAdmin, (req, res) => {
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
       .then((records) => {
 
-        if (records > 0) {
+        if (records.length > 0) {
 
           res.status(200).json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   records,
-            userID: records.userID,
-            firstName: records.firstName,
-            lastName: records.lastName,
-            email: records.email,
-            updatedBy: records.updatedBy,
-            admin: records.admin,
-            active: records.active,
+            // user:   records[0],
+            userID: records[0].userID,
+            firstName: records[0].firstName,
+            lastName: records[0].lastName,
+            email: records[0].email,
+            updatedBy: records[0].updatedBy,
+            admin: records[0].admin,
+            active: records[0].active,
             recordUpdated: true,
             message: "Successfully updated" + controllerName + "."
           });
@@ -424,19 +426,19 @@ router.put("/", validateSession, (req, res) => {
 
         updateSuccess = (records) => {
 
-          if (records > 0) {
+          if (records.length > 0) {
 
-            // let token = jwt.sign({userID: records.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            // let token = jwt.sign({userID: records[0].userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
             res.json({
               // ? Need to return all the properties of the user to the browser?
-              // user:   records,
-              userID: records.userID,
-              firstName: records.firstName,
-              lastName: records.lastName,
-              email: records.email,
-              updatedBy: records.updatedBy,
-              admin: records.admin,
-              active: records.active,
+              // user:   records[0],
+              userID: records[0].userID,
+              firstName: records[0].firstName,
+              lastName: records[0].lastName,
+              email: records[0].email,
+              updatedBy: records[0].updatedBy,
+              admin: records[0].admin,
+              active: records[0].active,
               isLoggedIn: true,
               recordUpdated: true,
               message: "Successfully updated" + controllerName + ".",

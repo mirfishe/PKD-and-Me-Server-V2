@@ -4,7 +4,9 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const convertBitTrueFalse = require("../utilities/sharedFunctions");
+const isEmpty = require("../utilities/isEmpty");
+const getDateTime = require("../utilities/getDateTime");
+const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "edition";
 const tableName = "editions";
@@ -15,6 +17,27 @@ const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
 
 
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createdAt, updatedAt
+const columnsList = ["*", "editions.publicationDate AS editionsPublicationDate", "editions.imageName AS editionsImageName", "editions.active AS editionsActive", "editions.createdAt AS editionsCreatedAt", "editions.updatedAt AS editionsUpdatedAt", "titles.active AS titlesActive", "titles.createdAt AS titlesCreatedAt", "titles.updatedAt AS titlesUpdatedAt", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createdAt AS mediaCreatedAt", "media.updatedAt AS mediaUpdatedAt"];
+
+/*
+categories
+("categoryID","category","categories.sortID AS categoriesSortID", "categories.active AS categoriesActive", "categories.createdAt AS categoriesCreatedAt", "categories.updatedAt AS categoriesUpdatedAt")
+
+editions
+("editionID", "titleID", "mediaID", "editions.publicationDate AS editionsPublicationDate", "editions.imageName AS editionsImageName", "ASIN", "textLinkShort", "textLinkFull", "imageLinkSmall", "imageLinkMedium", "imageLinkLarge", "textImageLink", "editions.active AS editionsActive", "editions.createdAt AS editionsCreatedAt", "editions.updatedAt AS editionsUpdatedAt")
+
+media
+("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createdAt AS mediaCreatedAt", "media.updatedAt AS mediaUpdatedAt")
+
+titles
+("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createdAt AS titlesCreatedAt", "titles.updatedAt AS titlesUpdatedAt")
+
+userreviews
+("reviewID", "userID", "userreviews.updatedBy AS userreviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userreviews.active AS userreviewsActive", "userreviews.createdAt AS userreviewsCreatedAt", "userreviews.updatedAt AS userreviewsUpdatedAt")
+
+users
+("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createdAt AS usersCreatedAt", "users.updatedAt AS usersUpdatedAt")
+*/
 
 
 /******************************
@@ -23,7 +46,7 @@ const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
 // * Returns all editions active or not
 router.get("/list", (req, res) => {
 
-  db.select(select)
+  db.select(columnsList)
     .from(tableName)
     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
@@ -58,130 +81,130 @@ router.get("/list", (req, res) => {
 /******************************
  ***** Get Editions *********
  ******************************/
-router.get("/", (req, res) => {
+// router.get("/", (req, res) => {
 
-  // let sqlQuery = db.select(select)
-  //   .from(tableName)
-  //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-  //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-  //   .where(activeWhere)
-  //   .orderBy(orderBy)
-  //   .toSQL();
-  // // .toString();
+//   // let sqlQuery = db.select(select)
+//   //   .from(tableName)
+//   //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//   //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//   //   .where(activeWhere)
+//   //   .orderBy(orderBy)
+//   //   .toSQL();
+//   // // .toString();
 
-  // * .replace() and .replaceAll() are not working
-  // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
+//   // * .replace() and .replaceAll() are not working
+//   // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
 
-  // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editions.active = 1 and titles.active = 1 and media.active = 1 order by editions.publicationDate desc
+//   // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editions.active = 1 and titles.active = 1 and media.active = 1 order by editions.publicationDate desc
 
-  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+//   // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
 
-  db.select(select)
-    .from(tableName)
-    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where(activeWhere)
-    .orderBy(orderBy)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//     .where(activeWhere)
+//     .orderBy(orderBy)
+//     .then((records) => {
 
-      records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        // console.log(controllerName + "-controller get / " + tableName, records);
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller get / " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
-      } else {
-        // console.log(controllerName + "-controller get / No Results");
+//       } else {
+//         // console.log(controllerName + "-controller get / No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(controllerName + "-controller get / error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
-    });
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller get / error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
 
-});
+// });
 
 
 /**************************************
  ***** Get Edition By EditionID *****
 ***************************************/
-router.get("/:editionID", (req, res) => {
+// router.get("/:editionID", (req, res) => {
 
-  const where = { editionID: req.params.editionID };
+//   const where = { editionID: req.params.editionID };
 
-  // let sqlQuery = db.select(select)
-  //   .from(tableName)
-  //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-  //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-  //   .where(where)
-  //   // .where("editions.active", true)
-  //   .where("titles.active", true)
-  //   .where("media.active", true)
-  //   .orderBy(orderBy)
-  //   .toSQL();
-  // // .toString();
+//   // let sqlQuery = db.select(select)
+//   //   .from(tableName)
+//   //   .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//   //   .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//   //   .where(where)
+//   //   // .where("editions.active", true)
+//   //   .where("titles.active", true)
+//   //   .where("media.active", true)
+//   //   .orderBy(orderBy)
+//   //   .toSQL();
+//   // // .toString();
 
-  // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editionID = 1 and titles.active = true and media.active = true order by editions.publicationDate desc
+//   // select * from editions left outer join titles on titles.titleID = editions.titleID left outer join media on media.mediaID = editions.mediaID where editionID = 1 and titles.active = true and media.active = true order by editions.publicationDate desc
 
-  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+//   // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
 
-  db.select(select)
-    .from(tableName)
-    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where(where)
-    // .where("editions.active", true)
-    .where(activeDataWhere)
-    .orderBy(orderBy)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//     .where(where)
+//     // .where("editions.active", true)
+//     .where(activeDataWhere)
+//     .orderBy(orderBy)
+//     .then((records) => {
 
-      records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
-        // res.status(200).json({
-        // editionID:  edition.editionID,
-        // titleID:    edition.titleID,
-        // mediaID:    edition.mediaID,
-        // amazonLinkID:   edition.amazonLinkID,
-        // publicationDate:  edition.publicationDate,
-        // imageName:  edition.imageName,
-        // ASIN:              edition.ASIN,
-        // textLinkShort:     edition.textLinkShort,
-        // textLinkFull:     edition.textLinkFull,
-        // imageLinkSmall:     edition.imageLinkSmall,
-        // imageLinkMedium:     edition.imageLinkMedium,
-        // imageLinkLarge:     edition.imageLinkLarge,
-        // textImageLink:     edition.textImageLink,
-        // active:     edition.active,
-        // message:    "Successfully retrieved edition."
-        // });
+//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         // res.status(200).json({
+//         // editionID:  edition.editionID,
+//         // titleID:    edition.titleID,
+//         // mediaID:    edition.mediaID,
+//         // amazonLinkID:   edition.amazonLinkID,
+//         // publicationDate:  edition.publicationDate,
+//         // imageName:  edition.imageName,
+//         // ASIN:              edition.ASIN,
+//         // textLinkShort:     edition.textLinkShort,
+//         // textLinkFull:     edition.textLinkFull,
+//         // imageLinkSmall:     edition.imageLinkSmall,
+//         // imageLinkMedium:     edition.imageLinkMedium,
+//         // imageLinkLarge:     edition.imageLinkLarge,
+//         // textImageLink:     edition.textImageLink,
+//         // active:     edition.active,
+//         // message:    "Successfully retrieved edition."
+//         // });
 
-      } else {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+//       } else {
+//         // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
-    });
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
 
-});
+// });
 
 
 /**************************************
@@ -191,7 +214,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
 
   const where = { ASIN: req.params.ASIN };
 
-  db.select(select)
+  db.select(columnsList)
     .from(tableName)
     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
@@ -245,83 +268,83 @@ router.get("/ASIN/:ASIN", (req, res) => {
 /**************************************
  ***** Get Editions By TitleID *****
 ***************************************/
-router.get("/title/:titleID", (req, res) => {
+// router.get("/title/:titleID", (req, res) => {
 
-  const where = { "editions.titleID": req.params.titleID };
+//   const where = { "editions.titleID": req.params.titleID };
 
-  db.select(select)
-    .from(tableName)
-    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where(where)
-    .where(activeWhere)
-    .orderBy(orderBy)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//     .where(where)
+//     .where(activeWhere)
+//     .orderBy(orderBy)
+//     .then((records) => {
 
-      records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        // console.log(controllerName + "-controller get /title/:titleID " + tableName, records);
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller get /title/:titleID " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
-      } else {
-        // console.log(controllerName + "-controller get /title/:titleID No Results");
+//       } else {
+//         // console.log(controllerName + "-controller get /title/:titleID No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(controllerName + "-controller get /title/:titleID error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
-    });
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller get /title/:titleID error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
 
-});
+// });
 
 
 /**************************************
  ***** Get Editions By MediaID *****
 ***************************************/
-router.get("/media/:mediaID", (req, res) => {
+// router.get("/media/:mediaID", (req, res) => {
 
-  const where = { "editions.mediaID": req.params.mediaID };
+//   const where = { "editions.mediaID": req.params.mediaID };
 
-  db.select(select)
-    .from(tableName)
-    .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
-    .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    .where(where)
-    .where(activeWhere)
-    .orderBy(orderBy)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
+//     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+//     .where(where)
+//     .where(activeWhere)
+//     .orderBy(orderBy)
+//     .then((records) => {
 
-      records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        // console.log(controllerName + "-controller get /media/:mediaID " + tableName, records);
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller get /media/:mediaID " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 
-      } else {
-        // console.log(controllerName + "-controller get /media/:mediaID No Results");
+//       } else {
+//         // console.log(controllerName + "-controller get /media/:mediaID No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(controllerName + "-controller get /media/:mediaID error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
-    });
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller get /media/:mediaID error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
 
-});
+// });
 
 
 /**************************************
@@ -379,19 +402,21 @@ router.post("/", validateAdmin, (req, res) => {
     .then((records) => {
       // console.log(controllerName + "-controller post / records", records);
 
-      records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(records);
+
+      recordObject.editionID = records;
 
       if (records.length > 0) {
         console.log(controllerName + "-controller post / records", records);
 
-        res.status(200).json({ records: records, recordAdded: true, message: "Successfully created " + tableName + "." });
+        res.status(200).json({ records: [recordObject], recordAdded: true, message: "Successfully created " + tableName + "." });
 
       } else {
         console.log(controllerName + "-controller post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordAdded: false, message: "Nothing to add." });
+        res.status(200).json({ records: [recordObject], recordAdded: false, message: "Nothing to add." });
 
       };
 
@@ -452,19 +477,19 @@ router.put("/:editionID", validateAdmin, (req, res) => {
     .then((records) => {
       console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
 
-      records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
 
-        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+        res.status(200).json({ records: [recordObject], recordUpdated: true, message: "Successfully updated " + tableName + "." });
 
       } else {
         console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+        res.status(200).json({ records: [recordObject], recordUpdated: false, message: "Nothing to update." });
 
       };
 
@@ -493,7 +518,7 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
     .then((records) => {
       console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
 
-      records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);

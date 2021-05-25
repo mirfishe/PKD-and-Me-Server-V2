@@ -1,5 +1,5 @@
 
-const componentName = "sharedFunctions.js";
+const componentName = "convertBitTrueFalse.js";
 
 
 module.exports = convertBitTrueFalse = (records) => {

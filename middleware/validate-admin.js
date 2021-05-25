@@ -33,8 +33,8 @@ const validateAdmin = (req, res, next) => {
           };
 
           // ? Need to return all the properties of the user?
-          // req.user = records;
-          req.user = { userID: records.userID };
+          // req.user = records[0];
+          req.user = { userID: records[0].userID };
           // console.log(controllerName + " req.user", req.user);
           return next();
 
