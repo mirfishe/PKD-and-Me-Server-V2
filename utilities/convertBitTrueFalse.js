@@ -16,6 +16,42 @@ module.exports = convertBitTrueFalse = (records) => {
         records[i].active = false;
       };
 
+      if (records[i].categoriesActive === 1) {
+        records[i].categoriesActive = true;
+      } else if (records[i].categoriesActive === 0) {
+        records[i].categoriesActive = false;
+      };
+
+      if (records[i].editionsActive === 1) {
+        records[i].editionsActive = true;
+      } else if (records[i].editionsActive === 0) {
+        records[i].editionsActive = false;
+      };
+
+      if (records[i].mediaActive === 1) {
+        records[i].mediaActive = true;
+      } else if (records[i].mediaActive === 0) {
+        records[i].mediaActive = false;
+      };
+
+      if (records[i].titlesActive === 1) {
+        records[i].titlesActive = true;
+      } else if (records[i].titlesActive === 0) {
+        records[i].titlesActive = false;
+      };
+
+      if (records[i].userreviewsActive === 1) {
+        records[i].userreviewsActive = true;
+      } else if (records[i].userreviewsActive === 0) {
+        records[i].userreviewsActive = false;
+      };
+
+      if (records[i].usersActive === 1) {
+        records[i].usersActive = true;
+      } else if (records[i].usersActive === 0) {
+        records[i].usersActive = false;
+      };
+
       if (records[i].electronic === 1) {
         records[i].electronic = true;
       } else if (records[i].electronic === 0) {
