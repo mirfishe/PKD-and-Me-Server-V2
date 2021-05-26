@@ -361,10 +361,6 @@ router.get("/checklist/list", validateSession, (req, res) => {
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  // * title-controller get /checklist/list error Error: Undefined binding(s) detected when compiling SELECT. Undefined column(s): [users.userID] query: select * from titles left outer join userReviews on userReviews.titleID = titles.titleID left outer join users on users.userID = userReviews.userID left outer join categories on categories.categoryID = titles.categoryID where users.userID = ? and titles.active = ? and userReviews.active = ? and users.active = ? and categories.active = ? order by titleSort asc
-
-  // * title - controller get / checklist / list error Error: Undefined binding(s) detected when compiling SELECT.Undefined column(s): [userID] query: select *, titles.active as titlesActive, titles.createdAt as titlesCreatedAt, titles.updatedAt as titlesUpdatedAt, categories.sortID as categoriesSortID, categories.active as categoriesActive, categories.createdAt as categoriesCreatedAt, categories.updatedAt as categoriesUpdatedAt, userreviews.updatedBy as userreviewsUpdatedBy, userreviews.active as userreviewsActive, userreviews.createdAt as userreviewsCreatedAt, userreviews.updatedAt as userreviewsUpdatedAt from titles left outer join userReviews on userReviews.titleID = titles.titleID left outer join categories on categories.categoryID = titles.categoryID where userID = ? and titles.active = ? and userReviews.active = ? and categories.active = ? order by titleSort asc
-
   db.select(checklistColumnsList)
     .from(tableName)
     .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
