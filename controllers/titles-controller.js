@@ -8,7 +8,7 @@ const isEmpty = require("../utilities/isEmpty");
 const getDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
-const controllerName = "title";
+const controllerName = "titles";
 const tableName = "titles";
 const select = "*";
 const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
@@ -345,6 +345,9 @@ router.get("/list", (req, res) => {
  ***** Get Titles/Checklist *****
 ***************************************/
 router.get("/checklist/list", validateSession, (req, res) => {
+
+  // SELECT * FROM titles LEFT OUTER JOIN userReviews on titles.titleID = userReviews.titleID
+  // WHERE titles.active = 1 AND(userReviews.active = 1 OR userReviews.active is null)
 
   // let orderByColumn = "titleSort";
   let orderByDynamic;

@@ -12,7 +12,7 @@ const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 
-const controllerName = "user";
+const controllerName = "users";
 const tableName = "users";
 const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];

@@ -8,7 +8,7 @@ const isEmpty = require("../utilities/isEmpty");
 const getDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
-const controllerName = "userReview";
+const controllerName = "userReviews";
 const tableName = "userReviews";
 const select = "*";
 const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };

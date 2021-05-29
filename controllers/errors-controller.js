@@ -6,7 +6,7 @@ const validateAdmin = require("../middleware/validate-admin");
 const isEmpty = require("../utilities/isEmpty");
 const getDateTime = require("../utilities/getDateTime");
 
-const controllerName = "error";
+const controllerName = "errors";
 const tableName = "errors";
 const select = "*";
 const orderBy = [{ column: "errorDate", order: "desc" }];

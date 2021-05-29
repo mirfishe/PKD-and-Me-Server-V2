@@ -8,7 +8,7 @@ const isEmpty = require("../utilities/isEmpty");
 const getDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
-const controllerName = "category";
+const controllerName = "categories";
 const tableName = "categories";
 const select = "*";
 const orderBy = [{ column: "sortID", order: "asc" }];
