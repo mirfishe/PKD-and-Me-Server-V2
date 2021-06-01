@@ -100,11 +100,11 @@ router.post("/", (req, res) => {
       recordObject.errorID = records;
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
         res.status(200).json({ recordAdded: true, message: "Successfully created " + controllerName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})

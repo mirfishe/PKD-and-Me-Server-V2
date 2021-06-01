@@ -240,12 +240,12 @@ router.post("/", validateAdmin, (req, res) => {
       recordObject.mediaID = records;
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
 
         res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -282,18 +282,18 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -324,18 +324,18 @@ router.delete("/:mediaID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
       // * Returns the number of deleted records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", mediaID: req.params.mediaID });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})

@@ -515,16 +515,16 @@ router.delete("/:userID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
       // * Returns the number of deleted records.
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", userID: req.params.userID });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})

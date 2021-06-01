@@ -18,7 +18,7 @@ const orderBy = [{ column: "userReviews.updateDate", order: "desc" }];
 // ! Needs to not return the user's password.
 // TODO: Needs to not return the user's password.
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
-const columnsList = ["*", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "userreviews.updatedBy AS userreviewsUpdatedBy", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreatedAt", "userreviews.updateDate AS userreviewsUpdatedDate"];
+const columnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS userUpdatedBy", "admin", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
 
 /*
 categories
@@ -33,8 +33,8 @@ media
 titles
 ("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate")
 
-userreviews
-("reviewID", "userID", "userreviews.updatedBy AS userreviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreatedAt", "userreviews.updateDate AS userreviewsUpdatedDate")
+userReviews
+("reviewID", "userID", "userReviews.updatedBy AS userReviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userReviews.active AS userReviewsActive", "userReviews.createDate AS userReviewsCreatedAt", "userReviews.updateDate AS userReviewsUpdatedDate")
 
 users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreatedAt", "users.updateDate AS usersUpdatedDate")
@@ -351,7 +351,7 @@ router.get("/rating", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " get /rating records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get /rating records", records);
 
         res.status(200).json({ resultsFound: true, message: "Successfully retrieved user ratings.", records: records });
 
@@ -595,7 +595,7 @@ router.post("/", validateSession, (req, res) => {
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
       // * Returns the ID value of the added record.
 
       // records = convertBitTrueFalse(records);
@@ -603,12 +603,12 @@ router.post("/", validateSession, (req, res) => {
       recordObject.reviewID = records;
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
 
         res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -652,18 +652,18 @@ router.put("/:reviewID", validateSession, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -707,18 +707,18 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -749,18 +749,18 @@ router.delete("/:reviewID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
       // * Returns the number of deleted records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", reviewID: req.params.reviewID });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})

@@ -17,9 +17,9 @@ const orderBy = [{ column: "titleSort", order: "asc" }];
 
 
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
-const columnsList = ["*", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate", "categories.sortID AS categoriesSortID", "categories.active AS categoriesActive", "categories.createDate AS categoriesCreateDate", "categories.updateDate AS categoriesUpdatedDate"];
+const columnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate"];
 
-const checklistColumnsList = ["*", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate", "categories.sortID AS categoriesSortID", "categories.active AS categoriesActive", "categories.createDate AS categoriesCreateDate", "categories.updateDate AS categoriesUpdatedDate", "userreviews.updatedBy AS userreviewsUpdatedBy", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreateDate", "userreviews.updateDate AS userreviewsUpdatedDate"];
+const checklistColumnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate", "userreviews.updatedBy AS userreviewUpdatedBy", "userreviews.active AS userreviewActive", "userreviews.createDate AS userreviewCreateDate", "userreviews.updateDate AS userreviewUpdatedDate"];
 
 /*
 categories
@@ -498,12 +498,12 @@ router.post("/", validateAdmin, (req, res) => {
       recordObject.titleID = records;
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
 
         res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -548,18 +548,18 @@ router.put("/:titleID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -590,18 +590,18 @@ router.delete("/:titleID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
       // * Returns the number of deleted records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", titleID: req.params.titleID });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})

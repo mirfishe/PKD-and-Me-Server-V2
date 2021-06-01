@@ -17,7 +17,7 @@ const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
 
 
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
-const columnsList = ["*", "editions.publicationDate AS editionsPublicationDate", "editions.imageName AS editionsImageName", "editions.active AS editionsActive", "editions.createDate AS editionsCreateDate", "editions.updateDate AS editionsUpdatedDate", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate"];
+const columnsList = ["*", "editions.publicationDate AS editionPublicationDate", "editions.imageName AS editionImageName", "editions.active AS editionActive", "editions.createDate AS editionCreateDate", "editions.updateDate AS editionUpdatedDate", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate"];
 
 /*
 categories
@@ -409,12 +409,12 @@ router.post("/", validateAdmin, (req, res) => {
       recordObject.editionID = records;
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
 
         res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -477,18 +477,18 @@ router.put("/:editionID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -519,18 +519,18 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
       // * Returns the number of deleted records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
         res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", editionID: req.params.editionID });
 
       } else {
-        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
