@@ -3,8 +3,8 @@ const dbConfig = require("../db");
 const db = require("knex")(dbConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
 
-const isEmpty = require("../utilities/isEmpty");
-const getDateTime = require("../utilities/getDateTime");
+const IsEmpty = require("../utilities/isEmpty");
+const GetDateTime = require("../utilities/getDateTime");
 
 const controllerName = "errors";
 const tableName = "errors";
@@ -23,12 +23,12 @@ router.get("/", validateAdmin, (req, res) => {
     .then((records) => {
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get / " + tableName, records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -38,7 +38,7 @@ router.get("/", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get / error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -58,12 +58,12 @@ router.get("/:errorID", validateAdmin, (req, res) => {
     .then((records) => {
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get / " + tableName, records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + controllerName + "." });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + controllerName + ".", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -73,7 +73,7 @@ router.get("/:errorID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get / error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -85,33 +85,36 @@ router.get("/:errorID", validateAdmin, (req, res) => {
 *********************************/
 router.post("/", (req, res) => {
 
-  const createError = {
+  const recordObject = {
     errorName: req.body.error.errorName
   };
 
   db(tableName)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning("*")
-    .insert(createError)
+    .insert(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller post / records", records);
+      // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      // * Returns the ID value of the added record.
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller post / records", records);
-        res.status(200).json({ records: records, recordAdded: true, message: "Successfully created " + controllerName + "." });
+      recordObject.errorID = records;
+
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        res.status(200).json({ recordAdded: true, message: "Successfully created " + controllerName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller post / No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordAdded: false, message: "Nothing to add." });
+        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller post / error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
       res.status(500).json({ recordAdded: false, message: "Not successfully created " + controllerName + ".", error: error });
     });
 

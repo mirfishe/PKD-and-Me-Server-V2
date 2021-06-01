@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const isEmpty = require("../utilities/isEmpty");
-const getDateTime = require("../utilities/getDateTime");
+const IsEmpty = require("../utilities/isEmpty");
+const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
@@ -37,29 +37,32 @@ router.post("/register", (req, res) => {
   if (req.body.user.email.match(emailRegExp)) {
 
     db(tableName)
-      // ! .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect.
       // .returning(select)
       .insert(recordObject)
       .then(
 
         createSuccess = (records) => {
+          // * Returns the ID value of the added record.
 
-          records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(records);
 
-          let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+          recordObject.userID = records;
+
+          let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
           res.json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   records[0],
-            userID: records[0].userID,
-            firstName: records[0].firstName,
-            lastName: records[0].lastName,
-            email: records[0].email,
-            updatedBy: records[0].updatedBy,
-            admin: records[0].admin,
-            active: records[0].active,
+            // user:   recordObject,
+            userID: recordObject.userID,
+            firstName: recordObject.firstName,
+            lastName: recordObject.lastName,
+            email: recordObject.email,
+            updatedBy: recordObject.updatedBy,
+            admin: recordObject.admin,
+            active: recordObject.active,
             isLoggedIn: true,
-            isAdmin: records[0].admin,
+            isAdmin: recordObject.admin,
             recordAdded: true,
             message: "Successfully created " + controllerName + ".",
             sessionToken: token
@@ -68,14 +71,14 @@ router.post("/register", (req, res) => {
         },
 
         createError = (error) => {
-          // console.log(controllerName + "-controller post /register createError error", error);
-          // console.log(controllerName + "-controller post /register createError error.name", error.name);
-          // console.log(controllerName + "-controller post /register createError error.errors[0].message", error.errors[0].message);
+          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error", error);
+          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.name", error.name);
+          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           for (let i = 0; i < error.errors.length; i++) {
-            //console.log(controllerName + "-controller post /register createError error.errors[i].message", error.errors[i].message);
+            //console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
               errorMessages = errorMessages + ", ";
@@ -90,7 +93,7 @@ router.post("/register", (req, res) => {
         })
       .catch((error) => {
 
-        console.log(controllerName + "-controller post /register error", error);
+        console.log(controllerName + "-controller", GetDateTime(), " post /register error", error);
         res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + controllerName + ".", error: error });
 
       });
@@ -144,7 +147,7 @@ router.post("/login", (req, res) => {
 
             } else {
 
-              console.log(controllerName + "-controller post /login Login failed. 401");
+              console.log(controllerName + "-controller", GetDateTime(), " post /login Login failed. 401");
               res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
@@ -153,7 +156,7 @@ router.post("/login", (req, res) => {
 
         } else {
 
-          // console.log(controllerName + "-controller post /login Failed to authenticate. 401");
+          // console.log(controllerName + "-controller", GetDateTime(), " post /login Failed to authenticate. 401");
           res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
@@ -161,14 +164,14 @@ router.post("/login", (req, res) => {
       },
       error => {
 
-        console.log(controllerName + "-controller post /login Failed to process. 501 error", error);
+        console.log(controllerName + "-controller", GetDateTime(), " post /login Failed to process. 501 error", error);
         res.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
     )
     .catch((error) => {
 
-      console.log(controllerName + "-controller post /login error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " post /login error", error);
       res.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
 
     });
@@ -189,12 +192,12 @@ router.get("/admin", validateAdmin, (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get /admin records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get /admin records", records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get /admin No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get /admin No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -204,7 +207,7 @@ router.get("/admin", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get /admin error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get /admin error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -228,7 +231,7 @@ router.get("/", validateSession, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller get / records", records[0]);
+        // console.log(controllerName + "-controller", GetDateTime(), " get / records", records[0]);
 
         // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
@@ -246,7 +249,7 @@ router.get("/", validateSession, (req, res) => {
         });
 
       } else {
-        // console.log(controllerName + "-controller get / No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -256,7 +259,7 @@ router.get("/", validateSession, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get / error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -280,7 +283,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records[0]);
+        // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID records", records[0]);
 
         // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
         res.status(200).json({
@@ -298,7 +301,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
         });
 
       } else {
-        // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -308,7 +311,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -341,26 +344,27 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
     db(tableName)
       .where(where)
-      // !       // ! .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect.
       // .returning() is not supported by mysql and will not have any effect.
-      //       // ! .returning() is not supported by mysql and will not have any effect.
+      //       // * .returning() is not supported by mysql and will not have any effect.
       // .returning(select)
       .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
       .then((records) => {
+        // * Returns the number of updated records.
 
-        if (records.length > 0) {
+        if (records > 0) {
 
           res.status(200).json({
             // ? Need to return all the properties of the user to the browser?
-            // user:   records[0],
-            userID: records[0].userID,
-            firstName: records[0].firstName,
-            lastName: records[0].lastName,
-            email: records[0].email,
-            updatedBy: records[0].updatedBy,
-            admin: records[0].admin,
-            active: records[0].active,
+            // user:   recordObject,
+            userID: recordObject.userID,
+            firstName: recordObject.firstName,
+            lastName: recordObject.lastName,
+            email: recordObject.email,
+            updatedBy: recordObject.updatedBy,
+            admin: recordObject.admin,
+            active: recordObject.active,
             recordUpdated: true,
             message: "Successfully updated" + controllerName + "."
           });
@@ -373,14 +377,14 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
       })
       .catch((error) => {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
-        // console.log(controllerName + "-controller put /:" + controllerName + "ID error.name", error.name);
-        // console.log(controllerName + "-controller put /:" + controllerName + "ID error.errors[0].message", error.errors[0].message);
+        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.name", error.name);
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.errors[0].message", error.errors[0].message);
 
         let errorMessages = "";
 
         for (let i = 0; i < error.errors.length; i++) {
-          //console.log(controllerName + "-controller put /:" + controllerName + "ID error.errors[i].message", error.errors[i].message);
+          //console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.errors[i].message", error.errors[i].message);
 
           if (i > 1) {
             errorMessages = errorMessages + ", ";
@@ -427,26 +431,27 @@ router.put("/", validateSession, (req, res) => {
 
     db(tableName)
       .where(where)
-      // ! .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect.
       // .returning(select)
       .update(recordObject)
       .then(
 
         updateSuccess = (records) => {
+          // * Returns the number of updated records.
 
-          if (records.length > 0) {
+          if (records > 0) {
 
-            // let token = jwt.sign({userID: records[0].userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
             res.json({
               // ? Need to return all the properties of the user to the browser?
-              // user:   records[0],
-              userID: records[0].userID,
-              firstName: records[0].firstName,
-              lastName: records[0].lastName,
-              email: records[0].email,
-              updatedBy: records[0].updatedBy,
-              admin: records[0].admin,
-              active: records[0].active,
+              // user:   recordObject,
+              userID: recordObject.userID,
+              firstName: recordObject.firstName,
+              lastName: recordObject.lastName,
+              email: recordObject.email,
+              updatedBy: recordObject.updatedBy,
+              admin: recordObject.admin,
+              active: recordObject.active,
               isLoggedIn: true,
               recordUpdated: true,
               message: "Successfully updated" + controllerName + ".",
@@ -462,14 +467,14 @@ router.put("/", validateSession, (req, res) => {
         },
 
         updateError = (error) => {
-          console.log(controllerName + "-controller put / error", error);
-          // console.log(controllerName + "-controller put / error.name", error.name);
-          // console.log(controllerName + "-controller put / error.errors[0].message", error.errors[0].message);
+          console.log(controllerName + "-controller", GetDateTime(), " put / error", error);
+          // console.log(controllerName + "-controller", GetDateTime(), " put / error.name", error.name);
+          // console.log(controllerName + "-controller", GetDateTime(), " put / error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           for (let i = 0; i < error.errors.length; i++) {
-            //console.log(controllerName + "-controller put / error.errors[i].message", error.errors[i].message);
+            //console.log(controllerName + "-controller", GetDateTime(), " put / error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
               errorMessages = errorMessages + ", ";
@@ -485,7 +490,7 @@ router.put("/", validateSession, (req, res) => {
 
       )
       .catch((error) => {
-        console.log(controllerName + "-controller put / error", error);
+        console.log(controllerName + "-controller", GetDateTime(), " put / error", error);
         res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", error: error });
       });
 
@@ -506,29 +511,30 @@ router.delete("/:userID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // * Returns the number of deleted records.
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
-        res.status(200).json({ records: records, recordDeleted: true, message: "Successfully deleted " + tableName + "." });
+        res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", userID: req.params.userID });
 
       } else {
-        console.log(controllerName + "-controller delete /:" + controllerName + "ID No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordDeleted: false, message: "Nothing to delete." });
+        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", userID: req.params.userID });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller delete /:" + controllerName + "ID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID error", error);
       res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
     });
 

@@ -1,5 +1,5 @@
 
-const getDateTime = require("../utilities/getDateTime");
+const GetDateTime = require("../utilities/getDateTime");
 
 const componentName = "isEmpty.js";
 

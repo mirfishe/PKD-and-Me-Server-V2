@@ -4,8 +4,8 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const isEmpty = require("../utilities/isEmpty");
-const getDateTime = require("../utilities/getDateTime");
+const IsEmpty = require("../utilities/isEmpty");
+const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "categories";
@@ -15,10 +15,11 @@ const orderBy = [{ column: "sortID", order: "asc" }];
 
 
 /******************************
- ***** Get Category List *********
+ ***** Get Categories *********
  ******************************/
 // * Returns all categories active or not
-router.get("/list", (req, res) => {
+// router.get("/list", (req, res) => {
+router.get("/", (req, res) => {
 
   db.select(select)
     .from(tableName)
@@ -28,12 +29,12 @@ router.get("/list", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get /list " + tableName, records);
+        // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /list " + tableName, records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get /list No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get /list No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -43,7 +44,7 @@ router.get("/list", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get /list error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -68,12 +69,12 @@ router.get("/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         console.log(controllerName + "-controller get / " + tableName, records);
+//         console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get / No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -83,7 +84,7 @@ router.get("/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get / error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 

@@ -4,38 +4,40 @@ const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const isEmpty = require("../utilities/isEmpty");
-const getDateTime = require("../utilities/getDateTime");
+const IsEmpty = require("../utilities/isEmpty");
+const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "userReviews";
 const tableName = "userReviews";
 const select = "*";
 const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };
-const orderBy = [{ column: "userReviews.updatedAt", order: "desc" }];
+const orderBy = [{ column: "userReviews.updateDate", order: "desc" }];
 
-
-// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createdAt, updatedAt
-const columnsList = ["*", "titles.active AS titlesActive", "titles.createdAt AS titlesCreatedAt", "titles.updatedAt AS titlesUpdatedAt", "userreviews.updatedBy AS userreviewsUpdatedBy", "userreviews.active AS userreviewsActive", "userreviews.createdAt AS userreviewsCreatedAt", "userreviews.updatedAt AS userreviewsUpdatedAt"];
+// ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
+// ! Needs to not return the user's password.
+// TODO: Needs to not return the user's password.
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
+const columnsList = ["*", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "userreviews.updatedBy AS userreviewsUpdatedBy", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreatedAt", "userreviews.updateDate AS userreviewsUpdatedDate"];
 
 /*
 categories
-("categoryID","category","categories.sortID AS categoriesSortID", "categories.active AS categoriesActive", "categories.createdAt AS categoriesCreatedAt", "categories.updatedAt AS categoriesUpdatedAt")
+("categoryID","category","categories.sortID AS categoriesSortID", "categories.active AS categoriesActive", "categories.createDate AS categoriesCreatedAt", "categories.updateDate AS categoriesUpdatedDate")
 
 editions
-("editionID", "titleID", "mediaID", "editions.publicationDate AS editionsPublicationDate", "editions.imageName AS editionsImageName", "ASIN", "textLinkShort", "textLinkFull", "imageLinkSmall", "imageLinkMedium", "imageLinkLarge", "textImageLink", "editions.active AS editionsActive", "editions.createdAt AS editionsCreatedAt", "editions.updatedAt AS editionsUpdatedAt")
+("editionID", "titleID", "mediaID", "editions.publicationDate AS editionsPublicationDate", "editions.imageName AS editionsImageName", "ASIN", "textLinkShort", "textLinkFull", "imageLinkSmall", "imageLinkMedium", "imageLinkLarge", "textImageLink", "editions.active AS editionsActive", "editions.createDate AS editionsCreatedAt", "editions.updateDate AS editionsUpdatedDate")
 
 media
-("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createdAt AS mediaCreatedAt", "media.updatedAt AS mediaUpdatedAt")
+("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreatedAt", "media.updateDate AS mediaUpdatedDate")
 
 titles
-("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createdAt AS titlesCreatedAt", "titles.updatedAt AS titlesUpdatedAt")
+("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate")
 
 userreviews
-("reviewID", "userID", "userreviews.updatedBy AS userreviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userreviews.active AS userreviewsActive", "userreviews.createdAt AS userreviewsCreatedAt", "userreviews.updatedAt AS userreviewsUpdatedAt")
+("reviewID", "userID", "userreviews.updatedBy AS userreviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreatedAt", "userreviews.updateDate AS userreviewsUpdatedDate")
 
 users
-("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createdAt AS usersCreatedAt", "users.updatedAt AS usersUpdatedAt")
+("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreatedAt", "users.updateDate AS usersUpdatedDate")
 */
 
 
@@ -53,19 +55,19 @@ users
 //     UserReview.findAll(query)
 //     .then((records) => {
 //         if (records.length > 0) {
-//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID records", records);
-//             // res.status(200).json({records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "."});
-//             // console.log(controllerName + "-controller hasReviewedTitle", true);
+//             // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID/title/:titleID records", records);
+//             // res.status(200).json({resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+//             // console.log(controllerName + "-controller", GetDateTime(), " hasReviewedTitle", true);
 //             return {hasReviewedTitle: true, resultsFound: true, message: "Successfully retrieved " + tableName + "."};
 //         } else {
-//             // console.log(controllerName + "-controller get /user/:userID/title/:titleID No Results");
+//             // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID/title/:titleID No Results");
 //             // res.status(200).json({resultsFound: false, message: "No " + tableName + " found."});
-//             // console.log(controllerName + "-controller hasReviewedTitle", false);
+//             // console.log(controllerName + "-controller", GetDateTime(), " hasReviewedTitle", false);
 //             return {hasReviewedTitle: false, resultsFound: false, message: "No " + tableName + " found."};
 //         };
 //     })
 //     .catch((error) => {
-//         console.log(controllerName + "-controller hasReviewedTitle error", error);
+//         console.log(controllerName + "-controller", GetDateTime(), " hasReviewedTitle error", error);
 //         // res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         return {hasReviewedTitle: false, resultsFound: false, message: "An error occurred.", error: err};
 //     });
@@ -74,16 +76,18 @@ users
 
 
 /******************************
- ***** Get User Review List *********
+ ***** Get User Reviews *********
  ******************************/
-router.get("/list", (req, res) => {
+// * Returns all user reviews active or not
+// router.get("/list", (req, res) => {
+router.get("/", (req, res) => {
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(columnsList)
     .from(tableName)
     .leftOuterJoin("titles", "titles.titleID", "userReviews.titleID")
-    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    .leftOuterJoin("users", "users.userID", "userReviews.userID")
     // .where("titles.active", true)
     // .where("userReviews.active", true)
     // .where("users.active", true)
@@ -94,11 +98,11 @@ router.get("/list", (req, res) => {
 
       if (records.length > 0) {
 
-        // console.log(controllerName + "-controller get /list records", records);
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+        // console.log(controllerName + "-controller", GetDateTime(), " get /list records", records);
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get /list No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get /list No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -108,7 +112,7 @@ router.get("/list", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get /list error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -133,12 +137,12 @@ router.get("/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get / records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get / records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get / No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -148,7 +152,7 @@ router.get("/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get / error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 
@@ -176,9 +180,9 @@ router.get("/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get /:" + controllerName + "ID records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 //         // res.status(200).json({
 //         // reviewID:   userReview.reviewID,
 //         // userID:     userReview.userID,
@@ -194,7 +198,7 @@ router.get("/list", (req, res) => {
 //         // });
 
 //       } else {
-//         // console.log(controllerName + "-controller get /:" + controllerName + "ID No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -204,7 +208,7 @@ router.get("/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get /:" + controllerName + "ID error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 
@@ -231,7 +235,7 @@ router.get("/list", (req, res) => {
 //         message:    "Successfully retrieved user overall rating."
 //         }))
 //         .catch((error) => {
-//             console.log(controllerName + "-controller get /rating/:titleID error", error);
+//             console.log(controllerName + "-controller", GetDateTime(), " get /rating/:titleID error", error);
 //             res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //         });
 
@@ -254,13 +258,13 @@ router.get("/list", (req, res) => {
 
 //     UserReview.count(query)
 //     .then((userReview) => {
-//         // console.log(controllerName + "-controller get /count/:titleID userReview", userReview);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /count/:titleID userReview", userReview);
 //         res.status(200).json({
 //         userReviewCount:    userReview,
 //         message:    "Successfully retrieved user review count."});
 //     })
 //     .catch((error) => {
-//         console.log(controllerName + "-controller get /count/:titleID error", error);
+//         console.log(controllerName + "-controller", GetDateTime(), " get /count/:titleID error", error);
 //         res.status(500).json({resultsFound: false, message: "No " + tableName + " found.", error: err});
 //     });
 
@@ -284,14 +288,14 @@ router.get("/list", (req, res) => {
 //     UserReview.sum("rating", query)
 //     .then((userRatingSum) => {
 //         if (!isNaN(userRatingSum)) {
-//             // console.log(controllerName + "-controller get /sum/:titleID userRatingSum", userRatingSum);
+//             // console.log(controllerName + "-controller", GetDateTime(), " get /sum/:titleID userRatingSum", userRatingSum);
 //             res.status(200).json({
 //                 userRatingSum:    userRatingSum,
 //                 resultsFound: true,
 //                 message:    "Successfully retrieved user review sum."
 //             });
 //         } else {
-//             // console.log(controllerName + "-controller get /sum/:titleID userRatingSum", userRatingSum);
+//             // console.log(controllerName + "-controller", GetDateTime(), " get /sum/:titleID userRatingSum", userRatingSum);
 //             // res.status(200).json({resultsFound: false, message: "There are no user ratings."});
 //             res.status(200).json({
 //                 userRatingSum:    0,
@@ -302,7 +306,7 @@ router.get("/list", (req, res) => {
 //         };
 //     })
 //     .catch((error) => {
-//         console.log(controllerName + "-controller get /sum/:titleID error", error);
+//         console.log(controllerName + "-controller", GetDateTime(), " get /sum/:titleID error", error);
 //         res.status(500).json({resultsFound: false, message: "Did not successfully retrieved user review sum.", error: err});
 //     });
 
@@ -310,10 +314,11 @@ router.get("/list", (req, res) => {
 
 
 /**************************************
- ***** Get User Review Rating List *****
+ ***** Get User Review Ratings *****
 ***************************************/
 // * Gets the sum and count of ratings for the title
-router.get("/rating/list", (req, res) => {
+// router.get("/rating/list", (req, res) => {
+router.get("/rating", (req, res) => {
 
   // let sqlQuery = db.select("titleID")
   //   .from(tableName)
@@ -331,7 +336,7 @@ router.get("/rating/list", (req, res) => {
 
   // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where active = ? and rating is not null and not rating = ? group by titleID
 
-  // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+  // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID " + tableName, sqlQuery);
 
   db.select("titleID")
     .from(tableName)
@@ -346,12 +351,12 @@ router.get("/rating/list", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller get /rating/:titleID records", records);
+        console.log(controllerName + "-controller", GetDateTime(), " get /rating records", records);
 
-        res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved user ratings." });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved user ratings.", records: records });
 
       } else {
-        // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+        // console.log(controllerName + "-controller", GetDateTime(), " get /rating  No Results");
 
         // res.status(200).send("No " + tableName + " found.");
         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -360,7 +365,7 @@ router.get("/rating/list", (req, res) => {
       };
     })
     .catch((error) => {
-      console.log(controllerName + "-controller get /rating/:titleID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " get /rating error", error);
       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
     });
 
@@ -390,7 +395,7 @@ router.get("/rating/list", (req, res) => {
 
 //   // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where titleID = ? and active = ? and rating is not null and not rating = ? group by titleID
 
-//   // console.log(controllerName + "-controller get /:" + controllerName + "ID " + tableName, sqlQuery);
+//   // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID " + tableName, sqlQuery);
 
 //   const where = { "userReviews.titleID": req.params.titleID };
 
@@ -408,12 +413,12 @@ router.get("/rating/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get /rating/:titleID records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /rating/:titleID records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved user ratings." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved user ratings.", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get /rating/:titleID  No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /rating/:titleID  No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -423,7 +428,7 @@ router.get("/rating/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get /rating/:titleID error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get /rating/:titleID error", error);
 //       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
 //     });
 
@@ -449,18 +454,18 @@ router.get("/rating/list", (req, res) => {
 //     .where(activeWhere)
 //     .orderBy(orderBy)
 //     .then((records) => {
-//       // console.log(controllerName + "-controller get /title/:titleID records", records);
+//       // console.log(controllerName + "-controller", GetDateTime(), " get /title/:titleID records", records);
 
 //       records = convertBitTrueFalse(records);
 
 //       // if (records.rows.length > 0) {
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get /title/:titleID records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /title/:titleID records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get /title/:titleID No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /title/:titleID No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -470,7 +475,7 @@ router.get("/rating/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get /title/:titleID error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get /title/:titleID error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 
@@ -498,12 +503,12 @@ router.get("/rating/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get /user/:userID" records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID" records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get /user/:userID No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -513,7 +518,7 @@ router.get("/rating/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get /user/:userID error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 
@@ -545,12 +550,12 @@ router.get("/rating/list", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         // console.log(controllerName + "-controller get /user/:userID/title/:titleID records", records);
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID/title/:titleID records", records);
 
-//         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller get /user/:userID/title/:titleID No Results");
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID/title/:titleID No Results");
 
 //         // res.status(200).send("No " + tableName + " found.");
 //         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
@@ -560,7 +565,7 @@ router.get("/rating/list", (req, res) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller get /user/:userID/title/:titleID error", error);
+//       console.log(controllerName + "-controller", GetDateTime(), " get /user/:userID/title/:titleID error", error);
 //       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
 //     });
 
@@ -586,31 +591,34 @@ router.post("/", validateSession, (req, res) => {
   };
 
   db(tableName)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller post / records", records);
+      console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      // * Returns the ID value of the added record.
 
       // records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller post / records", records);
+      recordObject.reviewID = records;
 
-        res.status(200).json({ records: [recordObject], recordAdded: true, message: "Successfully created " + tableName + "." });
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+
+        res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller post / No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: [recordObject], recordAdded: false, message: "Nothing to add." });
+        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller post / error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
       res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
     });
 
@@ -640,33 +648,32 @@ router.put("/:reviewID", validateSession, (req, res) => {
 
   db(tableName)
     .where(where)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
-      recordObject.reviewID = records;
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
-
-        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
       res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
@@ -696,31 +703,32 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID records", records);
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
 
-        res.status(200).json({ records: records, recordUpdated: true, message: "Successfully updated " + tableName + "." });
+        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
 
       } else {
-        console.log(controllerName + "-controller put /:" + controllerName + "ID No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordUpdated: false, message: "Nothing to update." });
+        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller put /:" + controllerName + "ID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
       res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
@@ -737,31 +745,32 @@ router.delete("/:reviewID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // ! .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect.
     // .returning(select)
     .del()
     .then((records) => {
-      console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // * Returns the number of deleted records.
 
       // records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
-        console.log(controllerName + "-controller delete /:" + controllerName + "ID records", records);
+      if (records > 0) {
+        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
 
-        res.status(200).json({ records: records, recordDeleted: true, message: "Successfully deleted " + tableName + "." });
+        res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", reviewID: req.params.reviewID });
 
       } else {
-        console.log(controllerName + "-controller delete /:" + controllerName + "ID No Results");
+        console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ records: records, recordDeleted: false, message: "Nothing to delete." });
+        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", reviewID: req.params.reviewID });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller delete /:" + controllerName + "ID error", error);
+      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID error", error);
       res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
     });
 
