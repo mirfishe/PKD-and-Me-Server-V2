@@ -993,11 +993,11 @@ INSERT INTO `titles` (`titleID`, `titleName`, `titleSort`, `titleURL`, `authorFi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `userreviews`
+-- Table structure for table `userReviews`
 --
 
-DROP TABLE IF EXISTS `userreviews`;
-CREATE TABLE IF NOT EXISTS `userreviews` (
+DROP TABLE IF EXISTS `userReviews`;
+CREATE TABLE IF NOT EXISTS `userReviews` (
   `reviewID` int NOT NULL AUTO_INCREMENT,
   `userID` int NOT NULL,
   `updatedBy` int NOT NULL DEFAULT '0',
@@ -1005,6 +1005,7 @@ CREATE TABLE IF NOT EXISTS `userreviews` (
   `read` tinyint(1) NOT NULL DEFAULT '0',
   `dateRead` datetime DEFAULT NULL,
   `rating` int DEFAULT NULL,
+  `ranking` int DEFAULT NULL,
   `shortReview` varchar(255) DEFAULT NULL,
   `longReview` text,
   `active` tinyint(1) NOT NULL DEFAULT '1',
@@ -1065,12 +1066,12 @@ ALTER TABLE `titles`
   ADD CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `categories` (`categoryID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `userreviews`
+-- Constraints for table `userReviews`
 --
-ALTER TABLE `userreviews`
-  ADD CONSTRAINT `userreviews_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `userreviews_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `userreviews_ibfk_3` FOREIGN KEY (`titleID`) REFERENCES `titles` (`titleID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `userReviews`
+  ADD CONSTRAINT `userReviews_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userReviews_ibfk_2` FOREIGN KEY (`updatedBy`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userReviews_ibfk_3` FOREIGN KEY (`titleID`) REFERENCES `titles` (`titleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`

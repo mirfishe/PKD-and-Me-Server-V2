@@ -44,6 +44,8 @@ router.post("/register", (req, res) => {
 
         createSuccess = (records) => {
 
+          records = convertBitTrueFalse(records);
+
           let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
           res.json({
@@ -112,6 +114,8 @@ router.post("/login", (req, res) => {
     .where(where)
     .then(
       loginSuccess = (records) => {
+
+        records = convertBitTrueFalse(records);
 
         if (records.length > 0) {
 
@@ -220,6 +224,8 @@ router.get("/", validateSession, (req, res) => {
     .where(where)
     .then((records) => {
 
+      records = convertBitTrueFalse(records);
+
       // if (records.length > 0) {
       if (records != null) {
         // console.log(controllerName + "-controller get / records", records[0]);
@@ -269,6 +275,8 @@ router.get("/:userID", validateAdmin, (req, res) => {
     .from(tableName)
     .where(where)
     .then((records) => {
+
+      records = convertBitTrueFalse(records);
 
       // if (records.length > 0) {
       if (records != null) {

@@ -28,7 +28,7 @@ router.get("/list", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        console.log(controllerName + "-controller get /list " + tableName, records);
+        // console.log(controllerName + "-controller get /list " + tableName, records);
 
         res.status(200).json({ records: records, resultsFound: true, message: "Successfully retrieved " + tableName + "." });
 

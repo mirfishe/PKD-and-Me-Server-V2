@@ -167,6 +167,7 @@ CREATE TABLE [dbo].[userReviews](
 	[read] [bit] NOT NULL,
 	[dateRead] [datetimeoffset](7) NULL,
 	[rating] [int] NULL,
+	[ranking] [int] NULL,
 	[shortReview] [nvarchar](255) NULL,
 	[longReview] [nvarchar](max) NULL,
 	[active] [bit] NOT NULL,

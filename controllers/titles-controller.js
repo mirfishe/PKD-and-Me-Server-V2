@@ -347,7 +347,9 @@ router.get("/list", (req, res) => {
 router.get("/checklist/list", validateSession, (req, res) => {
 
   // SELECT * FROM titles LEFT OUTER JOIN userReviews on titles.titleID = userReviews.titleID
-  // WHERE titles.active = 1 AND(userReviews.active = 1 OR userReviews.active is null)
+  // LEFT OUTER JOIN categories on categories.categoryID = titles.categoryID
+  // WHERE titles.active = 1 AND categories.active = 1 AND (userReviews.active = 1 OR userReviews.active is null)
+  // AND (userReviews.userID = 1 OR userReviews.userID is null)
 
   // let orderByColumn = "titleSort";
   let orderByDynamic;
@@ -372,9 +374,12 @@ router.get("/checklist/list", validateSession, (req, res) => {
     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
     // .where("users.userID", req.user.userID)
-    .where("userReviews.userID", req.user.userID)
+    // .where("userReviews.userID", req.user.userID)
+    .where(function () { this.where("userReviews.userID", req.user.userID).orWhereNull("userReviews.userID"); })
     // .where("userID", req.user.userID)
-    .where(activeChecklist)
+    // .where(activeChecklist)
+    .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
+    .where({ "titles.active": true, "categories.active": true })
     // .where("editions.active", true)
     // .where("media.active", true)
     .orderBy(orderByDynamic)

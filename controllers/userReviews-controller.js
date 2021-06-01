@@ -580,6 +580,7 @@ router.post("/", validateSession, (req, res) => {
     read: req.body.userReview.read,
     dateRead: req.body.userReview.dateRead,
     rating: req.body.userReview.rating,
+    ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview
   };
@@ -629,6 +630,7 @@ router.put("/:reviewID", validateSession, (req, res) => {
     read: req.body.userReview.read,
     dateRead: req.body.userReview.dateRead,
     rating: req.body.userReview.rating,
+    ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview,
     active: req.body.userReview.active
@@ -684,6 +686,7 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     read: req.body.userReview.read,
     dateRead: req.body.userReview.dateRead,
     rating: req.body.userReview.rating,
+    ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview,
     active: req.body.userReview.active
