@@ -21,6 +21,8 @@ const categories = require("./controllers/categories-controller");
 // const error = require("./controllers/error-controller");
 // const errors = require("./controllers/errors-controller");
 
+const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
+
 app.use(express.json());
 
 app.use(require("./middleware/headers"));
@@ -41,6 +43,8 @@ app.use("/categories", categories);
 
 // app.use("/error", error);
 // app.use("/errors", errors);
+
+app.use("/fromthehomeopape", fromthehomeopape);
 
 
 app.listen(process.env.PORT || 4000, function () {
