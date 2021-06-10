@@ -205,7 +205,7 @@ router.get("/", (req, res) => {
     .from(tableName)
     .orderBy([{ column: "itemPubDate", order: "desc" }])
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
+      // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
 
       // records = convertBitTrueFalse(records);
 
@@ -304,22 +304,23 @@ router.get("/new", (req, res) => {
 
       // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
       // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
 
       let feedObject = {
         feedID: feed.id,
         feedTitle: feed.title,
         feedLink: feed.link,
-        feedUpdated: feed.updated.replaceAll("Z", ""),
-        feedLastBuildDate: feed.lastBuildDate.replaceAll("Z", ""),
+        feedUpdated: feed.updated,
+        feedLastBuildDate: feed.lastBuildDate,
         feedUrl: feed.feedUrl,
         itemID: item.id,
         itemTitle: item.title,
         itemLink: item.link,
-        itemPubDate: item.pubDate.replaceAll("T", " ").replaceAll("Z", ""),
-        itemUpdated: item.updated.replaceAll("T", " ").replaceAll("Z", ""),
+        itemPubDate: item.pubDate,
+        itemUpdated: item.updated,
         itemContent: item.content,
         itemContentSnippet: item.contentSnippet,
-        itemISODate: item.isoDate.replaceAll("T", " ").replaceAll("Z", ""),
+        itemISODate: item.isoDate,
         itemCreator: item.creator,
         itemAuthor: item.author
       };
@@ -430,22 +431,279 @@ router.get("/new", (req, res) => {
 
       // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
       // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
 
       let feedObject = {
         feedID: feed.id,
         feedTitle: feed.title,
         feedLink: feed.link,
-        feedUpdated: feed.updated.replaceAll("Z", ""),
-        feedLastBuildDate: feed.lastBuildDate.replaceAll("Z", ""),
+        feedUpdated: feed.updated,
+        feedLastBuildDate: feed.lastBuildDate,
         feedUrl: feed.feedUrl,
         itemID: item.id,
         itemTitle: item.title,
         itemLink: item.link,
-        itemPubDate: item.pubDate.replaceAll("T", " ").replaceAll("Z", ""),
-        itemUpdated: item.updated.replaceAll("T", " ").replaceAll("Z", ""),
+        itemPubDate: item.pubDate,
+        itemUpdated: item.updated,
         itemContent: item.content,
         itemContentSnippet: item.contentSnippet,
-        itemISODate: item.isoDate.replaceAll("T", " ").replaceAll("Z", ""),
+        itemISODate: item.isoDate,
+        itemCreator: item.creator,
+        itemAuthor: item.author
+      };
+
+      // itemsArray.push(feedObject);
+
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
+      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
+      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+
+      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+
+      db("homeopapeRSSImport")
+        // * .returning() is not supported by mysql and will not have any effect.
+        // .returning(select)
+        .insert(feedObject)
+        .then((records) => {
+          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          // * Returns the ID value of the added record.
+
+          // records = convertBitTrueFalse(records);
+
+          if (records > 0) {
+            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+
+            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+
+          } else {
+            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+
+            // res.status(200).send("No records found.");
+            // res.status(200).send({resultsFound: false, message: "No records found."})
+            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          };
+
+        })
+        .catch((error) => {
+          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
+          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+        });
+
+    });
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+
+  })();
+
+
+  (async () => {
+
+    // * Google Alert - Philip Dick All Except Web
+    // // * Doesn't appear to work anymore.
+    url = "https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835";
+
+    const feed = await rssParser.parseURL(url);
+
+    // <feed xmlns="http://www.w3.org/2005/Atom" xmlns:idx="urn:atom-extension:indexing">
+    // <id>tag:google.com,2005:reader/user/17849810695950872924/state/com.google/alerts/15842463258895766468</id>
+    // <title>Google Alert - Philip Dick New</title>
+    // <link href="https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468" rel="self"></link>
+    // <updated>2021-06-04T16:18:45Z</updated>
+    // <entry>
+    // <id>tag:google.com,2013:googlealerts/feed:12501224780620368192</id>
+    // <title type="html">This week in Concord history</title>
+    // <link href="https://www.google.com/url?rct=j&amp;sa=t&amp;url=https://www.theconcordinsider.com/2021/06/04/this-week-in-concord-history-502/&amp;ct=ga&amp;cd=CAIyGjUwMjhiYWRmMWQ5M2MzMGE6Y29tOmVuOlVT&amp;usg=AFQjCNGc3F9NBj810v400CL5oepfu5PTwQ"></link>
+    // <published>2021-06-04T14:26:15Z</published>
+    // <updated>2021-06-04T14:26:15Z</updated>
+    // <content type="html">Samuel Bell, on horseback, from Boscawen to the &lt;b&gt;new&lt;/b&gt; State House. ... fences to escape from the North State Street prison in Concord, &lt;b&gt;Philip Dick&lt;/b&gt;,&amp;nbsp;...</content>
+    // <author>
+    //     <name></name>
+    // </author>;
+    // </entry>
+
+    // Notes from https://github.com/rbren/rss-parser
+    // The contentSnippet field strips out HTML tags and unescapes HTML entities
+    // The dc: prefix will be removed from all fields
+    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
+    // If author is specified, but not dc:creator, creator will be set to author (see article)
+    // Atom's updated becomes lastBuildDate for consistency
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+
+    // let itemsArray = [];
+
+    feed.items.forEach(item => {
+
+      // SELECT @@GLOBAL.sql_mode global, @@SESSION.sql_mode session;
+      // SET sql_mode = '';
+      // SET GLOBAL sql_mode = '';
+
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+
+      let feedObject = {
+        feedID: feed.id,
+        feedTitle: feed.title,
+        feedLink: feed.link,
+        feedUpdated: feed.updated,
+        feedLastBuildDate: feed.lastBuildDate,
+        feedUrl: feed.feedUrl,
+        itemID: item.id,
+        itemTitle: item.title,
+        itemLink: item.link,
+        itemPubDate: item.pubDate,
+        itemUpdated: item.updated,
+        itemContent: item.content,
+        itemContentSnippet: item.contentSnippet,
+        itemISODate: item.isoDate,
+        itemCreator: item.creator,
+        itemAuthor: item.author
+      };
+
+      // itemsArray.push(feedObject);
+
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
+      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
+      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
+      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+
+      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+
+      db("homeopapeRSSImport")
+        // * .returning() is not supported by mysql and will not have any effect.
+        // .returning(select)
+        .insert(feedObject)
+        .then((records) => {
+          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          // * Returns the ID value of the added record.
+
+          // records = convertBitTrueFalse(records);
+
+          if (records > 0) {
+            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+
+            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+
+          } else {
+            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+
+            // res.status(200).send("No records found.");
+            // res.status(200).send({resultsFound: false, message: "No records found."})
+            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          };
+
+        })
+        .catch((error) => {
+          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
+          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+        });
+
+    });
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+
+  })();
+
+
+  (async () => {
+
+    // * Google Alert - Philip Dick News
+    // // * Doesn't appear to work anymore.
+    url = "https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674";
+
+    const feed = await rssParser.parseURL(url);
+
+    // <feed xmlns="http://www.w3.org/2005/Atom" xmlns:idx="urn:atom-extension:indexing">
+    // <id>tag:google.com,2005:reader/user/17849810695950872924/state/com.google/alerts/15842463258895766468</id>
+    // <title>Google Alert - Philip Dick New</title>
+    // <link href="https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468" rel="self"></link>
+    // <updated>2021-06-04T16:18:45Z</updated>
+    // <entry>
+    // <id>tag:google.com,2013:googlealerts/feed:12501224780620368192</id>
+    // <title type="html">This week in Concord history</title>
+    // <link href="https://www.google.com/url?rct=j&amp;sa=t&amp;url=https://www.theconcordinsider.com/2021/06/04/this-week-in-concord-history-502/&amp;ct=ga&amp;cd=CAIyGjUwMjhiYWRmMWQ5M2MzMGE6Y29tOmVuOlVT&amp;usg=AFQjCNGc3F9NBj810v400CL5oepfu5PTwQ"></link>
+    // <published>2021-06-04T14:26:15Z</published>
+    // <updated>2021-06-04T14:26:15Z</updated>
+    // <content type="html">Samuel Bell, on horseback, from Boscawen to the &lt;b&gt;new&lt;/b&gt; State House. ... fences to escape from the North State Street prison in Concord, &lt;b&gt;Philip Dick&lt;/b&gt;,&amp;nbsp;...</content>
+    // <author>
+    //     <name></name>
+    // </author>;
+    // </entry>
+
+    // Notes from https://github.com/rbren/rss-parser
+    // The contentSnippet field strips out HTML tags and unescapes HTML entities
+    // The dc: prefix will be removed from all fields
+    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
+    // If author is specified, but not dc:creator, creator will be set to author (see article)
+    // Atom's updated becomes lastBuildDate for consistency
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+
+    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+
+    // let itemsArray = [];
+
+    feed.items.forEach(item => {
+
+      // SELECT @@GLOBAL.sql_mode global, @@SESSION.sql_mode session;
+      // SET sql_mode = '';
+      // SET GLOBAL sql_mode = '';
+
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+
+      let feedObject = {
+        feedID: feed.id,
+        feedTitle: feed.title,
+        feedLink: feed.link,
+        feedUpdated: feed.updated,
+        feedLastBuildDate: feed.lastBuildDate,
+        feedUrl: feed.feedUrl,
+        itemID: item.id,
+        itemTitle: item.title,
+        itemLink: item.link,
+        itemPubDate: item.pubDate,
+        itemUpdated: item.updated,
+        itemContent: item.content,
+        itemContentSnippet: item.contentSnippet,
+        itemISODate: item.isoDate,
         itemCreator: item.creator,
         itemAuthor: item.author
       };
