@@ -761,7 +761,7 @@ router.get("/new", (req, res) => {
 
   })();
 
-  // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + "." });
+  res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + "." });
 
 });
 

@@ -482,7 +482,8 @@ router.post("/", validateAdmin, (req, res) => {
     imageName: req.body.title.imageName,
     categoryID: req.body.title.categoryID,
     shortDescription: req.body.title.shortDescription,
-    urlPKDweb: req.body.title.urlPKDweb
+    urlPKDweb: req.body.title.urlPKDweb,
+    active: true
   };
 
   db(tableName)

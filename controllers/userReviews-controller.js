@@ -587,7 +587,8 @@ router.post("/", validateSession, (req, res) => {
     rating: req.body.userReview.rating,
     ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
-    longReview: req.body.userReview.longReview
+    longReview: req.body.userReview.longReview,
+    active: true
   };
 
   db(tableName)

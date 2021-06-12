@@ -393,7 +393,8 @@ router.post("/", validateAdmin, (req, res) => {
     imageLinkSmall: req.body.edition.imageLinkSmall,
     imageLinkMedium: req.body.edition.imageLinkMedium,
     imageLinkLarge: req.body.edition.imageLinkLarge,
-    textImageLink: req.body.edition.textImageLink
+    textImageLink: req.body.edition.textImageLink,
+    active: true
   };
 
   db(tableName)
