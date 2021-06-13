@@ -203,6 +203,7 @@ router.get("/", (req, res) => {
 
   db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate")
     .from(tableName)
+    // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
     .orderBy([{ column: "itemPubDate", order: "desc" }])
     .then((records) => {
       // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
