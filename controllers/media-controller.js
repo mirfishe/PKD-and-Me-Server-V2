@@ -26,6 +26,7 @@ router.get("/", (req, res) => {
     .orderBy(orderBy)
     // .then((records) => {
 
+    // ! pm2 doesn't see the .env variables being used here.
     //   if (process.env.DATABASE_DIALECT == "mysql") {
 
     //     return convertBitTrueFalse(records);
@@ -237,7 +238,7 @@ router.post("/", validateAdmin, (req, res) => {
 
       // records = convertBitTrueFalse(records);
 
-      recordObject.mediaID = records;
+      recordObject.mediaID = records[0];
 
       if (records > 0) {
         // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);

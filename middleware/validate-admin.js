@@ -14,12 +14,14 @@ const validateAdmin = (req, res, next) => {
 
   const token = req.headers.authorization;
 
-  jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
-    // console.log(controllerName, GetDateTime() + " token: ", token);
-    // console.log(controllerName, GetDateTime() + " decoded: ", decoded);
+  // ! pm2 doesn't see the .env variables being used here.
+  // jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+  jwt.verify(token, "The empire never ended.", (error, decoded) => {
+    // console.log(controllerName, GetDateTime(), "token: ", token);
+    // console.log(controllerName, GetDateTime(), "decoded: ", decoded);
 
     if (!error && decoded) {
-      // console.log(controllerName, GetDateTime() + " !error && decoded");
+      // console.log(controllerName, GetDateTime(), "!error && decoded");
 
       const where = { userID: decoded.userID, admin: true, active: true };
 
@@ -27,7 +29,7 @@ const validateAdmin = (req, res, next) => {
         .from(tableName)
         .where(where)
         .then(records => {
-          // console.log(controllerName, GetDateTime() + " records", records);
+          // console.log(controllerName, GetDateTime(), "records", records);
 
           // if (!records) throw {isAdmin: false, message: "Unauthorized."} // "Unauthorized."; // "error";
           if (!records) {
@@ -37,14 +39,14 @@ const validateAdmin = (req, res, next) => {
           // ? Need to return all the properties of the user?
           // req.user = records[0];
           req.user = { userID: records[0].userID };
-          // console.log(controllerName, GetDateTime() + " req.user", req.user);
+          // console.log(controllerName, GetDateTime(), "req.user", req.user);
           return next();
 
         })
         .catch(error => next(error));
 
     } else {
-      // console.log(controllerName, GetDateTime() + " req.errors = error");
+      // console.log(controllerName, GetDateTime(), "req.errors = error");
 
       req.errors = error;
       // return res.status(401).send({isAdmin: false, message: "Unauthorized."})

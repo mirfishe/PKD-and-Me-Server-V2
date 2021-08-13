@@ -19,7 +19,7 @@ const orderBy = [{ column: "titleSort", order: "asc" }];
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
 const columnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate"];
 
-const checklistColumnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate", "userreviews.updatedBy AS userreviewUpdatedBy", "userreviews.active AS userreviewActive", "userreviews.createDate AS userreviewCreateDate", "userreviews.updateDate AS userreviewUpdatedDate"];
+const checklistColumnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
 
 /*
 categories
@@ -34,8 +34,8 @@ media
 titles
 ("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate")
 
-userreviews
-("reviewID", "userID", "userreviews.updatedBy AS userreviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userreviews.active AS userreviewsActive", "userreviews.createDate AS userreviewsCreateDate", "userreviews.updateDate AS userreviewsUpdatedDate")
+userReviews
+("reviewID", "userID", "userReviews.updatedBy AS userReviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userReviews.active AS userReviewsActive", "userReviews.createDate AS userReviewsCreateDate", "userReviews.updateDate AS userReviewsUpdatedDate")
 
 users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreateDate", "users.updateDate AS usersUpdatedDate")
@@ -59,7 +59,7 @@ router.get("/", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /list records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
 
         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
@@ -75,6 +75,72 @@ router.get("/", (req, res) => {
     })
     .catch((error) => {
       console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+    });
+
+});
+
+
+/******************************
+ ***** Log Image Links *********
+ ******************************/
+// * Logs that a broken link was found on a page loaded.
+router.get("/broken/:titleID", (req, res) => {
+
+  // console.log(controllerName + "-controller", GetDateTime(), " get /broken titleID", req.params.titleID);
+
+  // res.status(200).json({ resultsFound: true, message: "Successfully logged broken image link. titleID " + req.params.titleID });
+
+  const where = { "titles.titleID": req.params.titleID };
+
+  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
+
+  db.select(select)
+    .from(tableName)
+    // .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
+    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
+    // .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
+    // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
+    // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+    .where(where)
+    // .where(activeWhere)
+    // .orderBy(orderBy)
+    .then((records) => {
+
+      records = convertBitTrueFalse(records);
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " get /broken/:" + controllerName + "ID " + tableName, records);
+        console.log(controllerName + "-controller", GetDateTime(), " get /broken/:" + controllerName + "ID records", "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
+
+        // res.status(200).json({
+        // titleID:   title.titleID,
+        // titleName:     title.titleName,
+        // titleSort:  title.titleSort,
+        // authorFirstName:   title.authorFirstName,
+        // authorLastName:     title.authorLastName,
+        // publicationDate:  title.publicationDate,
+        // imageName:   title.imageName,
+        // categoryID:   title.categoryID,
+        // shortDescription:     title.shortDescription,
+        // urlPKDweb:  title.urlPKDweb,
+        // active:     title.active,
+        // message:    "Successfully retrieved " + tableName + "."
+        // });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+
+      } else {
+        console.log(controllerName + "-controller", GetDateTime(), " get /broken/:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " get /broken/:" + controllerName + "ID error", error);
       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
@@ -358,41 +424,76 @@ router.get("/checklist", validateSession, (req, res) => {
 
   if (req.params.sort == "publicationDate") {
     // orderByColumn = "publicationDate";
-    orderByDynamic = [{ column: "publicationDate", order: "asc" }, { column: "titleSort", order: "asc" }];
+    // orderByDynamic = [{ column: "publicationDate", order: "asc" }, { column: "titleSort", order: "asc" }];
+    orderByDynamic = " publicationDate ASC, titleSort ASC";
   } else {
     // orderByColumn = "titleSort";
-    orderByDynamic = [{ column: "titleSort", order: "asc" }];
+    // orderByDynamic = [{ column: "titleSort", order: "asc" }];
+    orderByDynamic = " titleSort ASC";
   };
 
   // const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
   // // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
-  db.select(checklistColumnsList)
-    .from(tableName)
-    .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
-    // .leftOuterJoin("users", "users.userID", "userReviews.userID")
-    .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
-    // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
-    // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-    // .where("users.userID", req.user.userID)
-    // .where("userReviews.userID", req.user.userID)
-    .where(function () { this.where("userReviews.userID", req.user.userID).orWhereNull("userReviews.userID"); })
-    // .where("userID", req.user.userID)
-    // .where(activeChecklist)
-    .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
-    .where({ "titles.active": true, "categories.active": true })
-    // .where("editions.active", true)
-    // .where("media.active", true)
-    .orderBy(orderByDynamic)
+  // SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID 
+  // WHERE (userReviews.userID = 2 AND
+  // (userReviews.active = 1 OR userReviews.active IS null) 
+  // AND titles.active = 'true'
+  // AND categories.active = 'true'
+
+  // UNION ALL
+
+  // SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate
+  // FROM titles
+  // LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID
+  // LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID 
+  // WHERE titles.titleID NOT IN (
+  // SELECT titles.titleID
+  // FROM titles
+  // LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID
+  // LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID 
+  // WHERE (userReviews.userID = 2 AND
+  // (userReviews.active = 1 OR userReviews.active IS null) 
+  // AND titles.active = 'true'
+  // AND categories.active = 'true'
+  // )
+  // AND titles.active = 'true'
+  // AND categories.active = 'true'
+
+  // ORDER BY titleSort ASC
+
+  let sqlQuery = "SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = " + req.user.userID + " OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1 UNION ALL SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE titles.titleID NOT IN (SELECT titles.titleID FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = " + req.user.userID + " OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1) AND titles.active = 1 AND categories.active = 1 ORDER BY " + orderByDynamic;
+
+  // console.log(controllerName + "-controller", GetDateTime(), " get /list sqlQuery", sqlQuery);
+
+  // db.select(checklistColumnsList)
+  //   .from(tableName)
+  //   .leftOuterJoin("userReviews", "userReviews.titleID", "titles.titleID")
+  //   // .leftOuterJoin("users", "users.userID", "userReviews.userID")
+  //   .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
+  //   // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
+  //   // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
+  //   // .where("users.userID", req.user.userID)
+  //   // .where("userReviews.userID", req.user.userID)
+  //   .where(function () { this.where("userReviews.userID", req.user.userID).orWhereNull("userReviews.userID"); })
+  //   // .where("userID", req.user.userID)
+  //   // .where(activeChecklist)
+  //   .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
+  //   .where({ "titles.active": true, "categories.active": true })
+  //   // .where("editions.active", true)
+  //   // .where("media.active", true)
+  //   .orderBy(orderByDynamic)
+
+  db.raw(sqlQuery)
     .then((records) => {
 
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /checklist/list records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get /checklist/list records[0]", records[0]);
 
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records[0] });
 
       } else {
         // console.log(controllerName + "-controller", GetDateTime(), " get /checklist/list No Results");
@@ -496,7 +597,7 @@ router.post("/", validateAdmin, (req, res) => {
 
       // records = convertBitTrueFalse(records);
 
-      recordObject.titleID = records;
+      recordObject.titleID = records[0];
 
       if (records > 0) {
         // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);

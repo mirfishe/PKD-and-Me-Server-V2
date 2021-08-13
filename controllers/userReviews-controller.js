@@ -18,7 +18,7 @@ const orderBy = [{ column: "userReviews.updateDate", order: "desc" }];
 // ! Needs to not return the user's password.
 // TODO: Needs to not return the user's password.
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
-const columnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS userUpdatedBy", "admin", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
+const columnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS userUpdatedBy", "admin", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
 
 /*
 categories
@@ -98,7 +98,7 @@ router.get("/", (req, res) => {
 
       if (records.length > 0) {
 
-        // console.log(controllerName + "-controller", GetDateTime(), " get /list records", records);
+        // console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
 
       } else {
@@ -337,6 +337,17 @@ router.get("/rating", (req, res) => {
   // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where active = ? and rating is not null and not rating = ? group by titleID
 
   // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID " + tableName, sqlQuery);
+
+  // let sqlQuery = db.select("titleID")
+  //   .from(tableName)
+  //   .count("rating", { as: "userReviewCount" })
+  //   .sum({ userReviewSum: "rating" })
+  //   .where({ active: true })
+  //   .whereNotNull("rating")
+  //   .whereNot({ rating: 0 })
+  //   .groupBy("titleID").toString();
+
+  // console.log(controllerName + "-controller", GetDateTime(), " get /rating sqlQuery", sqlQuery);
 
   db.select("titleID")
     .from(tableName)
@@ -588,6 +599,8 @@ router.post("/", validateSession, (req, res) => {
     ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview,
+    owned: req.body.userReview.owned,
+    datePurchased: req.body.userReview.datePurchased,
     active: true
   };
 
@@ -601,7 +614,7 @@ router.post("/", validateSession, (req, res) => {
 
       // records = convertBitTrueFalse(records);
 
-      recordObject.reviewID = records;
+      recordObject.reviewID = records[0];
 
       if (records > 0) {
         // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
@@ -642,10 +655,20 @@ router.put("/:reviewID", validateSession, (req, res) => {
     ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview,
+    owned: req.body.userReview.owned,
+    datePurchased: req.body.userReview.datePurchased,
     active: req.body.userReview.active
   };
 
   const where = { reviewID: req.params.reviewID, userID: req.user.userID };
+
+  // let sqlQuery = db(tableName)
+  //   .where(where)
+  //   // * .returning() is not supported by mysql and will not have any effect.
+  //   // .returning(select)
+  //   .update(recordObject).toString();
+
+  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID sqlQuery", sqlQuery);
 
   db(tableName)
     .where(where)
@@ -697,10 +720,20 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     ranking: req.body.userReview.ranking,
     shortReview: req.body.userReview.shortReview,
     longReview: req.body.userReview.longReview,
+    owned: req.body.userReview.owned,
+    datePurchased: req.body.userReview.datePurchased,
     active: req.body.userReview.active
   };
 
   const where = { reviewID: req.params.reviewID };
+
+  // let sqlQuery = db(tableName)
+  //   .where(where)
+  //   // * .returning() is not supported by mysql and will not have any effect.
+  //   // .returning(select)
+  //   .update(recordObject).toString();
+
+  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID sqlQuery", sqlQuery);
 
   db(tableName)
     .where(where)

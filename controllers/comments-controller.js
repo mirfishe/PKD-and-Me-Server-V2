@@ -1,19 +1,20 @@
 const router = require("express").Router();
 const dbConfig = require("../db");
 const db = require("knex")(dbConfig.config);
+const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
 const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 
-const controllerName = "errors";
-const tableName = "errors";
+const controllerName = "comments";
+const tableName = "comments";
 const select = "*";
 const orderBy = [{ column: "dateEntered", order: "desc" }];
 
 
 /******************************
- ***** Get Errors *********
+ ***** Get Comments *********
  ******************************/
 router.get("/", validateAdmin, (req, res) => {
 
@@ -46,11 +47,11 @@ router.get("/", validateAdmin, (req, res) => {
 
 
 /**************************************
- ***** Get Error By ErrorID *****
+ ***** Get Comment By commentID *****
 ***************************************/
-router.get("/:errorID", validateAdmin, (req, res) => {
+router.get("/:commentID", validateAdmin, (req, res) => {
 
-  const where = { errorID: req.params.errorID };
+  const where = { commentID: req.params.commentID };
 
   db.select(select)
     .from(tableName)
@@ -81,14 +82,15 @@ router.get("/:errorID", validateAdmin, (req, res) => {
 
 
 /* ******************************
- *** Add Error ***************
+ *** Add Comment ***************
 *********************************/
-router.post("/", (req, res) => {
+router.post("/", /*validateSession,*/(req, res) => {
 
   const recordObject = {
-    componentName: req.body.recordObject.componentName,
-    transactionData: JSON.stringify(req.body.recordObject.transactionData),
-    errorData: JSON.stringify(req.body.recordObject.errorData)
+    // userID: req.user.userID,
+    userID: req.body.comment.userID,
+    email: req.body.comment.email,
+    comment: req.body.comment.comment
     // dateEntered: req.body.recordObject.dateEntered
   };
 
@@ -100,7 +102,7 @@ router.post("/", (req, res) => {
       // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
       // * Returns the ID value of the added record.
 
-      recordObject.errorID = records[0];
+      recordObject.commentID = records[0];
 
       if (records > 0) {
         // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);

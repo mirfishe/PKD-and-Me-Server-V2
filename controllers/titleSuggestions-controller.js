@@ -1,19 +1,20 @@
 const router = require("express").Router();
 const dbConfig = require("../db");
 const db = require("knex")(dbConfig.config);
+const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
 const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 
-const controllerName = "errors";
-const tableName = "errors";
+const controllerName = "titleSuggestions";
+const tableName = "titleSuggestions";
 const select = "*";
 const orderBy = [{ column: "dateEntered", order: "desc" }];
 
 
 /******************************
- ***** Get Errors *********
+ ***** Get Title Suggestions *********
  ******************************/
 router.get("/", validateAdmin, (req, res) => {
 
@@ -46,11 +47,11 @@ router.get("/", validateAdmin, (req, res) => {
 
 
 /**************************************
- ***** Get Error By ErrorID *****
+ ***** Get Title Suggestion By titleSuggestionID *****
 ***************************************/
-router.get("/:errorID", validateAdmin, (req, res) => {
+router.get("/:titleSuggestionID", validateAdmin, (req, res) => {
 
-  const where = { errorID: req.params.errorID };
+  const where = { titleSuggestionID: req.params.titleSuggestionID };
 
   db.select(select)
     .from(tableName)
@@ -81,14 +82,20 @@ router.get("/:errorID", validateAdmin, (req, res) => {
 
 
 /* ******************************
- *** Add Error ***************
+ *** Add Title Suggestion ***************
 *********************************/
-router.post("/", (req, res) => {
+router.post("/", /*validateSession,*/(req, res) => {
 
   const recordObject = {
-    componentName: req.body.recordObject.componentName,
-    transactionData: JSON.stringify(req.body.recordObject.transactionData),
-    errorData: JSON.stringify(req.body.recordObject.errorData)
+    // userID: req.user.userID,
+    userID: req.body.titleSuggestion.userID,
+    email: req.body.titleSuggestion.email,
+    titleName: req.body.titleSuggestion.titleName,
+    authorFirstName: req.body.titleSuggestion.authorFirstName,
+    authorLastName: req.body.titleSuggestion.authorLastName,
+    publicationDate: req.body.titleSuggestion.publicationDate,
+    shortDescription: req.body.titleSuggestion.shortDescription,
+    titleURL: req.body.titleSuggestion.titleURL
     // dateEntered: req.body.recordObject.dateEntered
   };
 
@@ -100,7 +107,7 @@ router.post("/", (req, res) => {
       // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
       // * Returns the ID value of the added record.
 
-      recordObject.errorID = records[0];
+      recordObject.titleSuggestionID = records[0];
 
       if (records > 0) {
         // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);

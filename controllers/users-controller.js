@@ -18,7 +18,7 @@ const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];
 
 
-// TODO: Fix all the user adminsitration routes below. They assume that no records are returned after the add, update or delete.
+// TODO: Fix all the user administration routes below. They assume that no records are returned after the add, update or delete.
 
 
 
@@ -47,9 +47,11 @@ router.post("/register", (req, res) => {
 
           // records = convertBitTrueFalse(records);
 
-          recordObject.userID = records;
+          recordObject.userID = records[0];
 
-          let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+          // ! pm2 doesn't see the .env variables being used here.
+          // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+          let token = jwt.sign({ userID: recordObject.userID }, "The empire never ended.", { expiresIn: "1d" });
 
           res.json({
             // ? Need to return all the properties of the user to the browser?
@@ -126,7 +128,9 @@ router.post("/login", (req, res) => {
 
             if (matches) {
 
-              let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+              // ! pm2 doesn't see the .env variables being used here.
+              // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
+              let token = jwt.sign({ userID: records[0].userID }, "The empire never ended.", { expiresIn: "1d" });
 
               res.status(200).json({
                 // ? Need to return all the properties of the user to the browser?
@@ -441,6 +445,7 @@ router.put("/", validateSession, (req, res) => {
 
           if (records > 0) {
 
+            // ! pm2 doesn't see the .env variables being used here.
             // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
             res.json({
               // ? Need to return all the properties of the user to the browser?

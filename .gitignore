@@ -10,6 +10,7 @@
 
 # production
 /build
+/dist
 /deploy
 
 # misc
@@ -22,6 +23,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vscode/
 
 # Logs
 logs
@@ -93,5 +95,5 @@ node_modules/
 # Downloaded Code
 *.zip
 
-# image files
+# Image Files
 /assets
