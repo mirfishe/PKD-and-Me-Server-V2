@@ -197,14 +197,14 @@ router.get("/", (req, res) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
+  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
+  // let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
 
   // db.raw(sqlQuery).toSQL();
 
   // console.log(controllerName + "-controller", getDateTime(), "get /:" + controllerName + "ID " + tableName, sqlQuery);
 
-  db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "posted")
+  db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
     .from(tableName)
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
     .orderBy([{ column: "itemPubDate", order: "desc" }])
@@ -253,14 +253,14 @@ router.get("/top/:topNumber", (req, res) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
-  let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
+  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
+  let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
 
   // db.raw(sqlQuery).toSQL();
 
   // console.log(controllerName + "-controller", getDateTime(), "get /:" + controllerName + "ID " + tableName, sqlQuery);
 
-  // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "posted")
+  // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
   //   .from(tableName)
   //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
   //   .orderBy([{ column: "itemPubDate", order: "desc" }])
@@ -1114,7 +1114,7 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
 /***************************
  ******* Posted Entry *******
  ***************************/
-// * Allows the admin to hide an entry.
+// * Allows the admin to mark an entry as posted.
 router.put("/posted/:itemID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -1162,5 +1162,59 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
     });
 
 });
+
+
+/***************************
+ ******* Always Filter Entry *******
+ ***************************/
+// * Allows the admin to mark an entry as always filter.
+router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
+
+  const recordObject = {
+    alwaysFilter: req.body.recordObject.alwaysFilter
+  };
+
+  let itemID = "tag:google.com,2013:googlealerts/feed:" + req.params.itemID;
+
+  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
+
+  // const where = { itemID: req.params.itemID };
+  const where = { itemID: itemID };
+
+  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID itemID", itemID);
+
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // * Returns the number of updated records.
+
+      // records = convertBitTrueFalse(records);
+
+      if (records > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
+
+      } else {
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
+    });
+
+});
+
 
 module.exports = router;
