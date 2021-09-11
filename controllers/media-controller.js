@@ -1,138 +1,190 @@
 const router = require("express").Router();
-const Media = require("../db").import("../models/media");
-const { Op } = require("sequelize");
+const dbConfig = require("../db");
+const db = require("knex")(dbConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-/******************************
- ***** Get Media List *********
- ******************************/
-// * Returns all media active or not
-router.get("/list", (req, res) => {
+const IsEmpty = require("../utilities/isEmpty");
+const GetDateTime = require("../utilities/getDateTime");
+const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
-  const query = {/*where: {
-        active: {[Op.eq]: true}
-    // }, include: {all: true, nested: true}, order: [["sortID", "ASC"]]};
-    },*/ order: [["sortID", "ASC"]]
-  };
+const controllerName = "media";
+const tableName = "media";
+const select = "*";
+const orderBy = [{ column: "sortID", order: "asc" }];
 
-  Media.findAll(query)
-    .then((media) => {
-      if (media.length > 0) {
-        // console.log("media-controller get / media", media);
-        res.status(200).json({ media: media, resultsFound: true, message: "Successfully retrieved media." });
-      } else {
-        // console.log("media-controller get / No Results");
-        // res.status(200).send("No media found.");
-        // res.status(200).send({resultsFound: false, message: "No media found."})
-        res.status(200).json({ resultsFound: false, message: "No media found." });
-      };
-    })
-    .catch((err) => {
-      console.log("media-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No media found.", error: err });
-    });
-
-});
 
 /******************************
  ***** Get Media *********
  ******************************/
+// * Returns all media active or not
+// router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
-  const query = {
-    where: {
-      active: { [Op.eq]: true }
-      // }, include: {all: true, nested: true}, order: [["sortID", "ASC"]]};
-    }, order: [["sortID", "ASC"]]
-  };
+  db.select(select)
+    .from(tableName)
+    .orderBy(orderBy)
+    // .then((records) => {
 
-  Media.findAll(query)
-    .then((media) => {
-      if (media.length > 0) {
-        // console.log("media-controller get / media", media);
-        res.status(200).json({ media: media, resultsFound: true, message: "Successfully retrieved media." });
+    // ! pm2 doesn't see the .env variables being used here.
+    //   if (process.env.DATABASE_DIALECT == "mysql") {
+
+    //     return convertBitTrueFalse(records);
+
+    //   } else {
+
+    //     return records;
+
+    //   };
+
+    // })
+    .then((records) => {
+
+      records = convertBitTrueFalse(records);
+
+      if (records.length > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " get /list " + tableName, records);
+
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+
       } else {
-        // console.log("media-controller get / No Results");
-        // res.status(200).send("No media found.");
-        // res.status(200).send({resultsFound: false, message: "No media found."})
-        res.status(200).json({ resultsFound: false, message: "No media found." });
+        // console.log(controllerName + "-controller", GetDateTime(), " get /list No Results");
+
+        // res.status(200).send("No " + tableName + " found.");
+        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
       };
+
     })
-    .catch((err) => {
-      console.log("media-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No media found.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
+      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
     });
 
 });
+
+
+/******************************
+ ***** Get Media *********
+ ******************************/
+// router.get("/", (req, res) => {
+
+//   const where = { active: true };
+
+//   db.select(select)
+//     .from(tableName)
+//     .where(where)
+//     .orderBy(orderBy)
+//     .then((records) => {
+
+//       records = convertBitTrueFalse(records);
+
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
+
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+
+//       } else {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
+
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
+//       };
+
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
+
+// });
+
 
 /******************************
  ***** Get Media Admin *********
  ******************************/
 // * Return all categories to adminster them
-router.get("/admin", validateAdmin, (req, res) => {
+// router.get("/admin", validateAdmin, (req, res) => {
 
-  const query = { order: [["sortID", "ASC"]] };
+//   db.select(select)
+//     .from(tableName)
+//     .orderBy(orderBy)
+//     .then((records) => {
 
-  Media.findAll(query)
-    .then((media) => {
-      if (media.length > 0) {
-        // console.log("media-controller get / media", media);
-        res.status(200).json({ media: media, resultsFound: true, message: "Successfully retrieved media." });
-      } else {
-        // console.log("media-controller get / No Results");
-        // res.status(200).send("No media found.");
-        // res.status(200).send({resultsFound: false, message: "No media found."})
-        res.status(200).json({ resultsFound: false, message: "No media found." });
-      };
-    })
-    .catch((err) => {
-      console.log("media-controller get / err", err);
-      res.status(500).json({ resultsFound: false, message: "No media found.", error: err });
-    });
+//       records = convertBitTrueFalse(records);
 
-});
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /admin " + tableName, records);
+
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+
+//       } else {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /admin No Results");
+
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
+//       };
+
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller", GetDateTime(), " get /admin error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
+
+// });
+
 
 /**************************************
  ***** Get Media By MediaID *****
 ***************************************/
-router.get("/:mediaID", (req, res) => {
+// router.get("/:mediaID", (req, res) => {
 
-  const query = {
-    where: {
-      mediaID: { [Op.eq]: req.params.mediaID }
-      // }, include: {all: true, nested: true}};
-    }
-  };
+//   const where = { mediaID: req.params.mediaID };
 
-  // Media.findOne(query)
-  Media.findAll(query)
-    .then((media) => {
-      // console.log("media-controller get /:mediaID media", media);
-      // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne.
-      // if (media === null) {
-      if (media.length > 0) {
-        // console.log("media-controller get /:mediaID media", media);
-        res.status(200).json({ media: media, resultsFound: true, message: "Successfully retrieved media item." });
-        // res.status(200).json({
-        //     media:   media.media,
-        //     sortID:     media.sortID,
-        //     active:     media.active,
-        //     message:    "Successfully retrieved media information."
-        //     });
-      } else {
-        // console.log("media-controller get /:mediaID No Results");
-        // res.status(200).send("No media found.");
-        // res.status(200).send({resultsFound: false, message: "No media found."})
-        res.status(200).json({ resultsFound: false, message: "No media found." });
-      };
-    })
-    .catch((err) => {
-      console.log("media-controller get /:mediaID err", err);
-      res.status(500).json({ resultsFound: false, message: "No media found.", error: err });
-    });
+//   db.select(select)
+//     .from(tableName)
+//     .where(where)
+//     .orderBy(orderBy)
+//     .then((records) => {
+//       // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID records", records);
 
-});
+//       records = convertBitTrueFalse(records);
+
+//       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne.
+//       // if (records === null) {
+//       if (records.length > 0) {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID records", records);
+
+//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+//         // res.status(200).json({
+//         //     media:   records.media,
+//         //     sortID:     records.sortID,
+//         //     active:     records.active,
+//         //     message:    "Successfully retrieved " + tableName + " information."
+//         //     });
+
+//       } else {
+//         // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID No Results");
+
+//         // res.status(200).send("No " + tableName + " found.");
+//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
+//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+
+//       };
+
+//     })
+//     .catch((error) => {
+//       console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID error", error);
+//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//     });
+
+// });
+
 
 /* ******************************
  *** Add Media ***************
@@ -149,9 +201,13 @@ router.post("/", validateAdmin, (req, res) => {
   //     sortID:     newSortID
   //   };
 
-  Media.max("sortID")
+  db.queryBuilder()
+    .from(tableName)
+    .max("sortID")
+    .first() // * Add this to get an object.
     .then((maxSortID) => {
-      // console.log("media-controller maxSortID", maxSortID);
+
+      // console.log(controllerName + "-controller", GetDateTime(), " maxSortID", maxSortID);
       if (isNaN(maxSortID)) {
         // newSortID = 1;
         return 1;
@@ -159,39 +215,53 @@ router.post("/", validateAdmin, (req, res) => {
         // newSortID = maxSortID + 1;
         return maxSortID + 1;
       };
+
     })
     .then((newSortID) => {
-      // console.log("media-controller newSortID", newSortID);
+      // console.log(controllerName + "-controller", GetDateTime(), " newSortID", newSortID);
 
-      const createMedia = {
+      const recordObject = {
         media: req.body.media.media,
         electronic: req.body.media.electronic,
         sortID: newSortID
       };
 
-      return Media.create(createMedia);
+      return db(tableName)
+        // * .returning() is not supported by mysql and will not have any effect.
+        // .returning(select)
+        .insert(recordObject);
+
     })
-    // .then((media) => res.status(200).json({media: media, message: "Media successfully created."}))
-    .then((media) => {
-      // console.log("media-controller post / media", media);
-      res.status(200).json({
-        mediaID: media.mediaID,
-        media: media.media,
-        electronic: media.electronic,
-        sortID: media.sortID,
-        active: media.active,
-        createdAt: media.createdAt,
-        updatedAt: media.updatedAt,
-        recordAdded: true,
-        message: "Media successfully created."
-      });
+    .then((records) => {
+      // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      // * Returns the ID value of the added record.
+
+      // records = convertBitTrueFalse(records);
+
+      recordObject.mediaID = records[0];
+
+      if (records > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+
+        res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
+
+      } else {
+        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+
+      };
+
     })
-    .catch((err) => {
-      console.log("media-controller post / err", err);
-      res.status(500).json({ recordAdded: false, message: "Media not successfully created.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
+      res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
     });
 
 });
+
 
 /***************************
  ******* Update Media *******
@@ -199,42 +269,47 @@ router.post("/", validateAdmin, (req, res) => {
 // * Allows an admin to update the media including soft delete it
 router.put("/:mediaID", validateAdmin, (req, res) => {
 
-  const updateMedia = {
+  const where = { mediaID: req.params.mediaID };
+
+  const recordObject = {
     media: req.body.media.media,
     sortID: req.body.media.sortID,
     active: req.body.media.active
   };
 
-  const query = {
-    where: {
-      mediaID: { [Op.eq]: req.params.mediaID }
-    }
-  };
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // * Returns the number of updated records.
 
-  Media.update(updateMedia, query)
-    // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
-    // .then((media) => res.status(200).json({message: media + " media record(s) successfully updated."}))
-    .then((media) => {
-      if (media > 0) {
-        res.status(200).json({
-          mediaID: parseInt(req.params.mediaID), // * The parameter value is passed as a string unless converted
-          media: req.body.media.media,
-          sortID: req.body.media.sortID,
-          active: req.body.media.active,
-          recordUpdated: true,
-          // message:    "Media successfully updated."
-          message: media + " media record(s) successfully updated."
-        });
+      // records = convertBitTrueFalse(records);
+
+      if (records > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
+
       } else {
-        res.status(200).json({ recordUpdated: false, message: media + " media record(s) successfully updated." });
+        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+
       };
+
     })
-    .catch((err) => {
-      console.log("media-controller put /:mediaID err", err);
-      res.status(500).json({ recordUpdated: false, message: "Media not successfully updated.", error: err });
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
     });
 
 });
+
 
 /***************************
  ******* Delete Media *******
@@ -242,19 +317,40 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
 // * Allows an admin to hard delete the media
 router.delete("/:mediaID", validateAdmin, (req, res) => {
 
-  const query = {
-    where: {
-      mediaID: { [Op.eq]: req.params.mediaID }
-    }
-  };
+  const where = { mediaID: req.params.mediaID };
 
-  Media.destroy(query)
-    .then(() => res.status(200).json({ recordDeleted: true, message: "Media successfully deleted." }))
-    .catch((err) => {
-      console.log("media-controller delete /:mediaID err", err);
-      res.status(500).json({ recordDeleted: false, message: "Media not successfully deleted.", error: err });
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect.
+    // .returning(select)
+    .del()
+    .then((records) => {
+      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // * Returns the number of deleted records.
+
+      // records = convertBitTrueFalse(records);
+
+      if (records > 0) {
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+
+        res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", mediaID: req.params.mediaID });
+
+      } else {
+        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", mediaID: req.params.mediaID });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID error", error);
+      res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
     });
 
 });
+
 
 module.exports = router;

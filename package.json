@@ -1,29 +1,45 @@
 {
   "name": "pkd-and-me-server",
   "version": "0.2.0",
-  "private": true,
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Project using Node.js to allow users to rate and review works by and related to Philip K. Dick.",
+  "author": "Michael Fisher",
+  "copyrightYear": "2021",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/mirfishe/PKD-and-Me-Server-V2"
   },
-  "author": "Michael Fisher",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.7"
+  "private": true,
+  "main": "app.js",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "build/*",
+      "dist/*"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.95.1",
-    "mysql2": "^2.2.5",
+    "knex": "^0.95.9",
+    "mysql2": "^2.3.0",
     "pg": "^7.11.0",
-    "tedious": "^11.0.5"
+    "rss-parser": "^3.12.0",
+    "tedious": "^11.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
