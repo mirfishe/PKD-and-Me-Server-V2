@@ -66,21 +66,21 @@ router.post("/register", (req, res) => {
             isLoggedIn: true,
             isAdmin: recordObject.admin,
             recordAdded: true,
-            message: "Successfully created " + controllerName + ".",
+            message: `Successfully created ${controllerName}.`,
             sessionToken: token
           });
 
         },
 
         createError = (error) => {
-          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error", error);
-          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.name", error.name);
-          // console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.errors[0].message", error.errors[0].message);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post /register createError error", error);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post /register createError error.name", error.name);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post /register createError error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           for (let i = 0; i < error.errors.length; i++) {
-            //console.log(controllerName + "-controller", GetDateTime(), " post /register createError error.errors[i].message", error.errors[i].message);
+            //console.log(`${controllerName}-controller`, GetDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
               errorMessages = errorMessages + ", ";
@@ -90,13 +90,13 @@ router.post("/register", (req, res) => {
 
           };
 
-          res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + controllerName + ".", errorMessages: errorMessages, error: error });
+          res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
 
         })
       .catch((error) => {
 
-        console.log(controllerName + "-controller", GetDateTime(), " post /register error", error);
-        res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Not successfully registered " + controllerName + ".", error: error });
+        console.log(`${controllerName}-controller`, GetDateTime(), "post /register error", error);
+        res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
 
       });
 
@@ -145,13 +145,13 @@ router.post("/login", (req, res) => {
                 isLoggedIn: true,
                 isAdmin: records[0].admin,
                 resultsFound: true,
-                message: "Successfully authenticated " + controllerName + ".",
+                message: `Successfully authenticated ${controllerName}.`,
                 sessionToken: token
               });
 
             } else {
 
-              console.log(controllerName + "-controller", GetDateTime(), " post /login Login failed. 401");
+              console.log(`${controllerName}-controller`, GetDateTime(), "post /login Login failed. 401");
               res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
@@ -160,7 +160,7 @@ router.post("/login", (req, res) => {
 
         } else {
 
-          // console.log(controllerName + "-controller", GetDateTime(), " post /login Failed to authenticate. 401");
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to authenticate. 401");
           res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
@@ -168,14 +168,14 @@ router.post("/login", (req, res) => {
       },
       error => {
 
-        console.log(controllerName + "-controller", GetDateTime(), " post /login Failed to process. 501 error", error);
+        console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to process. 501 error", error);
         res.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
     )
     .catch((error) => {
 
-      console.log(controllerName + "-controller", GetDateTime(), " post /login error", error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "post /login error", error);
       res.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
 
     });
@@ -196,23 +196,23 @@ router.get("/admin", validateAdmin, (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /admin records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin records", records);
 
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /admin No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get /admin error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -235,9 +235,9 @@ router.get("/", validateSession, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller", GetDateTime(), " get / records", records[0]);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records[0]);
 
-        // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
           // user:   records[0],
@@ -249,22 +249,22 @@ router.get("/", validateSession, (req, res) => {
           admin: records[0].admin,
           active: records[0].active,
           resultsFound: true,
-          message: "Successfully retrieved " + controllerName + " information."
+          message: `Successfully retrieved ${controllerName} information.`
         });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -287,9 +287,9 @@ router.get("/:userID", validateAdmin, (req, res) => {
 
       // if (records.length > 0) {
       if (records != null) {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID records", records[0]);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records[0]);
 
-        // res.status(200).json({records: records[0], resultsFound: true, message: "Successfully retrieved " + tableName + "."});
+        // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
         res.status(200).json({
           // ? Need to return all the properties of the user to the browser?
           // user:   records[0],
@@ -301,22 +301,22 @@ router.get("/:userID", validateAdmin, (req, res) => {
           admin: records[0].admin,
           active: records[0].active,
           resultsFound: true,
-          message: "Successfully retrieved " + controllerName + " information."
+          message: `Successfully retrieved ${controllerName} information.`
         });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get /:" + controllerName + "ID error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -370,25 +370,25 @@ router.put("/:userID", validateAdmin, (req, res) => {
             admin: recordObject.admin,
             active: recordObject.active,
             recordUpdated: true,
-            message: "Successfully updated" + controllerName + "."
+            message: `Successfully updated${controllerName}.`
           });
 
         } else {
 
-          res.status(200).json({ recordUpdated: false, message: "Not successfully updated" + tableName + "." });
+          res.status(200).json({ recordUpdated: false, message: `Not successfully updated${tableName}.` });
 
         };
 
       })
       .catch((error) => {
-        console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.name", error.name);
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.errors[0].message", error.errors[0].message);
+        console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.name`, error.name);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.errors[0].message`, error.errors[0].message);
 
         let errorMessages = "";
 
         for (let i = 0; i < error.errors.length; i++) {
-          //console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error.errors[i].message", error.errors[i].message);
+          //console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
 
           if (i > 1) {
             errorMessages = errorMessages + ", ";
@@ -398,7 +398,7 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
         };
 
-        res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", errorMessages: errorMessages, error: error });
+        res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
       });
 
@@ -459,27 +459,27 @@ router.put("/", validateSession, (req, res) => {
               active: recordObject.active,
               isLoggedIn: true,
               recordUpdated: true,
-              message: "Successfully updated" + controllerName + ".",
+              message: `Successfully updated ${controllerName}.`,
               // sessionToken:   token // User gets a new sessionToken even if they haven't updated their password
             });
 
           } else {
 
-            res.status(200).json({ recordUpdated: false, isLoggedIn: true, message: "Successfully updated" + tableName + "." });
+            res.status(200).json({ recordUpdated: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
 
           };
 
         },
 
         updateError = (error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " put / error", error);
-          // console.log(controllerName + "-controller", GetDateTime(), " put / error.name", error.name);
-          // console.log(controllerName + "-controller", GetDateTime(), " put / error.errors[0].message", error.errors[0].message);
+          console.log(`${controllerName}-controller`, GetDateTime(), "put / error", error);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "put / error.name", error.name);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "put / error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           for (let i = 0; i < error.errors.length; i++) {
-            //console.log(controllerName + "-controller", GetDateTime(), " put / error.errors[i].message", error.errors[i].message);
+            //console.log(`${controllerName}-controller`, GetDateTime(), "put / error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
               errorMessages = errorMessages + ", ";
@@ -489,14 +489,14 @@ router.put("/", validateSession, (req, res) => {
 
           };
 
-          res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", errorMessages: errorMessages, error: error });
+          res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
         }
 
       )
       .catch((error) => {
-        console.log(controllerName + "-controller", GetDateTime(), " put / error", error);
-        res.status(500).json({ recordUpdated: false, message: "Not successfully updated" + tableName + ".", error: error });
+        console.log(`${controllerName}-controller`, GetDateTime(), "put / error", error);
+        res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, error: error });
       });
 
   } else {
@@ -520,16 +520,16 @@ router.delete("/:userID", validateAdmin, (req, res) => {
     // .returning(select)
     .del()
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
       // * Returns the number of deleted records.
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordDeleted: true, message: "Successfully deleted " + tableName + ".", userID: req.params.userID });
+        res.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, userID: req.params.userID });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -539,8 +539,8 @@ router.delete("/:userID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " delete /:" + controllerName + "ID error", error);
-      res.status(500).json({ recordDeleted: false, message: "Not successfully deleted " + tableName + ".", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+      res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
     });
 
 });

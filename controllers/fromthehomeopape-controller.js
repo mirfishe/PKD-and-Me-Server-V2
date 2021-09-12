@@ -27,7 +27,7 @@ const orderBy = [{ column: "createDate", order: "desc" }];
 //   let url;
 
 //   // * Google Alert - Philip Dick New
-//   url = proxyurl + "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
+//   url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/158424632588957664681`;
 //   // url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
 //   // * Google Alert - Philip Dick
 //   // url = proxyurl + "https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249";
@@ -197,12 +197,12 @@ router.get("/", (req, res) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(controllerName + "-controller", getDateTime(), "get /:" + controllerName + "ID " + tableName, sqlQuery);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
     .from(tableName)
@@ -211,28 +211,28 @@ router.get("/", (req, res) => {
     // .orderBy([{ column: "createDate", order: "desc" }])
     // db.raw(sqlQuery)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
       // records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -253,12 +253,12 @@ router.get("/top/:topNumber", (req, res) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = "SELECT DISTINCT TOP " + topNumber + " itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC";
-  let sqlQuery = "SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM " + tableName + " ORDER BY itemPubDate DESC LIMIT " + topNumber;
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(controllerName + "-controller", getDateTime(), "get /:" + controllerName + "ID " + tableName, sqlQuery);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
   //   .from(tableName)
@@ -267,28 +267,28 @@ router.get("/top/:topNumber", (req, res) => {
   //   // .orderBy([{ column: "createDate", order: "desc" }])
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
       // records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /" + tableName, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -345,16 +345,16 @@ router.get("/new", (req, res) => {
     // If author is specified, but not dc:creator, creator will be set to author (see article)
     // Atom's updated becomes lastBuildDate for consistency
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -389,38 +389,38 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect.
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record.
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -430,13 +430,13 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
         });
 
     });
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
   })();
 
@@ -472,16 +472,16 @@ router.get("/new", (req, res) => {
     // If author is specified, but not dc:creator, creator will be set to author (see article)
     // Atom's updated becomes lastBuildDate for consistency
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -517,38 +517,38 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect.
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record.
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -558,13 +558,13 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
         });
 
     });
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
   })();
 
@@ -601,16 +601,16 @@ router.get("/new", (req, res) => {
     // If author is specified, but not dc:creator, creator will be set to author (see article)
     // Atom's updated becomes lastBuildDate for consistency
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -645,38 +645,38 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect.
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record.
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -686,13 +686,13 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
         });
 
     });
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
   })();
 
@@ -729,16 +729,16 @@ router.get("/new", (req, res) => {
     // If author is specified, but not dc:creator, creator will be set to author (see article)
     // Atom's updated becomes lastBuildDate for consistency
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -773,38 +773,38 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect.
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record.
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -814,13 +814,13 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
         });
 
     });
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
   })();
 
@@ -857,16 +857,16 @@ router.get("/new", (req, res) => {
     // If author is specified, but not dc:creator, creator will be set to author (see article)
     // Atom's updated becomes lastBuildDate for consistency
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed", feed);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.id", feed.id);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.title", feed.title);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.link", feed.link);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.updated", feed.updated);
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -901,38 +901,38 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.id", item.id);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.title", item.title);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.link", item.link);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.pubDate", item.pubDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.updated", item.updated);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.content", item.content);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.contentSnippet", item.contentSnippet);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.isoDate", item.isoDate);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.creator", item.creator);
-      // console.log(controllerName + "-controller", GetDateTime(), " get / item.author", item.author);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.author.name", item.author.name);
-      // // console.log(controllerName + "-controller", GetDateTime(), " get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
 
-      // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect.
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record.
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-            // res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [feedObject] });
+            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -942,18 +942,18 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-          res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
         });
 
     });
 
-    // console.log(controllerName + "-controller", GetDateTime(), " get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
   })();
 
 
-  res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + "." });
+  res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.` });
 
 });
 
@@ -969,22 +969,22 @@ router.get("/update", (req, res) => {
 
   db.raw(sqlQuery).toSQL();
 
-  console.log(controllerName + "-controller", getDateTime(), "get /:" + controllerName + "ID " + tableName, sqlQuery);
+  console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   db.raw(sqlQuery)
     .then((records) => {
-      console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
       // * Returns the ID value of the added record.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: records });
+        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -994,8 +994,8 @@ router.get("/update", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-      // res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      // res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
     });
 
 });
@@ -1030,18 +1030,18 @@ router.post("/", validateAdmin, (req, res) => {
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
       // * Returns the ID value of the added record.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " post / records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: "Successfully created " + tableName + ".", records: [recordObject] });
+        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " post / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1051,8 +1051,8 @@ router.post("/", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " post / error", error);
-      res.status(500).json({ recordAdded: false, message: "Not successfully created " + tableName, error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
     });
 
 });
@@ -1068,14 +1068,14 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
     display: req.body.recordObject.display
   };
 
-  let itemID = "tag:google.com,2013:googlealerts/feed:" + req.params.itemID;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID itemID", itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1083,18 +1083,18 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
+        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1104,8 +1104,8 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
-      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
     });
 
 });
@@ -1121,14 +1121,14 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
     posted: req.body.recordObject.posted
   };
 
-  let itemID = "tag:google.com,2013:googlealerts/feed:" + req.params.itemID;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID itemID", itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1136,18 +1136,18 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
+        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1157,8 +1157,8 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
-      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
     });
 
 });
@@ -1174,14 +1174,14 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
     alwaysFilter: req.body.recordObject.alwaysFilter
   };
 
-  let itemID = "tag:google.com,2013:googlealerts/feed:" + req.params.itemID;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID itemID", itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1189,18 +1189,18 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
       // * Returns the number of updated records.
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: "Successfully updated " + tableName + ".", records: [recordObject] });
+        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1210,8 +1210,8 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " put /:" + controllerName + "ID error", error);
-      res.status(500).json({ recordUpdated: false, message: "Not successfully updated " + tableName + ".", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
     });
 
 });
