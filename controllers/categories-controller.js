@@ -29,23 +29,23 @@ router.get("/", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(controllerName + "-controller", GetDateTime(), "", GetDateTime(), " get /list " + tableName, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(controllerName + "-controller", GetDateTime(), " get /list No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send("No " + tableName + " found.");
-        // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-        res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(controllerName + "-controller", GetDateTime(), " get /list error", error);
-      res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
     });
 
 });
@@ -69,23 +69,23 @@ router.get("/", (req, res) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (records.length > 0) {
-//         console.log(controllerName + "-controller", GetDateTime(), " get / " + tableName, records);
+//         console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: "Successfully retrieved " + tableName + ".", records: records });
+//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
-//         // console.log(controllerName + "-controller", GetDateTime(), " get / No Results");
+//         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-//         // res.status(200).send("No " + tableName + " found.");
-//         // res.status(200).send({resultsFound: false, message: "No " + tableName + " found."})
-//         res.status(200).json({ resultsFound: false, message: "No " + tableName + " found." });
+//         // res.status(200).send(`No ${tableName} found.`);
+//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
 //     })
 //     .catch((error) => {
-//       console.log(controllerName + "-controller", GetDateTime(), " get / error", error);
-//       res.status(500).json({ resultsFound: false, message: "No " + tableName + " found.", error: error });
+//       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 //     });
 
 // });
