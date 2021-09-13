@@ -30,13 +30,13 @@ const orderBy = [{ column: "createDate", order: "desc" }];
 //   url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/158424632588957664681`;
 //   // url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
 //   // * Google Alert - Philip Dick
-//   // url = proxyurl + "https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249";
+//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249`;
 //   // * Google Alert - Philip Dick All Except Web
 //   // * Doesn't appear to work anymore.
-//   // url = proxyurl + "https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835";
+//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835`;
 //   // * Google Alert - Philip Dick News
 //   // * Doesn't appear to work anymore.
-//   // url = proxyurl + "https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674";
+//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674`;
 
 //   let rssParser = new Parser({
 //     // * Doesn't prevent the CORS error.
