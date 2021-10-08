@@ -95,5 +95,8 @@ node_modules/
 # Downloaded Code
 *.zip
 
+# postcss compiled file
+/src/css/styles.css
+
 # Image Files
 /assets
