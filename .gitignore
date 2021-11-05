@@ -92,6 +92,12 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# Temporary Microsoft Office Files
+~$*
+
+# Temporary MacOS Files
+._*
+
 # Downloaded Code
 *.zip
 
