@@ -1,3 +1,5 @@
+"use strict";
+
 require("dotenv").config();
 
 const express = require("express");
@@ -29,10 +31,10 @@ const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
 app.use(express.json());
 
-// * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working.
-// ! pm2 doesn't see the .env variables being used here.
+// * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working. -- 08/13/2021 MF
+// ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
 // console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-// * This will work in development and won't affect production even though pm2 doesn't see this .env variable, because it would be equal to undefined in production.
+// * This will work in development and won't affect production even though pm2 doesn't see this .env variable, because it would be equal to undefined in production. -- 08/13/2021 MF
 if (process.env.NODE_ENV === "development") {
   app.use(require("./middleware/headers"));
 };
@@ -61,7 +63,7 @@ app.use("/titleSuggestions", titleSuggestions);
 app.use("/fromthehomeopape", fromthehomeopape);
 
 
-// ! pm2 doesn't see the .env variables being used here.
+// ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
 app.listen(process.env.PORT || 4000, function () {
   console.log(`App is listening on port ${process.env.PORT}`);
 }

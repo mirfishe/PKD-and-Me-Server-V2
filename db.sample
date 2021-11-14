@@ -1,3 +1,4 @@
+"use strict";
 
 // let databaseURL = "";
 // let dialectValue = "";
@@ -12,7 +13,7 @@
 //   databaseURL = process.env.DATABASE_URL_SQLSERVER;
 //   dialectValue = "mssql";
 // } else {
-//   // * Set to postgres by default
+//   // * Set to postgres by default -- 03/28/2021 MF
 //   databaseURL = process.env.DATABASE_URL_POSTGRESQL;
 //   dialectValue = "postgres";
 // };
@@ -28,20 +29,23 @@ module.exports = {
   //     user: process.env.DATABASE_USER,
   //     password: process.env.DATABASE_PASSWORD,
   //     database: process.env.DATABASE_NAME,
-  //     // options: { encrypt: false } // ! Needs to be set to default for the localhost? https://stackoverflow.com/questions/66504525/error-no-event-socketconnect-in-state-sentprelogin
+  //     // options: { encrypt: false } // ! Needs to be set to default for the localhost? https://stackoverflow.com/questions/66504525/error-no-event-socketconnect-in-state-sentprelogin -- 05/06/2021 MF
   //   }
   // }
 
-  // ! pm2 doesn't see the .env variables being used here and then isn't able to access MySql.
+  // ! pm2 doesn't see the .env variables being used here and then isn't able to access MySql. -- 08/13/2021 MF
   config: {
     client: "mysql2",
     connection: {
       host: "localhost",
       // host: "127.0.0.1",
-      user: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      // options: { encrypt: false } // ! Needs to be set to default for the localhost? https://stackoverflow.com/questions/66504525/error-no-event-socketconnect-in-state-sentprelogin
+        // user: process.env.DATABASE_USER,
+        // password: process.env.DATABASE_PASSWORD,
+        // database: process.env.DATABASE_NAME,
+        user: "",
+        password: "",
+        database: "",
+      // options: { encrypt: false } // ! Needs to be set to default for the localhost? https://stackoverflow.com/questions/66504525/error-no-event-socketconnect-in-state-sentprelogin -- 03/28/2021 MF
     }
   }
 

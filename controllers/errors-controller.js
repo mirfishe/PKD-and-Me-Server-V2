@@ -1,9 +1,11 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 
 const controllerName = "errors";
@@ -93,12 +95,12 @@ router.post("/", (req, res) => {
   };
 
   db(tableName)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning("*")
     .insert(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       recordObject.errorID = records[0];
 

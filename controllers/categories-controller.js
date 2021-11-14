@@ -1,10 +1,12 @@
-const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
-const validateSession = require("../middleware/validate-session");
-const validateAdmin = require("../middleware/validate-admin");
+"use strict";
 
-const IsEmpty = require("../utilities/isEmpty");
+const router = require("express").Router();
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
+// const validateSession = require("../middleware/validate-session");
+// const validateAdmin = require("../middleware/validate-admin");
+
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
@@ -17,7 +19,7 @@ const orderBy = [{ column: "sortID", order: "asc" }];
 /******************************
  ***** Get Categories *********
  ******************************/
-// * Returns all categories active or not
+// * Returns all categories active or not -- 03/28/2021 MF
 // router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
@@ -54,8 +56,8 @@ router.get("/", (req, res) => {
 /******************************
  ***** Get Categories *********
  ******************************/
-// * Only returns categories that have titles linked to them
-// * Need to return all categories that are active for the add title function
+// * Only returns categories that have titles linked to them -- 03/28/2021 MF
+// * Need to return all categories that are active for the add title function -- 03/28/2021 MF
 // router.get("/", (req, res) => {
 
 //   const where = { active: true };
