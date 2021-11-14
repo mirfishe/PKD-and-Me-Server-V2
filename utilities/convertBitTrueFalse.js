@@ -1,13 +1,14 @@
+"use strict";
 
-const componentName = "convertBitTrueFalse.js";
+// const componentName = "convertBitTrueFalse.js";
 
 
-module.exports = convertBitTrueFalse = (records) => {
+const convertBitTrueFalse = (records) => {
   // console.log(componentName, "convertBitTrueFalse records", records);
   // console.log(componentName, "convertBitTrueFalse process.env.DATABASE_DIALECT", process.env.DATABASE_DIALECT);
 
-  // ! pm2 doesn't see the .env variables being used here.
-  // ? Need to limit this function to only MySQL?
+  // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF -- 08/13/2021 MF
+  // ? Need to limit this function to only MySQL? -- 08/13/2021 MF
   // if (process.env.DATABASE_DIALECT == "mysql") {
 
   for (let i = 0; i < records.length; i++) {
@@ -78,6 +79,24 @@ module.exports = convertBitTrueFalse = (records) => {
       records[i].admin = false;
     };
 
+    if (records[i].display === 1) {
+      records[i].display = true;
+    } else if (records[i].display === 0) {
+      records[i].display = false;
+    };
+
+    if (records[i].alwaysFilter === 1) {
+      records[i].alwaysFilter = true;
+    } else if (records[i].alwaysFilter === 0) {
+      records[i].alwaysFilter = false;
+    };
+
+    if (records[i].posted === 1) {
+      records[i].posted = true;
+    } else if (records[i].posted === 0) {
+      records[i].posted = false;
+    };
+
   };
 
   // };
@@ -86,3 +105,5 @@ module.exports = convertBitTrueFalse = (records) => {
 
 };
 
+
+module.exports = convertBitTrueFalse;

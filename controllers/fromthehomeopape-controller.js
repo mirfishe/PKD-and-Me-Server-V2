@@ -1,17 +1,19 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
-const validateSession = require("../middleware/validate-session");
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
+// const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
-const select = "*";
-const orderBy = [{ column: "createDate", order: "desc" }];
+// const select = "*";
+// const orderBy = [{ column: "createDate", order: "desc" }];
 
 // const Parser = require('rss-parser');
 
@@ -19,27 +21,27 @@ const orderBy = [{ column: "createDate", order: "desc" }];
 // const fetchNews = async () => {
 //   // console.log(componentName, GetDateTime(), "fetchNews");
 
-//   // https://cors-anywhere.herokuapp.com
-//   // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
+//   // https://cors-anywhere.herokuapp.com -- 06/05/2021 MF
+//   // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe -- 06/05/2021 MF
 //   const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 //   // let url = proxyurl;
 //   let url;
 
-//   // * Google Alert - Philip Dick New
+//   // * Google Alert - Philip Dick New -- 06/05/2021 MF
 //   url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/158424632588957664681`;
 //   // url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
-//   // * Google Alert - Philip Dick
+//   // * Google Alert - Philip Dick -- 06/05/2021 MF
 //   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249`;
-//   // * Google Alert - Philip Dick All Except Web
-//   // * Doesn't appear to work anymore.
+//   // * Google Alert - Philip Dick All Except Web -- 06/05/2021 MF
+//   // * Doesn't appear to work anymore. -- 06/05/2021 MF
 //   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835`;
-//   // * Google Alert - Philip Dick News
-//   // * Doesn't appear to work anymore.
+//   // * Google Alert - Philip Dick News -- 06/05/2021 MF
+//   // * Doesn't appear to work anymore. -- 06/05/2021 MF
 //   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674`;
 
 //   let rssParser = new Parser({
-//     // * Doesn't prevent the CORS error.
+//     // * Doesn't prevent the CORS error. -- 06/05/2021 MF
 //     // headers: {
 //     //   "access-control-allow-origin": "*", "access-control-allow-methods": "GET, POST, PUT, DELETE", "access-control-allow-headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 //     // },
@@ -71,12 +73,12 @@ const orderBy = [{ column: "createDate", order: "desc" }];
 //   // </author>;
 //   // </entry>
 
-//   // Notes from https://github.com/rbren/rss-parser
-//   // The contentSnippet field strips out HTML tags and unescapes HTML entities
-//   // The dc: prefix will be removed from all fields
-//   // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-//   // If author is specified, but not dc:creator, creator will be set to author (see article)
-//   // Atom's updated becomes lastBuildDate for consistency
+// // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+// // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+// // * The dc: prefix will be removed from all fields -- 06/05/2021
+// // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+// // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+// // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
 //   console.log(componentName, GetDateTime(), "fetchNews feed", feed);
 //   console.log(componentName, GetDateTime(), "fetchNews feed.id", feed.id);
@@ -195,25 +197,25 @@ const orderBy = [{ column: "createDate", order: "desc" }];
  ******************************/
 router.get("/", (req, res) => {
 
-  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
+  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
   // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
   // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
     .from(tableName)
-    // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
+    // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
     .orderBy([{ column: "itemPubDate", order: "desc" }])
     // .orderBy([{ column: "createDate", order: "desc" }])
     // db.raw(sqlQuery)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
@@ -251,18 +253,18 @@ router.get("/top/:topNumber", (req, res) => {
     topNumber = parseInt(topNumber);
   };
 
-  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
+  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
   // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
   let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
   //   .from(tableName)
-  //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server.
+  //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   //   .orderBy([{ column: "itemPubDate", order: "desc" }])
   //   // .orderBy([{ column: "createDate", order: "desc" }])
   db.raw(sqlQuery)
@@ -301,7 +303,7 @@ router.get("/new", (req, res) => {
 
   let Parser = require('rss-parser');
   let rssParser = new Parser({
-    // * Doesn't prevent the CORS error.
+    // * Doesn't prevent the CORS error. -- 06/05/2021 MF
     // headers: {
     //   "access-control-allow-origin": "*", "access-control-allow-methods": "GET, POST, PUT, DELETE", "access-control-allow-headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     // },
@@ -316,7 +318,7 @@ router.get("/new", (req, res) => {
 
   (async () => {
 
-    // * Google Alert - Philip Dick New
+    // * Google Alert - Philip Dick New -- 06/05/2021 MF
     url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
 
     const feed = await rssParser.parseURL(url);
@@ -338,12 +340,12 @@ router.get("/new", (req, res) => {
     // </author>;
     // </entry>
 
-    // Notes from https://github.com/rbren/rss-parser
-    // The contentSnippet field strips out HTML tags and unescapes HTML entities
-    // The dc: prefix will be removed from all fields
-    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-    // If author is specified, but not dc:creator, creator will be set to author (see article)
-    // Atom's updated becomes lastBuildDate for consistency
+    // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+    // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+    // * The dc: prefix will be removed from all fields -- 06/05/2021
+    // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+    // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+    // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
@@ -364,9 +366,9 @@ router.get("/new", (req, res) => {
       // SET sql_mode = '';
       // SET GLOBAL sql_mode = '';
 
-      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
-      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
-      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value -- 06/05/2021 MF
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue. -- 06/09/2021 MF
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function -- 06/09/2021 MF
 
       let feedObject = {
         feedID: feed.id,
@@ -405,12 +407,12 @@ router.get("/new", (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -443,7 +445,7 @@ router.get("/new", (req, res) => {
 
   (async () => {
 
-    // * Google Alert - Philip Dick
+    // * Google Alert - Philip Dick -- 06/05/2021 MF
     url = "https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249";
 
     const feed = await rssParser.parseURL(url);
@@ -465,12 +467,12 @@ router.get("/new", (req, res) => {
     // </author>;
     // </entry>
 
-    // Notes from https://github.com/rbren/rss-parser
-    // The contentSnippet field strips out HTML tags and unescapes HTML entities
-    // The dc: prefix will be removed from all fields
-    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-    // If author is specified, but not dc:creator, creator will be set to author (see article)
-    // Atom's updated becomes lastBuildDate for consistency
+    // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+    // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+    // * The dc: prefix will be removed from all fields -- 06/05/2021
+    // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+    // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+    // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
@@ -491,10 +493,10 @@ router.get("/new", (req, res) => {
       // SET sql_mode = '';
       // SET GLOBAL sql_mode = '';
 
-      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
-      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
-      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
-      // * https://www.designcise.com/web/tutorial/how-to-fix-replaceall-is-not-a-function-javascript-error
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value -- 06/05/2021 MF
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue. -- 06/09/2021 MF
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function -- 06/09/2021 MF
+      // * https://www.designcise.com/web/tutorial/how-to-fix-replaceall-is-not-a-function-javascript-error -- 08/13/2021 MF
 
       let feedObject = {
         feedID: feed.id,
@@ -533,12 +535,12 @@ router.get("/new", (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -571,8 +573,8 @@ router.get("/new", (req, res) => {
 
   (async () => {
 
-    // * Google Alert - Philip Dick All Except Web
-    // // * Doesn't appear to work anymore.
+    // * Google Alert - Philip Dick All Except Web -- 06/05/2021 MF
+    // // * Doesn't appear to work anymore. -- 06/05/2021 MF
     url = "https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835";
 
     const feed = await rssParser.parseURL(url);
@@ -594,12 +596,12 @@ router.get("/new", (req, res) => {
     // </author>;
     // </entry>
 
-    // Notes from https://github.com/rbren/rss-parser
-    // The contentSnippet field strips out HTML tags and unescapes HTML entities
-    // The dc: prefix will be removed from all fields
-    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-    // If author is specified, but not dc:creator, creator will be set to author (see article)
-    // Atom's updated becomes lastBuildDate for consistency
+    // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+    // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+    // * The dc: prefix will be removed from all fields -- 06/05/2021
+    // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+    // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+    // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
@@ -620,9 +622,9 @@ router.get("/new", (req, res) => {
       // SET sql_mode = '';
       // SET GLOBAL sql_mode = '';
 
-      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
-      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
-      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value -- 06/05/2021 MF
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue. -- 06/09/2021 MF
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function -- 06/09/2021 MF
 
       let feedObject = {
         feedID: feed.id,
@@ -661,12 +663,12 @@ router.get("/new", (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -699,8 +701,8 @@ router.get("/new", (req, res) => {
 
   (async () => {
 
-    // * Google Alert - Philip Dick News
-    // // * Doesn't appear to work anymore.
+    // * Google Alert - Philip Dick News -- 06/05/2021 MF
+    // // * Doesn't appear to work anymore. -- 06/05/2021 MF
     url = "https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674";
 
     const feed = await rssParser.parseURL(url);
@@ -722,12 +724,12 @@ router.get("/new", (req, res) => {
     // </author>;
     // </entry>
 
-    // Notes from https://github.com/rbren/rss-parser
-    // The contentSnippet field strips out HTML tags and unescapes HTML entities
-    // The dc: prefix will be removed from all fields
-    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-    // If author is specified, but not dc:creator, creator will be set to author (see article)
-    // Atom's updated becomes lastBuildDate for consistency
+    // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+    // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+    // * The dc: prefix will be removed from all fields -- 06/05/2021
+    // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+    // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+    // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
@@ -748,9 +750,9 @@ router.get("/new", (req, res) => {
       // SET sql_mode = '';
       // SET GLOBAL sql_mode = '';
 
-      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
-      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
-      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value -- 06/05/2021 MF
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue. -- 06/09/2021 MF
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function -- 06/09/2021 MF
 
       let feedObject = {
         feedID: feed.id,
@@ -789,12 +791,12 @@ router.get("/new", (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -827,8 +829,8 @@ router.get("/new", (req, res) => {
 
   (async () => {
 
-    // * Google Alert - Blade Runner
-    // // * Doesn't appear to work anymore.
+    // * Google Alert - Blade Runner -- 06/05/2021 MF
+    // // * Doesn't appear to work anymore. -- 06/05/2021 MF
     url = "https://www.google.com/alerts/feeds/17849810695950872924/2707042161623420058";
 
     const feed = await rssParser.parseURL(url);
@@ -850,12 +852,12 @@ router.get("/new", (req, res) => {
     // </author>;
     // </entry>
 
-    // Notes from https://github.com/rbren/rss-parser
-    // The contentSnippet field strips out HTML tags and unescapes HTML entities
-    // The dc: prefix will be removed from all fields
-    // Both dc:date and pubDate will be available in ISO 8601 format as isoDate
-    // If author is specified, but not dc:creator, creator will be set to author (see article)
-    // Atom's updated becomes lastBuildDate for consistency
+    // * Notes from https://github.com/rbren/rss-parser -- 06/05/2021 MF
+    // * The contentSnippet field strips out HTML tags and unescapes HTML entities -- 06/05/2021
+    // * The dc: prefix will be removed from all fields -- 06/05/2021
+    // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
+    // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
+    // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
     // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
@@ -876,9 +878,9 @@ router.get("/new", (req, res) => {
       // SET sql_mode = '';
       // SET GLOBAL sql_mode = '';
 
-      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value
-      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue.
-      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function
+      // * https://stackoverflow.com/questions/44304777/er-truncated-wrong-value-incorrect-datetime-value -- 06/05/2021 MF
+      // * .replaceAll("T", " ").replaceAll("Z", "") are used to fix this issue. -- 06/09/2021 MF
+      // * UnhandledPromiseRejectionWarning: TypeError: feed.updated.replaceAll is not a function -- 06/09/2021 MF
 
       let feedObject = {
         feedID: feed.id,
@@ -917,12 +919,12 @@ router.get("/new", (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -967,14 +969,14 @@ router.get("/update", (req, res) => {
 
   let sqlQuery = "INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)";
 
-  db.raw(sqlQuery).toSQL();
+  // db.raw(sqlQuery).toSQL();
 
-  console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   db.raw(sqlQuery)
     .then((records) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -1026,12 +1028,12 @@ router.post("/", validateAdmin, (req, res) => {
   };
 
   db(tableName)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -1061,7 +1063,7 @@ router.post("/", validateAdmin, (req, res) => {
 /***************************
  ******* Hide Entry *******
  ***************************/
-// * Allows the admin to display or not display an entry.
+// * Allows the admin to display or not display an entry. -- 08/13/2021 MF
 router.put("/display/:itemID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -1079,12 +1081,12 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -1114,7 +1116,7 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
 /***************************
  ******* Posted Entry *******
  ***************************/
-// * Allows the admin to mark an entry as posted.
+// * Allows the admin to mark an entry as posted. -- 09/10/2021 MF
 router.put("/posted/:itemID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -1132,12 +1134,12 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -1167,7 +1169,7 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
 /***************************
  ******* Always Filter Entry *******
  ***************************/
-// * Allows the admin to mark an entry as always filter.
+// * Allows the admin to mark an entry as always filter. -- 09/10/2021 MF
 router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -1185,12 +1187,12 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 

@@ -1,24 +1,27 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "userReviews";
 const tableName = "userReviews";
-const select = "*";
-const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };
+// const select = "*";
+// const activeWhere = { "titles.active": true, "userReviews.active": true, "users.active": true };
 const orderBy = [{ column: "userReviews.updateDate", order: "desc" }];
 
 // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
-// ! Needs to not return the user's password.
-// TODO: Needs to not return the user's password.
-// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
-const columnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS userUpdatedBy", "admin", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
+// ! Needs to not return the user's password. -- 06/01/2021 MF
+// TODO: Needs to not return the user's password. -- 06/01/2021 MF
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate -- 06/01/2021 MF
+// const columnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "lastName", "email", "users.updatedBy AS userUpdatedBy", "admin", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
+const columnsList = ["userReviews.*", "titles.*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "firstName", "users.updatedBy AS userUpdatedBy", "users.active AS userActive", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
 
 /*
 categories
@@ -41,7 +44,7 @@ users
 */
 
 
-// ! Function doesn't work because it needs to wait on the results of the query
+// ! Function doesn't work because it needs to wait on the results of the query -- 03/28/2021 MF
 // function hasReviewedTitle (userID, titleID) {
 
 //     const query = {where: {
@@ -78,7 +81,7 @@ users
 /******************************
  ***** Get User Reviews *********
  ******************************/
-// * Returns all user reviews active or not
+// * Returns all user reviews active or not -- 06/01/2021 MF
 // router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
@@ -218,7 +221,7 @@ router.get("/", (req, res) => {
 /**************************************
  ***** Get Total Average Rating By TitleID *****
 ***************************************/
-// * Gets the overall rating for the title
+// * Gets the overall rating for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (req, res) => {
 
 //     const query = {where: {
@@ -245,8 +248,8 @@ router.get("/", (req, res) => {
 /**************************************
  ***** Get User Review Count Rating By TitleID *****
 ***************************************/
-// * Gets the user review count for the title
-// * Don't need because the count comes back with the get user reviews by titleID
+// * Gets the user review count for the title -- 03/28/2021 MF
+// * Don't need because the count comes back with the get user reviews by titleID -- 03/28/2021 MF
 // router.get("/count/:titleID", (req, res) => {
 
 //     const query = {where: {
@@ -274,8 +277,8 @@ router.get("/", (req, res) => {
 /**************************************
  ***** Get User Review Rating Sum By TitleID *****
 ***************************************/
-// * Gets the sum of ratings for the title
-// * Don't need since the rating endpoint is working
+// * Gets the sum of ratings for the title -- 03/28/2021 MF
+// * Don't need since the rating endpoint is working -- 03/28/2021 MF
 // router.get("/sum/:titleID", (req, res) => {
 
 //     const query = {where: {
@@ -316,7 +319,7 @@ router.get("/", (req, res) => {
 /**************************************
  ***** Get User Review Ratings *****
 ***************************************/
-// * Gets the sum and count of ratings for the title
+// * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/list", (req, res) => {
 router.get("/rating", (req, res) => {
 
@@ -331,7 +334,7 @@ router.get("/rating", (req, res) => {
   //   .toSQL();
   // // .toString();
 
-  // * .replace() and .replaceAll() are not working
+  // * .replace() and .replaceAll() are not working -- 05/08/2021 MF
   // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
 
   // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where active = ? and rating is not null and not rating = ? group by titleID
@@ -386,7 +389,7 @@ router.get("/rating", (req, res) => {
 /**************************************
  ***** Get User Review Rating By TitleID *****
 ***************************************/
-// * Gets the sum and count of ratings for the title
+// * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (req, res) => {
 
 //   // let sqlQuery = db.select("titleID")
@@ -401,7 +404,7 @@ router.get("/rating", (req, res) => {
 //   //   .toSQL();
 //   // // .toString();
 
-//   // * .replace() and .replaceAll() are not working
+//   // * .replace() and .replaceAll() are not working -- 05/24/2021 MF
 //   // sqlQuery = sqlQuery.replaceAll("'", "").replaceAll("`", "");
 
 //   // select titleID, count(rating) as userReviewCount, sum(rating) as userReviewSum from userReviews where titleID = ? and active = ? and rating is not null and not rating = ? group by titleID
@@ -449,8 +452,8 @@ router.get("/rating", (req, res) => {
 /**************************************
  ***** Get User Reviews By TitleID *****
 ***************************************/
-// * Gets all user reviews by TitleID and the count
-// TODO: Would like to add the overall rating for the title
+// * Gets all user reviews by TitleID and the count -- 03/28/2021 MF
+// TODO: Would like to add the overall rating for the title -- 03/28/2021 MF
 // router.get("/title/:titleID", (req, res) => {
 
 //   const where = { "userReviews.titleID": req.params.titleID };
@@ -539,12 +542,12 @@ router.get("/rating", (req, res) => {
 /**************************************
  ***** Get User Reviews By UserID and TitleID *****
 ***************************************/
-// * Don't need because the front end restricts user reviews to one per title
+// * Don't need because the front end restricts user reviews to one per title -- 03/28/2021 MF
 // router.get("/user/:userID/title/:titleID", (req, res) => {
 
 //   const where = { "userReviews.titleID": req.params.titleID, "userReviews.userID": req.params.userID };
 
-//   // ! Function doesn't work because it needs to wait on the results of the query
+//   // ! Function doesn't work because it needs to wait on the results of the query -- 05/24/2021 MF
 //   // console.log("hasReviewedTitle", hasReviewedTitle(req.params.userID, req.params.titleID));
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
@@ -586,7 +589,7 @@ router.get("/rating", (req, res) => {
 /* ******************************
  *** Add User Review  ***************
 *********************************/
-// * Allows a user to add a new user review
+// * Allows a user to add a new user review -- 03/28/2021 MF
 router.post("/", validateSession, (req, res) => {
 
   const recordObject = {
@@ -605,12 +608,12 @@ router.post("/", validateSession, (req, res) => {
   };
 
   db(tableName)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -642,7 +645,7 @@ router.post("/", validateSession, (req, res) => {
 /***************************
  ******* Update User Review  *******
  ***************************/
-// * Allows the user to update the user review including soft delete it
+// * Allows the user to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/:reviewID", validateSession, (req, res) => {
 
   const recordObject = {
@@ -664,7 +667,7 @@ router.put("/:reviewID", validateSession, (req, res) => {
 
   // let sqlQuery = db(tableName)
   //   .where(where)
-  //   // * .returning() is not supported by mysql and will not have any effect.
+  //   // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
   //   // .returning(select)
   //   .update(recordObject).toString();
 
@@ -672,12 +675,12 @@ router.put("/:reviewID", validateSession, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -707,7 +710,7 @@ router.put("/:reviewID", validateSession, (req, res) => {
 /***************************
  ******* Update User Review  *******
  ***************************/
-// * Allows the admin to update the user review including soft delete it
+// * Allows the admin to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -729,7 +732,7 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
   // let sqlQuery = db(tableName)
   //   .where(where)
-  //   // * .returning() is not supported by mysql and will not have any effect.
+  //   // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
   //   // .returning(select)
   //   .update(recordObject).toString();
 
@@ -737,12 +740,12 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -772,19 +775,19 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
 /***************************
  ******* Delete User Review *******
  ***************************/
-// * Allows an admin to hard delete a review
+// * Allows an admin to hard delete a review -- 03/28/2021 MF
 router.delete("/:reviewID", validateAdmin, (req, res) => {
 
   const where = { reviewID: req.params.reviewID };
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records.
+      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 

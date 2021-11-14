@@ -1,22 +1,24 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
-const validateSession = require("../middleware/validate-session");
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
+// const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "editions";
 const tableName = "editions";
 const select = "*";
-const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
+// const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
 const activeDataWhere = { "titles.active": true, "media.active": true };
 const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
 
 
-// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate -- 06/01/2021 MF
 const columnsList = ["*", "editions.publicationDate AS editionPublicationDate", "editions.imageName AS editionImageName", "editions.active AS editionActive", "editions.createDate AS editionCreateDate", "editions.updateDate AS editionUpdatedDate", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate"];
 
 /*
@@ -43,7 +45,7 @@ users
 /******************************
  ***** Get Editions *********
  ******************************/
-// * Returns all editions active or not
+// * Returns all editions active or not -- 03/28/2021 MF
 // router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
@@ -82,7 +84,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Log Broken Amazon Link *********
  ******************************/
-// * Logs that a broken link was found on a page loaded.
+// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:editionID", (req, res) => {
 
   // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken editionID", req.params.editionID);
@@ -417,9 +419,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 /**************************************
  ***** Get Editions By CategoryID *****
 ***************************************/
-// ? Needed? Use Get Titles instead?
-// ! There is no column for categoryID in the editions table
-// ! Query needs to be changed to work
+// ? Needed? Use Get Titles instead? -- 03/28/2021 MF
+// ! There is no column for categoryID in the editions table -- 03/28/2021 MF
+// ! Query needs to be changed to work -- 03/28/2021 MF
 // router.get("/category/:categoryID", (req, res) => {
 
 //     const query = {where: {
@@ -445,7 +447,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
 /* ******************************
  *** Add Edition ***************
 *********************************/
-// * Allows an admin to add a new edition
+// * Allows an admin to add a new edition -- 03/28/2021 MF
 router.post("/", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -464,12 +466,12 @@ router.post("/", validateAdmin, (req, res) => {
   };
 
   db(tableName)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -501,7 +503,9 @@ router.post("/", validateAdmin, (req, res) => {
         //console.log(`${controllerName}-controller`, GetDateTime(), "post / error.errors[i].message", error.errors[i].message);
 
         if (i > 1) {
+
           errorMessages = errorMessages + ", ";
+
         };
 
         errorMessages = errorMessages + error.errors[i].message;
@@ -518,7 +522,7 @@ router.post("/", validateAdmin, (req, res) => {
 /***************************
  ******* Update Edition *******
  ***************************/
-// * Allows the admin to update the edition including soft delete it
+// * Allows the admin to update the edition including soft delete it -- 03/28/2021 MF
 router.put("/:editionID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -540,12 +544,12 @@ router.put("/:editionID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -575,19 +579,19 @@ router.put("/:editionID", validateAdmin, (req, res) => {
 /***************************
  ******* Delete Edition *******
  ***************************/
-// * Allows an admin to hard delete an edition
+// * Allows an admin to hard delete an edition -- 03/28/2021 MF
 router.delete("/:editionID", validateAdmin, (req, res) => {
 
   const where = { editionID: req.params.editionID };
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records.
+      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 

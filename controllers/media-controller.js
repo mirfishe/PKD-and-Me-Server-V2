@@ -1,10 +1,12 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
-const validateSession = require("../middleware/validate-session");
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
+// const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
@@ -17,7 +19,7 @@ const orderBy = [{ column: "sortID", order: "asc" }];
 /******************************
  ***** Get Media *********
  ******************************/
-// * Returns all media active or not
+// * Returns all media active or not -- 03/28/2021 MF
 // router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
@@ -26,7 +28,7 @@ router.get("/", (req, res) => {
     .orderBy(orderBy)
     // .then((records) => {
 
-    // ! pm2 doesn't see the .env variables being used here.
+    // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
     //   if (process.env.DATABASE_DIALECT == "mysql") {
 
     //     return convertBitTrueFalse(records);
@@ -106,7 +108,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Get Media Admin *********
  ******************************/
-// * Return all categories to adminster them
+// * Return all categories to adminster them -- 03/28/2021 MF
 // router.get("/admin", validateAdmin, (req, res) => {
 
 //   db.select(select)
@@ -155,7 +157,7 @@ router.get("/", (req, res) => {
 
 //       records = convertBitTrueFalse(records);
 
-//       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne.
+//       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne. -- 05/24/2021 MF
 //       // if (records === null) {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records);
@@ -189,13 +191,13 @@ router.get("/", (req, res) => {
 /* ******************************
  *** Add Media ***************
 *********************************/
-// * Allows an admin to add a new media
+// * Allows an admin to add a new media -- 03/28/2021 MF
 router.post("/", validateAdmin, (req, res) => {
 
-  // ! Don't need this anymore; was trying to fix scoping issues
+  // ! Don't need this anymore; was trying to fix scoping issues -- 03/28/2021 MF
   // let newSortID = 0;
 
-  // * Moved this inside the function for scoping issues with newSortID
+  // * Moved this inside the function for scoping issues with newSortID -- 03/28/2021 MF
   // const createMedia = {
   //     media:      req.body.media.media,
   //     sortID:     newSortID
@@ -204,7 +206,7 @@ router.post("/", validateAdmin, (req, res) => {
   db.queryBuilder()
     .from(tableName)
     .max("sortID")
-    .first() // * Add this to get an object.
+    .first() // * Add this to get an object. -- 05/06/2021 MF
     .then((maxSortID) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "maxSortID", maxSortID);
@@ -227,14 +229,14 @@ router.post("/", validateAdmin, (req, res) => {
       };
 
       return db(tableName)
-        // * .returning() is not supported by mysql and will not have any effect.
+        // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(recordObject);
 
     })
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -266,7 +268,7 @@ router.post("/", validateAdmin, (req, res) => {
 /***************************
  ******* Update Media *******
  ***************************/
-// * Allows an admin to update the media including soft delete it
+// * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
 router.put("/:mediaID", validateAdmin, (req, res) => {
 
   const where = { mediaID: req.params.mediaID };
@@ -279,12 +281,12 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -314,19 +316,19 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
 /***************************
  ******* Delete Media *******
  ***************************/
-// * Allows an admin to hard delete the media
+// * Allows an admin to hard delete the media -- 03/28/2021 MF
 router.delete("/:mediaID", validateAdmin, (req, res) => {
 
   const where = { mediaID: req.params.mediaID };
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records.
+      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 

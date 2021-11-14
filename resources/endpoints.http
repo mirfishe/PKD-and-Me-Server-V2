@@ -1,0 +1,41 @@
+
+# https://github.com/Huachao/vscode-restclient
+
+# @baseURL = http://localhost:4000
+
+@baseURL = https://api.philipdick.com
+
+GET {{baseURL}}/categories
+
+###
+
+GET {{baseURL}}/media
+
+###
+
+GET {{baseURL}}/titles
+
+###
+
+GET {{baseURL}}/editions
+
+###
+
+GET {{baseURL}}/userreviews
+
+###
+
+GET {{baseURL}}/fromthehomeopape
+
+###
+
+# Runs the import of new data from the RSS feeds. -- 11/14/2021 MF
+GET {{baseURL}}/fromthehomeopape/new
+
+###
+
+# Runs the inserting of new data from the import. -- 11/14/2021 MF
+GET {{baseURL}}/fromthehomeopape/update
+
+###
+

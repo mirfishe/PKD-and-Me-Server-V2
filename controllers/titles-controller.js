@@ -1,25 +1,27 @@
+"use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
 const controllerName = "titles";
 const tableName = "titles";
 const select = "*";
-const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
-const activeChecklist = { "titles.active": true, "userReviews.active": true, /*"users.active": true,*/ "categories.active": true };
+// const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
+// const activeChecklist = { "titles.active": true, "userReviews.active": true, /*"users.active": true,*/ "categories.active": true };
 const orderBy = [{ column: "titleSort", order: "asc" }];
 
 
-// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate
+// ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate -- 06/01/2021 MF
 const columnsList = ["*", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate"];
 
-const checklistColumnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
+// const checklistColumnsList = ["*", "titles.titleID", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "categories.sortID AS categorySortID", "categories.active AS categoryActive", "categories.createDate AS categoryCreateDate", "categories.updateDate AS categoryUpdatedDate", "userReviews.updatedBy AS userReviewUpdatedBy", "userReviews.active AS userReviewActive", "userReviews.createDate AS userReviewCreateDate", "userReviews.updateDate AS userReviewUpdatedDate"];
 
 /*
 categories
@@ -45,8 +47,8 @@ users
 /******************************
  ***** Get Titles *********
  ******************************/
-// * Returns all titles active or not
-// * Just the title data and not the related tables data
+// * Returns all titles active or not -- 03/28/2021 MF
+// * Just the title data and not the related tables data -- 03/28/2021 MF
 // router.get("/list", (req, res) => {
 router.get("/", (req, res) => {
 
@@ -84,7 +86,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Log Image Links *********
  ******************************/
-// * Logs that a broken link was found on a page loaded.
+// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:titleID", (req, res) => {
 
   // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken titleID", req.params.titleID);
@@ -150,7 +152,7 @@ router.get("/broken/:titleID", (req, res) => {
 /******************************
  ***** Get Titles *********
  ******************************/
-// ? ADD OVERALL RATING TO GET TITLE?
+// ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/", (req, res) => {
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
@@ -194,7 +196,7 @@ router.get("/broken/:titleID", (req, res) => {
 /**************************************
  ***** Get Title By TitleID *****
 ***************************************/
-// ? ADD OVERALL RATING TO GET TITLE?
+// ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/:titleID", (req, res) => {
 
 //   const where = { "titles.titleID": req.params.titleID };
@@ -255,10 +257,10 @@ router.get("/broken/:titleID", (req, res) => {
 /**************************************
  ***** Get Titles By MediaID *****
 ***************************************/
-// ? Needed? Use Get Editions instead?
-// ! There is no column for mediaID in the titles table
-// ! Query needs to be changed to work
-// ? ADD OVERALL RATING TO GET TITLE?
+// ? Needed? Use Get Editions instead? -- 03/28/2021 MF
+// ! There is no column for mediaID in the titles table -- 03/28/2021 MF
+// ! Query needs to be changed to work -- 03/28/2021 MF
+// ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/media/:mediaID", (req, res) => {
 
 //     // const attributes = {
@@ -292,7 +294,7 @@ router.get("/broken/:titleID", (req, res) => {
 /**************************************
  ***** Get Titles By CategoryID *****
 ***************************************/
-// ? ADD OVERALL RATING TO GET TITLE?
+// ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/category/:categoryID/:sort?", (req, res) => {
 
 //   let orderByColumn = "titleSort";
@@ -349,7 +351,7 @@ router.get("/broken/:titleID", (req, res) => {
 /**************************************
  ***** Get Titles By CategoryID Admin *****
 ***************************************/
-// * Return all titles to adminster them
+// * Return all titles to adminster them -- 03/28/2021 MF
 // router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
 
 //   let orderByColumn = "titleSort";
@@ -570,7 +572,7 @@ router.get("/checklist", validateSession, (req, res) => {
 /* ******************************
  *** Add Title ***************
 *********************************/
-// * Allows an admin to add a new title
+// * Allows an admin to add a new title -- 03/28/2021 MF
 router.post("/", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -579,6 +581,7 @@ router.post("/", validateAdmin, (req, res) => {
     titleURL: req.body.title.titleURL,
     authorFirstName: req.body.title.authorFirstName,
     authorLastName: req.body.title.authorLastName,
+    submissionDate: req.body.title.submissionDate,
     publicationDate: req.body.title.publicationDate,
     imageName: req.body.title.imageName,
     categoryID: req.body.title.categoryID,
@@ -588,12 +591,12 @@ router.post("/", validateAdmin, (req, res) => {
   };
 
   db(tableName)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
       // console.log(`${ controllerName } - controller`, GetDateTime(), "post / records", records);
-      // * Returns the ID value of the added record.
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -625,7 +628,7 @@ router.post("/", validateAdmin, (req, res) => {
 /***************************
  ******* Update Title *******
  ***************************/
-// * Allows the admin to update the title including soft delete it
+// * Allows the admin to update the title including soft delete it -- 03/28/2021 MF
 router.put("/:titleID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -634,6 +637,7 @@ router.put("/:titleID", validateAdmin, (req, res) => {
     titleURL: req.body.title.titleURL,
     authorFirstName: req.body.title.authorFirstName,
     authorLastName: req.body.title.authorLastName,
+    submissionDate: req.body.title.submissionDate,
     publicationDate: req.body.title.publicationDate,
     imageName: req.body.title.imageName,
     categoryID: req.body.title.categoryID,
@@ -646,12 +650,12 @@ router.put("/:titleID", validateAdmin, (req, res) => {
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
       // console.log(`${ controllerName } - controller`, GetDateTime(), `put /: ${ controllerName }ID records`, records);
-      // * Returns the number of updated records.
+      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
@@ -681,19 +685,19 @@ router.put("/:titleID", validateAdmin, (req, res) => {
 /***************************
  ******* Delete Title *******
  ***************************/
-// * Allows an admin to hard delete a title
+// * Allows an admin to hard delete a title -- 03/28/2021 MF
 router.delete("/:titleID", validateAdmin, (req, res) => {
 
   const where = { titleID: req.params.titleID };
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
     .then((records) => {
       // console.log(`${ controllerName } - controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);;
-      // * Returns the number of deleted records.
+      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 

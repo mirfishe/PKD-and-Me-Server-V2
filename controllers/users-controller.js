@@ -1,12 +1,16 @@
+// * Uncommenting "use strict"; causes an error in this controller. -- 11/14/2021 MF
+// "use strict";
+
 const router = require("express").Router();
-const dbConfig = require("../db");
-const db = require("knex")(dbConfig.config);
+const databaseConfig = require("../database");
+const db = require("knex")(databaseConfig.config);
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const jwtSecret = require("../jwtSecret");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-const IsEmpty = require("../utilities/isEmpty");
+// const IsEmpty = require("../utilities/isEmpty");
 const GetDateTime = require("../utilities/getDateTime");
 const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
 
@@ -18,7 +22,7 @@ const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];
 
 
-// TODO: Fix all the user administration routes below. They assume that no records are returned after the add, update or delete.
+// TODO: Fix all the user administration routes below. They assume that no records are returned after the add, update or delete. -- 08/13/2021 MF
 
 
 
@@ -37,24 +41,24 @@ router.post("/register", (req, res) => {
   if (req.body.user.email.match(emailRegExp)) {
 
     db(tableName)
-      // * .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
       // .returning(select)
       .insert(recordObject)
       .then(
 
         createSuccess = (records) => {
-          // * Returns the ID value of the added record.
+          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           recordObject.userID = records[0];
 
-          // ! pm2 doesn't see the .env variables being used here.
+          // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
           // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
-          let token = jwt.sign({ userID: recordObject.userID }, "The empire never ended.", { expiresIn: "1d" });
+          let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "1d" });
 
           res.json({
-            // ? Need to return all the properties of the user to the browser?
+            // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
             // user:   recordObject,
             userID: recordObject.userID,
             firstName: recordObject.firstName,
@@ -83,7 +87,9 @@ router.post("/register", (req, res) => {
             //console.log(`${controllerName}-controller`, GetDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
+
               errorMessages = errorMessages + ", ";
+
             };
 
             errorMessages = errorMessages + error.errors[i].message;
@@ -101,7 +107,9 @@ router.post("/register", (req, res) => {
       });
 
   } else {
+
     res.status(200).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Please provide a valid email address." });
+
   };
 
 });
@@ -128,12 +136,12 @@ router.post("/login", (req, res) => {
 
             if (matches) {
 
-              // ! pm2 doesn't see the .env variables being used here.
+              // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
               // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
-              let token = jwt.sign({ userID: records[0].userID }, "The empire never ended.", { expiresIn: "1d" });
+              let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "1d" });
 
               res.status(200).json({
-                // ? Need to return all the properties of the user to the browser?
+                // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
                 // user:   records[0],
                 userID: records[0].userID,
                 firstName: records[0].firstName,
@@ -185,7 +193,7 @@ router.post("/login", (req, res) => {
 /******************************
  ***** Get Users *****
  ******************************/
-// * Allows an admin to view all the users
+// * Allows an admin to view all the users -- 03/28/2021 MF
 router.get("/admin", validateAdmin, (req, res) => {
 
   db.select(select)
@@ -221,7 +229,7 @@ router.get("/admin", validateAdmin, (req, res) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// * Returns User information for the logged in user
+// * Returns User information for the logged in user -- 03/28/2021 MF
 router.get("/", validateSession, (req, res) => {
 
   const where = { userID: req.user.userID };
@@ -239,7 +247,7 @@ router.get("/", validateSession, (req, res) => {
 
         // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
         res.status(200).json({
-          // ? Need to return all the properties of the user to the browser?
+          // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
           userID: records[0].userID,
           firstName: records[0].firstName,
@@ -273,7 +281,7 @@ router.get("/", validateSession, (req, res) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// Returns User information for the admin
+// Returns User information for the admin -- 03/28/2021 MF
 router.get("/:userID", validateAdmin, (req, res) => {
 
   const where = { userID: req.params.userID };
@@ -291,7 +299,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
 
         // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
         res.status(200).json({
-          // ? Need to return all the properties of the user to the browser?
+          // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
           userID: records[0].userID,
           firstName: records[0].firstName,
@@ -325,8 +333,8 @@ router.get("/:userID", validateAdmin, (req, res) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows an admin to update the user data including soft delete it
-// * The admin column is not included here as an extra security feature
+// * Allows an admin to update the user data including soft delete it -- 03/28/2021 MF
+// * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/:userID", validateAdmin, (req, res) => {
 
   const recordObject = {
@@ -337,9 +345,11 @@ router.put("/:userID", validateAdmin, (req, res) => {
     active: req.body.user.active
   };
 
-  // If the user doesn't enter a password, then it isn't updated
+  // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
   if (req.body.user.password) {
+
     Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
+
   };
 
   const where = { userID: req.params.userID };
@@ -348,19 +358,17 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
     db(tableName)
       .where(where)
-      // * .returning() is not supported by mysql and will not have any effect.
-      // .returning() is not supported by mysql and will not have any effect.
-      //       // * .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
       // .returning(select)
       .update(recordObject)
-      // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated.
+      // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated. -- 03/28/2021 MF
       .then((records) => {
-        // * Returns the number of updated records.
+        // * Returns the number of updated records. -- 08/13/2021 MF
 
         if (records > 0) {
 
           res.status(200).json({
-            // ? Need to return all the properties of the user to the browser?
+            // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
             // user:   recordObject,
             userID: recordObject.userID,
             firstName: recordObject.firstName,
@@ -391,7 +399,9 @@ router.put("/:userID", validateAdmin, (req, res) => {
           //console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
 
           if (i > 1) {
+
             errorMessages = errorMessages + ", ";
+
           };
 
           errorMessages = errorMessages + error.errors[i].message;
@@ -403,7 +413,9 @@ router.put("/:userID", validateAdmin, (req, res) => {
       });
 
   } else {
+
     res.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+
   };
 
 });
@@ -412,8 +424,8 @@ router.put("/:userID", validateAdmin, (req, res) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows a user to update their own record including soft delete it
-// * The admin column is not included here as an extra security feature
+// * Allows a user to update their own record including soft delete it -- 03/28/2021 MF
+// * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/", validateSession, (req, res) => {
 
   const recordObject = {
@@ -424,9 +436,11 @@ router.put("/", validateSession, (req, res) => {
     active: req.body.user.active
   };
 
-  // * If the user doesn't enter a password, then it isn't updated
+  // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
   if (req.body.user.password) {
+
     Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
+
   };
 
   const where = { userID: req.user.userID };
@@ -435,20 +449,20 @@ router.put("/", validateSession, (req, res) => {
 
     db(tableName)
       .where(where)
-      // * .returning() is not supported by mysql and will not have any effect.
+      // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
       // .returning(select)
       .update(recordObject)
       .then(
 
         updateSuccess = (records) => {
-          // * Returns the number of updated records.
+          // * Returns the number of updated records. -- 08/13/2021 MF
 
           if (records > 0) {
 
-            // ! pm2 doesn't see the .env variables being used here.
+            // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
             // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
             res.json({
-              // ? Need to return all the properties of the user to the browser?
+              // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
               // user:   recordObject,
               userID: recordObject.userID,
               firstName: recordObject.firstName,
@@ -460,7 +474,7 @@ router.put("/", validateSession, (req, res) => {
               isLoggedIn: true,
               recordUpdated: true,
               message: `Successfully updated ${controllerName}.`,
-              // sessionToken:   token // User gets a new sessionToken even if they haven't updated their password
+              // sessionToken:   token // * User gets a new sessionToken even if they haven't updated their password -- 03/28/2021 MF
             });
 
           } else {
@@ -482,7 +496,9 @@ router.put("/", validateSession, (req, res) => {
             //console.log(`${controllerName}-controller`, GetDateTime(), "put / error.errors[i].message", error.errors[i].message);
 
             if (i > 1) {
+
               errorMessages = errorMessages + ", ";
+
             };
 
             errorMessages = errorMessages + error.errors[i].message;
@@ -500,7 +516,9 @@ router.put("/", validateSession, (req, res) => {
       });
 
   } else {
+
     res.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+
   };
 
 });
@@ -509,19 +527,19 @@ router.put("/", validateSession, (req, res) => {
 /***************************
  ******* Delete User *******
  ***************************/
-// * Allows an admin to hard delete a user
+// * Allows an admin to hard delete a user -- 03/28/2021 MF
 router.delete("/:userID", validateAdmin, (req, res) => {
 
   const where = { userID: req.params.userID };
 
   db(tableName)
     .where(where)
-    // * .returning() is not supported by mysql and will not have any effect.
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records.
+      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
