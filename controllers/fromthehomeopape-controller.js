@@ -29,16 +29,16 @@ const tableName = "homeopapeRSS";
 //   let url;
 
 //   // * Google Alert - Philip Dick New -- 06/05/2021 MF
-//   url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/158424632588957664681`;
-//   // url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
+//   let url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/158424632588957664681`;
+//   // let url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
 //   // * Google Alert - Philip Dick -- 06/05/2021 MF
-//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249`;
+//   // let url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249`;
 //   // * Google Alert - Philip Dick All Except Web -- 06/05/2021 MF
 //   // * Doesn't appear to work anymore. -- 06/05/2021 MF
-//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835`;
+//   // let url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835`;
 //   // * Google Alert - Philip Dick News -- 06/05/2021 MF
 //   // * Doesn't appear to work anymore. -- 06/05/2021 MF
-//   // url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674`;
+//   // let url = `${proxyurl}https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674`;
 
 //   let rssParser = new Parser({
 //     // * Doesn't prevent the CORS error. -- 06/05/2021 MF
@@ -54,7 +54,7 @@ const tableName = "homeopapeRSS";
 //     }
 //   });
 
-//   const feed = await rssParser.parseURL(url);
+// const feed = await rssParser.parseURL(url);
 
 //   // <feed xmlns="http://www.w3.org/2005/Atom" xmlns:idx="urn:atom-extension:indexing">
 //   // <id>tag:google.com,2005:reader/user/17849810695950872924/state/com.google/alerts/15842463258895766468</id>
@@ -271,7 +271,7 @@ router.get("/top/:topNumber", (req, res) => {
     .then((records) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
@@ -319,7 +319,7 @@ router.get("/new", (req, res) => {
   (async () => {
 
     // * Google Alert - Philip Dick New -- 06/05/2021 MF
-    url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
+    let url = "https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468";
 
     const feed = await rssParser.parseURL(url);
 
@@ -347,16 +347,16 @@ router.get("/new", (req, res) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.feedUrl", feed.feedUrl);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -391,27 +391,27 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.name", item.name);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
@@ -438,7 +438,7 @@ router.get("/new", (req, res) => {
 
     });
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -446,7 +446,7 @@ router.get("/new", (req, res) => {
   (async () => {
 
     // * Google Alert - Philip Dick -- 06/05/2021 MF
-    url = "https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249";
+    let url = "https://www.google.com/alerts/feeds/17849810695950872924/2465476321108416249";
 
     const feed = await rssParser.parseURL(url);
 
@@ -474,16 +474,16 @@ router.get("/new", (req, res) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.feedUrl", feed.feedUrl);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -519,27 +519,27 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.name", item.name);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
@@ -566,7 +566,7 @@ router.get("/new", (req, res) => {
 
     });
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -575,7 +575,7 @@ router.get("/new", (req, res) => {
 
     // * Google Alert - Philip Dick All Except Web -- 06/05/2021 MF
     // // * Doesn't appear to work anymore. -- 06/05/2021 MF
-    url = "https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835";
+    let url = "https://www.google.com/alerts/feeds/17849810695950872924/11918400074382766835";
 
     const feed = await rssParser.parseURL(url);
 
@@ -603,16 +603,16 @@ router.get("/new", (req, res) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.feedUrl", feed.feedUrl);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -647,27 +647,27 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.name", item.name);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
@@ -694,7 +694,7 @@ router.get("/new", (req, res) => {
 
     });
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -703,7 +703,7 @@ router.get("/new", (req, res) => {
 
     // * Google Alert - Philip Dick News -- 06/05/2021 MF
     // // * Doesn't appear to work anymore. -- 06/05/2021 MF
-    url = "https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674";
+    let url = "https://www.google.com/alerts/feeds/17849810695950872924/17162147117770349674";
 
     const feed = await rssParser.parseURL(url);
 
@@ -731,16 +731,16 @@ router.get("/new", (req, res) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.feedUrl", feed.feedUrl);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -775,27 +775,27 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.name", item.name);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
@@ -822,7 +822,7 @@ router.get("/new", (req, res) => {
 
     });
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -831,7 +831,7 @@ router.get("/new", (req, res) => {
 
     // * Google Alert - Blade Runner -- 06/05/2021 MF
     // // * Doesn't appear to work anymore. -- 06/05/2021 MF
-    url = "https://www.google.com/alerts/feeds/17849810695950872924/2707042161623420058";
+    let url = "https://www.google.com/alerts/feeds/17849810695950872924/2707042161623420058";
 
     const feed = await rssParser.parseURL(url);
 
@@ -859,16 +859,16 @@ router.get("/new", (req, res) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed", feed);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.id", feed.id);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.title", feed.title);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.link", feed.link);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.updated", feed.updated);
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.lastBuildDate", feed.lastBuildDate);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed", feed);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.id", feed.id);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.title", feed.title);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.link", feed.link);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.updated", feed.updated);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.feedUrl", feed.feedUrl);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.feedUrl", feed.feedUrl);
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / feed.items", feed.items);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -903,27 +903,27 @@ router.get("/new", (req, res) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.id", item.id);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.title", item.title);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.link", item.link);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.pubDate", item.pubDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.updated", item.updated);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.content", item.content);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.contentSnippet", item.contentSnippet);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.isoDate", item.isoDate);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.creator", item.creator);
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author", item.author);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.author.name", item.author.name);
-      // // console.log(`${controllerName}-controller`, GetDateTime(), "get / item.name", item.name);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.id", item.id);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.title", item.title);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.link", item.link);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.pubDate", item.pubDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.updated", item.updated);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.content", item.content);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.contentSnippet", item.contentSnippet);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.isoDate", item.isoDate);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.creator", item.creator);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author", item.author);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.author.name", item.author.name);
+      // // console.log(`${controllerName}-controller`, GetDateTime(), "get /new item.name", item.name);
 
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
@@ -950,7 +950,7 @@ router.get("/new", (req, res) => {
 
     });
 
-    // console.log(`${controllerName}-controller`, GetDateTime(), "get / itemsArray", itemsArray);
+    // console.log(`${controllerName}-controller`, GetDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -975,13 +975,13 @@ router.get("/update", (req, res) => {
 
   db.raw(sqlQuery)
     .then((records) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+        console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
         res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
 
