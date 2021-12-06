@@ -19,7 +19,6 @@ const tableName = "homeopapeRSS";
 
 
 // const fetchNews = async () => {
-//   // console.log(componentName, GetDateTime(), "fetchNews");
 
 //   // https://cors-anywhere.herokuapp.com -- 06/05/2021 MF
 //   // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe -- 06/05/2021 MF
