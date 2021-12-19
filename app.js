@@ -5,7 +5,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
-
 // const user = require("./controllers/user-controller");
 // const userReview = require("./controllers/userReview-controller");
 // const title = require("./controllers/title-controller");
@@ -29,6 +28,8 @@ const titleSuggestions = require("./controllers/titleSuggestions-controller");
 
 const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
+const computerLogs = require("./controllers/computerLogs-controller");
+
 app.use(express.json());
 
 // * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working. -- 08/13/2021 MF
@@ -36,7 +37,9 @@ app.use(express.json());
 // console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 // * This will work in development and won't affect production even though pm2 doesn't see this .env variable, because it would be equal to undefined in production. -- 08/13/2021 MF
 if (process.env.NODE_ENV === "development") {
+
   app.use(require("./middleware/headers"));
+
 };
 
 // app.use("/user", user);
@@ -61,6 +64,8 @@ app.use("/comments", comments);
 app.use("/titleSuggestions", titleSuggestions);
 
 app.use("/fromthehomeopape", fromthehomeopape);
+
+app.use("/computerLogs", computerLogs);
 
 
 // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF

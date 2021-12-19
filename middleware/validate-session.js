@@ -5,8 +5,7 @@ const jwtSecret = require("../jwtSecret");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 
-// const IsEmpty = require("../utilities/isEmpty");
-// const GetDateTime = require("../utilities/getDateTime");
+// const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 
 // const controllerName = "validateSession";
 const tableName = "users";
@@ -34,7 +33,9 @@ const validateSession = (req, res, next) => {
 
           // if (!records) throw "Unauthorized."; // "error";
           if (!records) {
+
             return res.status(401).json({ isLoggedIn: false, message: "Unauthorized." });
+
           };
 
           // ? Need to return all the properties of the user? -- 03/28/2021 MF

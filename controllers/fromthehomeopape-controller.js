@@ -6,9 +6,7 @@ const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
-const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
+const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
 
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
@@ -207,6 +205,7 @@ router.get("/", (req, res) => {
 
   db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
     .from(tableName)
+    .where({ display: true })
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
     .orderBy([{ column: "itemPubDate", order: "desc" }])
     // .orderBy([{ column: "createDate", order: "desc" }])
@@ -222,7 +221,7 @@ router.get("/", (req, res) => {
         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
         // res.status(200).send(`No ${tableName} found.`);
         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
@@ -233,7 +232,60 @@ router.get("/", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+    });
+
+});
+
+
+/******************************
+ ***** Get New Items To Review  *********
+ ******************************/
+router.get("/review", (req, res) => {
+
+  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+  // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /review ${tableName}`, sqlQuery);
+
+  db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
+    .from(tableName)
+    .where({ viewed: false })
+    // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+    .orderBy([{ column: "itemPubDate", order: "desc" }])
+    // .orderBy([{ column: "createDate", order: "desc" }])
+    // db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /review ${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (records.length > 0) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /review ${tableName}`, records);
+
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /review No Results");
+
+        // res.status(200).send(`No ${tableName} found.`);
+        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
+
+      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -247,9 +299,13 @@ router.get("/top/:topNumber", (req, res) => {
   let topNumber = req.params.topNumber;
 
   if (isNaN(topNumber.toString().trim()) === true) {
+
     topNumber = 10;
+
   } else {
+
     topNumber = parseInt(topNumber);
+
   };
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
@@ -259,7 +315,7 @@ router.get("/top/:topNumber", (req, res) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
 
   // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "display", "alwaysFilter", "posted")
   //   .from(tableName)
@@ -268,17 +324,17 @@ router.get("/top/:topNumber", (req, res) => {
   //   // .orderBy([{ column: "createDate", order: "desc" }])
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /top/:topNumber ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /top/:topNumber ${tableName}`, records);
 
         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber No Results");
 
         // res.status(200).send(`No ${tableName} found.`);
         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
@@ -288,11 +344,15 @@ router.get("/top/:topNumber", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
+
+
 
 
 /******************************
@@ -432,7 +492,9 @@ router.get("/new", (req, res) => {
         })
         .catch((error) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
         });
 
     });
@@ -560,7 +622,9 @@ router.get("/new", (req, res) => {
         })
         .catch((error) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
         });
 
     });
@@ -688,7 +752,9 @@ router.get("/new", (req, res) => {
         })
         .catch((error) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
         });
 
     });
@@ -816,7 +882,9 @@ router.get("/new", (req, res) => {
         })
         .catch((error) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
         });
 
     });
@@ -944,7 +1012,9 @@ router.get("/new", (req, res) => {
         })
         .catch((error) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
         });
 
     });
@@ -996,7 +1066,51 @@ router.get("/update", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
       // res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
+    });
+
+});
+
+
+/******************************
+ ***** Mark All Viewed  *********
+ ******************************/
+router.get("/markviewed", (req, res) => {
+
+  let sqlQuery = "UPDATE homeopapeRSS SET viewed = 1 WHERE viewed = 0";
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed`, sqlQuery);
+
+  db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /markviewed`, records);
+
+      // records = convertBitTrueFalse(records);
+
+      if (records.length > 0) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /markviewed`, records);
+
+        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed No Results`);
+
+        // res.status(200).send("No records found.");
+        // res.status(200).send({resultsFound: false, message: "No records found."})
+        res.status(200).json({ recordUpdated: false, message: "Nothing to update." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
+
+      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -1053,7 +1167,9 @@ router.post("/", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
     });
 
 });
@@ -1106,7 +1222,9 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -1159,7 +1277,9 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -1212,7 +1332,9 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });

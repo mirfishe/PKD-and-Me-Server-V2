@@ -6,8 +6,7 @@ const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
+const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 
 const controllerName = "comments";
 const tableName = "comments";
@@ -42,7 +41,9 @@ router.get("/", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -77,7 +78,9 @@ router.get("/:commentID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -122,7 +125,9 @@ router.post("/", /*validateSession,*/(req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });
+
     });
 
 });

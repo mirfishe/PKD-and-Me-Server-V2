@@ -10,9 +10,7 @@ const jwtSecret = require("../jwtSecret");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
-const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
+const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 
@@ -21,9 +19,7 @@ const tableName = "users";
 const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];
 
-
 // TODO: Fix all the user administration routes below. They assume that no records are returned after the add, update or delete. -- 08/13/2021 MF
-
 
 
 /* ***********************************
@@ -220,7 +216,9 @@ router.get("/admin", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -272,7 +270,9 @@ router.get("/", validateSession, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -324,7 +324,9 @@ router.get("/:userID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -512,7 +514,9 @@ router.put("/", validateSession, (req, res) => {
       )
       .catch((error) => {
         console.log(`${controllerName}-controller`, GetDateTime(), "put / error", error);
-        res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, error: error });
+
+        res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
       });
 
   } else {
@@ -558,7 +562,9 @@ router.delete("/:userID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+
     });
 
 });

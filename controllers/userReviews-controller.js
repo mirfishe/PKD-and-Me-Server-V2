@@ -6,9 +6,7 @@ const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
-const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
+const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
 
 const controllerName = "userReviews";
 const tableName = "userReviews";
@@ -34,7 +32,7 @@ media
 ("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreatedAt", "media.updateDate AS mediaUpdatedDate")
 
 titles
-("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate")
+("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDWeb", "titles.active AS titlesActive", "titles.createDate AS titlesCreatedAt", "titles.updateDate AS titlesUpdatedDate")
 
 userReviews
 ("reviewID", "userID", "userReviews.updatedBy AS userReviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userReviews.active AS userReviewsActive", "userReviews.createDate AS userReviewsCreatedAt", "userReviews.updateDate AS userReviewsUpdatedDate")
@@ -57,22 +55,30 @@ users
 
 //     UserReview.findAll(query)
 //     .then((records) => {
+
 //         if (records.length > 0) {
+
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID/title/:titleID records", records);
 //             // res.status(200).json({resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "hasReviewedTitle", true);
 //             return {hasReviewedTitle: true, resultsFound: true, message: `Successfully retrieved ${tableName}.`};
+
 //         } else {
+
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID/title/:titleID No Results");
 //             // res.status(200).json({resultsFound: false, message: `No ${tableName} found.`});
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "hasReviewedTitle", false);
 //             return {hasReviewedTitle: false, resultsFound: false, message: `No ${tableName} found.`};
+
 //         };
+
 //     })
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "hasReviewedTitle error", error);
+
 //         // res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
 //         return {hasReviewedTitle: false, resultsFound: false, message: "An error occurred.", error: err};
+
 //     });
 
 // };
@@ -116,7 +122,9 @@ router.get("/", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -156,7 +164,9 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -212,7 +222,9 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -239,7 +251,9 @@ router.get("/", (req, res) => {
 //         }))
 //         .catch((error) => {
 //             console.log(`${controllerName}-controller`, GetDateTime(), "get /rating/:titleID error", error);
+
 //             res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
+
 //         });
 
 // });
@@ -268,7 +282,9 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /count/:titleID error", error);
+
 //         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
+
 //     });
 
 // });
@@ -290,15 +306,19 @@ router.get("/", (req, res) => {
 
 //     UserReview.sum("rating", query)
 //     .then((userRatingSum) => {
+
 //         if (!isNaN(userRatingSum)) {
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "get /sum/:titleID userRatingSum", userRatingSum);
+
 //             res.status(200).json({
 //                 userRatingSum:    userRatingSum,
 //                 resultsFound: true,
 //                 message:    "Successfully retrieved user review sum."
 //             });
+
 //         } else {
 //             // console.log(`${controllerName}-controller`, GetDateTime(), "get /sum/:titleID userRatingSum", userRatingSum);
+
 //             // res.status(200).json({resultsFound: false, message: "There are no user ratings."});
 //             res.status(200).json({
 //                 userRatingSum:    0,
@@ -306,11 +326,14 @@ router.get("/", (req, res) => {
 //                 resultsFound: false,
 //                 message:    "There are no user ratings."
 //             });
+
 //         };
 //     })
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /sum/:titleID error", error);
+
 //         res.status(500).json({resultsFound: false, message: "Did not successfully retrieved user review sum.", error: err});
+
 //     });
 
 // });
@@ -380,7 +403,9 @@ router.get("/rating", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /rating error", error);
+
       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
+
     });
 
 });
@@ -443,7 +468,9 @@ router.get("/rating", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /rating/:titleID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
+
 //     });
 
 // });
@@ -490,7 +517,9 @@ router.get("/rating", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -533,7 +562,9 @@ router.get("/rating", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -580,7 +611,9 @@ router.get("/rating", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID/title/:titleID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -636,7 +669,9 @@ router.post("/", validateSession, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
     });
 
 });
@@ -701,7 +736,9 @@ router.put("/:reviewID", validateSession, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -766,7 +803,9 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -808,7 +847,9 @@ router.delete("/:reviewID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+
     });
 
 });

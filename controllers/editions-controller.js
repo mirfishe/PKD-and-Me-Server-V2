@@ -6,9 +6,7 @@ const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
 
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
-const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
+const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
 
 const controllerName = "editions";
 const tableName = "editions";
@@ -32,7 +30,7 @@ media
 ("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate")
 
 titles
-("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate")
+("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDWeb", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate")
 
 userReviews
 ("reviewID", "userID", "userReviews.updatedBy AS userReviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userReviews.active AS userReviewsActive", "userReviews.createDate AS userReviewsCreateDate", "userReviews.updateDate AS userReviewsUpdatedDate")
@@ -75,7 +73,9 @@ router.get("/", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -140,7 +140,9 @@ router.get("/broken/:editionID", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName} - controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -195,7 +197,9 @@ router.get("/broken/:editionID", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -270,7 +274,9 @@ router.get("/broken/:editionID", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -327,8 +333,10 @@ router.get("/ASIN/:ASIN", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} error`, eror);
+      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} error`, error);
+
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -369,7 +377,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -410,7 +420,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID error", error);
+
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -438,7 +450,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     })
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /category/:categoryID error", error);
-//         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
+
+//         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: error});
+
 //     });
 
 // });
@@ -570,7 +584,9 @@ router.put("/:editionID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -612,7 +628,9 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+
     });
 
 });

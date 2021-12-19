@@ -25,7 +25,19 @@ GET {{baseURL}}/userreviews
 
 ###
 
+GET {{baseURL}}/computerLogs
+
+###
+
 GET {{baseURL}}/fromthehomeopape
+
+###
+
+GET {{baseURL}}/fromthehomeopape/review
+
+###
+
+GET {{baseURL}}/fromthehomeopape/markviewed
 
 ###
 
