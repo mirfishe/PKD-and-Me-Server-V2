@@ -5,20 +5,21 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
+const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "comments";
 const tableName = "comments";
 const select = "*";
 const orderBy = [{ column: "dateEntered", order: "desc" }];
 
+let records;
+
 
 /******************************
  ***** Get Comments *********
  ******************************/
-router.get("/", validateAdmin, (req, res) => {
+router.get("/", validateAdmin, (request, response) => {
 
   db.select(select)
     .from(tableName)
@@ -28,21 +29,24 @@ router.get("/", validateAdmin, (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -51,49 +55,52 @@ router.get("/", validateAdmin, (req, res) => {
 /**************************************
  ***** Get Comment By commentID *****
 ***************************************/
-router.get("/:commentID", validateAdmin, (req, res) => {
+// router.get("/:commentID", validateAdmin, (request, response) => {
 
-  const where = { commentID: req.params.commentID };
+//   const where = { commentID: request.params.commentID };
 
-  db.select(select)
-    .from(tableName)
-    .where(where)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .where(where)
+//     .then((records) => {
 
-      if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+//       if (records.length > 0) {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:commentID ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
 
-      } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+//       } else {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), "get /:commentID No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
-    });
+//     })
+//     .catch((error) => {
+//       console.log(`${controllerName}-controller`, GetDateTime(), "get /:commentID error", error);
 
-});
+//       addErrorLog(`${controllerName}-controller`, "get /:commentID", records, error);
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+//     });
+
+// });
 
 
 /* ******************************
  *** Add Comment ***************
 *********************************/
-router.post("/", /*validateSession,*/(req, res) => {
+router.post("/", /* validateSession, */(request, response) => {
 
   const recordObject = {
-    // userID: req.user.userID,
-    userID: req.body.comment.userID,
-    email: req.body.comment.email,
-    comment: req.body.comment.comment
-    // dateEntered: req.body.recordObject.dateEntered
+    // userID: request.user.userID,
+    userID: request.body.comment.userID,
+    email: request.body.comment.email,
+    comment: request.body.comment.comment
+    // dateEntered: request.body.recordObject.dateEntered
   };
 
   db(tableName)
@@ -108,21 +115,24 @@ router.post("/", /*validateSession,*/(req, res) => {
 
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${controllerName}.`, records: [recordObject] });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${controllerName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
-      res.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });
+
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });
+
     });
 
 });

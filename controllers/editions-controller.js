@@ -5,10 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
-// const IsEmpty = require("../utilities/isEmpty");
-const GetDateTime = require("../utilities/getDateTime");
-const convertBitTrueFalse = require("../utilities/convertBitTrueFalse");
+const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "editions";
 const tableName = "editions";
@@ -16,7 +14,6 @@ const select = "*";
 // const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
 const activeDataWhere = { "titles.active": true, "media.active": true };
 const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
-
 
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate -- 06/01/2021 MF
 const columnsList = ["*", "editions.publicationDate AS editionPublicationDate", "editions.imageName AS editionImageName", "editions.active AS editionActive", "editions.createDate AS editionCreateDate", "editions.updateDate AS editionUpdatedDate", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate"];
@@ -32,7 +29,7 @@ media
 ("mediaID", "media", "electronic", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate")
 
 titles
-("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDweb", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate")
+("titleID", "titleName", "titleSort", "titleURL", "authorFirstName", "authorLastName", "titles.publicationDate AS titlesPublicationDate", "titles.imageName AS titlesImageName", "categoryID", "shortDescription", "urlPKDWeb", "titles.active AS titlesActive", "titles.createDate AS titlesCreateDate", "titles.updateDate AS titlesUpdatedDate")
 
 userReviews
 ("reviewID", "userID", "userReviews.updatedBy AS userReviewsUpdatedBy", "titleID", "read", "dateRead", "rating", "shortReview", "longReview", "userReviews.active AS userReviewsActive", "userReviews.createDate AS userReviewsCreateDate", "userReviews.updateDate AS userReviewsUpdatedDate")
@@ -41,13 +38,15 @@ users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreateDate", "users.updateDate AS usersUpdatedDate")
 */
 
+let records;
+
 
 /******************************
  ***** Get Editions *********
  ******************************/
 // * Returns all editions active or not -- 03/28/2021 MF
-// router.get("/list", (req, res) => {
-router.get("/", (req, res) => {
+// router.get("/list", (request, response) => {
+router.get("/", (request, response) => {
 
   db.select(columnsList)
     .from(tableName)
@@ -61,21 +60,24 @@ router.get("/", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -85,13 +87,13 @@ router.get("/", (req, res) => {
  ***** Log Broken Amazon Link *********
  ******************************/
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
-router.get("/broken/:editionID", (req, res) => {
+router.get("/broken/:editionID", (request, response) => {
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken editionID", req.params.editionID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, request.params.editionID);
 
-  // res.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. editionID ${req.params.editionID}` });
+  // response.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. editionID ${request.params.editionID}` });
 
-  const where = { editionID: req.params.editionID };
+  const where = { editionID: request.params.editionID };
 
   db.select(select)
     .from(tableName)
@@ -107,40 +109,52 @@ router.get("/broken/:editionID", (req, res) => {
 
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, records);
+
         console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID records`, "editionID", records[0].editionID, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
-        // res.status(200).json({
-        // editionID:  edition.editionID,
-        // titleID:    edition.titleID,
-        // mediaID:    edition.mediaID,
-        // amazonLinkID:   edition.amazonLinkID,
-        // publicationDate:  edition.publicationDate,
-        // imageName:  edition.imageName,
-        // ASIN:              edition.ASIN,
-        // textLinkShort:     edition.textLinkShort,
-        // textLinkFull:     edition.textLinkFull,
-        // imageLinkSmall:     edition.imageLinkSmall,
-        // imageLinkMedium:     edition.imageLinkMedium,
-        // imageLinkLarge:     edition.imageLinkLarge,
-        // textImageLink:     edition.textImageLink,
-        // active:     edition.active,
-        // message:    "Successfully retrieved edition."
-        // });
+        const recordObject = {
+          endpoint: `get /broken/:${controllerName}ID records`,
+          editionID: records[0].editionID,
+          titleID: records[0].titleID,
+          titleName: records[0].titleName,
+          imageName: records[0].imageName,
+          createDate: GetDateTime()
+        };
+
+        db("brokenLinks")
+          // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+          // .returning(select)
+          .insert(recordObject)
+          .then((records) => {
+            // console.log(`${ controllerName } - controller`, GetDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
+
+          })
+          .catch((error) => {
+            console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
+
+            addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
+            // response.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
+
+          });
+
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved brokenLinks.`, records: records });
 
       } else {
-        console.log(`${controllerName} - controller`, GetDateTime(), `get /broken/: ${controllerName}ID No Results`);
+        console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID No Results`);
 
-        // res.status(200).send(`No ${ tableName } found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${ tableName } found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(`${controllerName} - controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
+
+      addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -150,7 +164,7 @@ router.get("/broken/:editionID", (req, res) => {
 /******************************
  ***** Get Editions *********
  ******************************/
-// router.get("/", (req, res) => {
+// router.get("/", (request, response) => {
 
 //   // let sqlQuery = db.select(select)
 //   //   .from(tableName)
@@ -181,21 +195,24 @@ router.get("/broken/:editionID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -204,9 +221,9 @@ router.get("/broken/:editionID", (req, res) => {
 /**************************************
  ***** Get Edition By EditionID *****
 ***************************************/
-// router.get("/:editionID", (req, res) => {
+// router.get("/:editionID", (request, response) => {
 
-//   const where = { editionID: req.params.editionID };
+//   const where = { editionID: request.params.editionID };
 
 //   // let sqlQuery = db.select(select)
 //   //   .from(tableName)
@@ -239,8 +256,8 @@ router.get("/broken/:editionID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
-//         // res.status(200).json({
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         // response.status(200).json({
 //         // editionID:  edition.editionID,
 //         // titleID:    edition.titleID,
 //         // mediaID:    edition.mediaID,
@@ -261,16 +278,19 @@ router.get("/broken/:editionID", (req, res) => {
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);  
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -279,9 +299,9 @@ router.get("/broken/:editionID", (req, res) => {
 /**************************************
  ***** Get Edition By ASIN *****
 ***************************************/
-router.get("/ASIN/:ASIN", (req, res) => {
+router.get("/ASIN/:ASIN", (request, response) => {
 
-  const where = { ASIN: req.params.ASIN };
+  const where = { ASIN: request.params.ASIN };
 
   db.select(columnsList)
     .from(tableName)
@@ -295,10 +315,10 @@ router.get("/ASIN/:ASIN", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
-        // res.status(200).json({
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        // response.status(200).json({
         // editionID:  edition.editionID,
         // titleID:    edition.titleID,
         // mediaID:    edition.mediaID,
@@ -317,18 +337,21 @@ router.get("/ASIN/:ASIN", (req, res) => {
         // });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /ASIN/:ASIN No Results`);
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} error`, eror);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /ASIN/:ASIN", records, error);
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -337,9 +360,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 /**************************************
  ***** Get Editions By TitleID *****
 ***************************************/
-// router.get("/title/:titleID", (req, res) => {
+// router.get("/title/:titleID", (request, response) => {
 
-//   const where = { "editions.titleID": req.params.titleID };
+//   const where = { "editions.titleID": request.params.titleID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -355,21 +378,24 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /title/:titleID ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID No Results");
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+//       addErrorLog(`${controllerName}-controller`, "get /title/:titleID", records, error);
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -378,9 +404,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 /**************************************
  ***** Get Editions By MediaID *****
 ***************************************/
-// router.get("/media/:mediaID", (req, res) => {
+// router.get("/media/:mediaID", (request, response) => {
 
-//   const where = { "editions.mediaID": req.params.mediaID };
+//   const where = { "editions.mediaID": request.params.mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -396,21 +422,24 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /media/:mediaID ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID No Results");
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID error", error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
+//       addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -422,11 +451,11 @@ router.get("/ASIN/:ASIN", (req, res) => {
 // ? Needed? Use Get Titles instead? -- 03/28/2021 MF
 // ! There is no column for categoryID in the editions table -- 03/28/2021 MF
 // ! Query needs to be changed to work -- 03/28/2021 MF
-// router.get("/category/:categoryID", (req, res) => {
+// router.get("/category/:categoryID", (request, response) => {
 
 //     const query = {where: {
 //         [Op.and]: [
-//             {categoryID: {[Op.eq]: req.params.categoryID}},
+//             {categoryID: {[Op.eq]: request.params.categoryID}},
 //             {active: {[Op.eq]: true}}
 //             ]
 //     }, order: [["publicationDate", "DESC"]]};
@@ -434,11 +463,14 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     Edition.findAll(query)
 //     .then((records) => {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /category/:categoryID ${tableName}`, records);
-//         res.status(200).json({message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({message: `Successfully retrieved ${tableName}.`, records: records });
 //     })
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /category/:categoryID error", error);
-//         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
+
+//         addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
+//         response.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: error});
+
 //     });
 
 // });
@@ -448,20 +480,20 @@ router.get("/ASIN/:ASIN", (req, res) => {
  *** Add Edition ***************
 *********************************/
 // * Allows an admin to add a new edition -- 03/28/2021 MF
-router.post("/", validateAdmin, (req, res) => {
+router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleID: req.body.edition.titleID,
-    mediaID: req.body.edition.mediaID,
-    publicationDate: req.body.edition.publicationDate,
-    imageName: req.body.edition.imageName,
-    ASIN: req.body.edition.ASIN,
-    textLinkShort: req.body.edition.textLinkShort,
-    textLinkFull: req.body.edition.textLinkFull,
-    imageLinkSmall: req.body.edition.imageLinkSmall,
-    imageLinkMedium: req.body.edition.imageLinkMedium,
-    imageLinkLarge: req.body.edition.imageLinkLarge,
-    textImageLink: req.body.edition.textImageLink,
+    titleID: request.body.edition.titleID,
+    mediaID: request.body.edition.mediaID,
+    publicationDate: request.body.edition.publicationDate,
+    imageName: request.body.edition.imageName,
+    ASIN: request.body.edition.ASIN,
+    textLinkShort: request.body.edition.textLinkShort,
+    textLinkFull: request.body.edition.textLinkFull,
+    imageLinkSmall: request.body.edition.imageLinkSmall,
+    imageLinkMedium: request.body.edition.imageLinkMedium,
+    imageLinkLarge: request.body.edition.imageLinkLarge,
+    textImageLink: request.body.edition.textImageLink,
     active: true
   };
 
@@ -480,14 +512,14 @@ router.post("/", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
@@ -512,7 +544,8 @@ router.post("/", validateAdmin, (req, res) => {
 
       };
 
-      res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, errorMessages: errorMessages, error: error });
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, errorMessages: errorMessages, error: error });
 
     });
 
@@ -523,24 +556,24 @@ router.post("/", validateAdmin, (req, res) => {
  ******* Update Edition *******
  ***************************/
 // * Allows the admin to update the edition including soft delete it -- 03/28/2021 MF
-router.put("/:editionID", validateAdmin, (req, res) => {
+router.put("/:editionID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleID: req.body.edition.titleID,
-    mediaID: req.body.edition.mediaID,
-    publicationDate: req.body.edition.publicationDate,
-    imageName: req.body.edition.imageName,
-    ASIN: req.body.edition.ASIN,
-    textLinkShort: req.body.edition.textLinkShort,
-    textLinkFull: req.body.edition.textLinkFull,
-    imageLinkSmall: req.body.edition.imageLinkSmall,
-    imageLinkMedium: req.body.edition.imageLinkMedium,
-    imageLinkLarge: req.body.edition.imageLinkLarge,
-    textImageLink: req.body.edition.textImageLink,
-    active: req.body.edition.active
+    titleID: request.body.edition.titleID,
+    mediaID: request.body.edition.mediaID,
+    publicationDate: request.body.edition.publicationDate,
+    imageName: request.body.edition.imageName,
+    ASIN: request.body.edition.ASIN,
+    textLinkShort: request.body.edition.textLinkShort,
+    textLinkFull: request.body.edition.textLinkFull,
+    imageLinkSmall: request.body.edition.imageLinkSmall,
+    imageLinkMedium: request.body.edition.imageLinkMedium,
+    imageLinkLarge: request.body.edition.imageLinkLarge,
+    textImageLink: request.body.edition.textImageLink,
+    active: request.body.edition.active
   };
 
-  const where = { editionID: req.params.editionID };
+  const where = { editionID: request.params.editionID };
 
   db(tableName)
     .where(where)
@@ -556,21 +589,24 @@ router.put("/:editionID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+
     });
 
 });
@@ -580,9 +616,9 @@ router.put("/:editionID", validateAdmin, (req, res) => {
  ******* Delete Edition *******
  ***************************/
 // * Allows an admin to hard delete an edition -- 03/28/2021 MF
-router.delete("/:editionID", validateAdmin, (req, res) => {
+router.delete("/:editionID", validateAdmin, (request, response) => {
 
-  const where = { editionID: req.params.editionID };
+  const where = { editionID: request.params.editionID };
 
   db(tableName)
     .where(where)
@@ -598,21 +634,24 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, editionID: req.params.editionID });
+        response.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, editionID: request.params.editionID });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", editionID: req.params.editionID });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordDeleted: false, message: "Nothing to delete.", editionID: request.params.editionID });
 
       };
 
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
-      res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+
+      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
+      response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+
     });
 
 });

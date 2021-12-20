@@ -17,7 +17,15 @@ GET {{baseURL}}/titles
 
 ###
 
+GET {{baseURL}}/titles/broken/1
+
+###
+
 GET {{baseURL}}/editions
+
+###
+
+GET {{baseURL}}/editions/broken/1
 
 ###
 
@@ -25,7 +33,19 @@ GET {{baseURL}}/userreviews
 
 ###
 
+GET {{baseURL}}/computerLogs
+
+###
+
 GET {{baseURL}}/fromthehomeopape
+
+###
+
+GET {{baseURL}}/fromthehomeopape/review
+
+###
+
+GET {{baseURL}}/fromthehomeopape/markviewed
 
 ###
 

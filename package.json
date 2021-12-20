@@ -1,6 +1,6 @@
 {
   "name": "pkd-and-me-server",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Project using Node.js to allow users to rate and review works by and related to Philip K. Dick.",
   "author": "Michael Fisher",
   "copyrightYear": "2021",
@@ -23,7 +23,10 @@
     "verbose": true,
     "ignore": [
       "build/*",
-      "dist/*"
+      "dist/*",
+      "logs/*",
+      "node_modules/*",
+      "tokens/*"
     ],
     "env": {
       "NODE_ENV": "development"
@@ -32,7 +35,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.6.0",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.14",
     "mysql2": "^2.3.3",

@@ -5,17 +5,16 @@ const jwtSecret = require("../jwtSecret");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 
-// const IsEmpty = require("../utilities/isEmpty");
-// const GetDateTime = require("../utilities/getDateTime");
+// const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 
 // const controllerName = "validateAdmin";
 const tableName = "users";
 const select = "*";
 
 
-const validateAdmin = (req, res, next) => {
+const validateAdmin = (request, response, next) => {
 
-  const token = req.headers.authorization;
+  const token = request.headers.authorization;
 
   // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
   // jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
@@ -36,24 +35,26 @@ const validateAdmin = (req, res, next) => {
 
           // if (!records) throw {isAdmin: false, message: "Unauthorized."} // "Unauthorized."; // "error";
           if (!records) {
-            return res.status(401).json({ isAdmin: false, message: "Unauthorized." });
+
+            return response.status(401).json({ isAdmin: false, message: "Unauthorized." });
+
           };
 
           // ? Need to return all the properties of the user? -- 03/28/2021 MF
-          // req.user = records[0];
-          req.user = { userID: records[0].userID };
-          // console.log(controllerName, GetDateTime(), "req.user", req.user);
+          // request.user = records[0];
+          request.user = { userID: records[0].userID };
+          // console.log(controllerName, GetDateTime(), "request.user", request.user);
           return next();
 
         })
         .catch(error => next(error));
 
     } else {
-      // console.log(controllerName, GetDateTime(), "req.errors = error");
+      // console.log(controllerName, GetDateTime(), "request.errors = error");
 
-      req.errors = error;
-      // return res.status(401).send({isAdmin: false, message: "Unauthorized."})
-      return res.status(401).json({ isAdmin: false, message: "Unauthorized." });
+      request.errors = error;
+      // return response.status(401).send({isAdmin: false, message: "Unauthorized."})
+      return response.status(401).json({ isAdmin: false, message: "Unauthorized." });
 
     };
 
