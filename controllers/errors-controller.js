@@ -4,13 +4,15 @@ const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "errors";
 const tableName = "errors";
 const select = "*";
 const orderBy = [{ column: "dateEntered", order: "desc" }];
+
+let records;
 
 
 /******************************
@@ -41,6 +43,7 @@ router.get("/", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -51,38 +54,39 @@ router.get("/", validateAdmin, (req, res) => {
 /**************************************
  ***** Get Error By ErrorID *****
 ***************************************/
-router.get("/:errorID", validateAdmin, (req, res) => {
+// router.get("/:errorID", validateAdmin, (req, res) => {
 
-  const where = { errorID: req.params.errorID };
+//   const where = { errorID: req.params.errorID };
 
-  db.select(select)
-    .from(tableName)
-    .where(where)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .where(where)
+//     .then((records) => {
 
-      if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+//       if (records.length > 0) {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:errorID ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
+//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
 
-      } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+//       } else {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), "get /:errorID No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // res.status(200).send(`No ${tableName} found.`);
+//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//     })
+//     .catch((error) => {
+//       console.log(`${controllerName}-controller`, GetDateTime(), "get /:errorID error", error);
 
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       addErrorLog(`${controllerName}-controller`, "get /:errorID", records, error);
+//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
-    });
+//     });
 
-});
+// });
 
 
 /* ******************************
@@ -91,10 +95,11 @@ router.get("/:errorID", validateAdmin, (req, res) => {
 router.post("/", (req, res) => {
 
   const recordObject = {
+    operation: req.body.recordObject.operation,
     componentName: req.body.recordObject.componentName,
     transactionData: JSON.stringify(req.body.recordObject.transactionData),
-    errorData: JSON.stringify(req.body.recordObject.errorData)
-    // dateEntered: req.body.recordObject.dateEntered
+    errorData: JSON.stringify(req.body.recordObject.errorData),
+    createDate: req.body.recordObject.createDate
   };
 
   db(tableName)
@@ -124,6 +129,7 @@ router.post("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });
 
     });

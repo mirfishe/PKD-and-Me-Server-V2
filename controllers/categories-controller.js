@@ -5,13 +5,15 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "categories";
 const tableName = "categories";
 const select = "*";
 const orderBy = [{ column: "sortID", order: "asc" }];
+
+let records;
 
 
 /******************************
@@ -46,6 +48,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -88,6 +91,7 @@ router.get("/", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });

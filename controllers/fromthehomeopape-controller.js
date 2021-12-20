@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
@@ -14,6 +14,8 @@ const tableName = "homeopapeRSS";
 // const orderBy = [{ column: "createDate", order: "desc" }];
 
 // const Parser = require('rss-parser');
+
+let records;
 
 
 // const fetchNews = async () => {
@@ -233,6 +235,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -284,6 +287,7 @@ router.get("/review", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /review", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -346,6 +350,7 @@ router.get("/top/:topNumber", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /top/:topNumber", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -470,18 +475,18 @@ router.get("/new", (req, res) => {
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
             // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -491,8 +496,9 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
+          addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
@@ -600,18 +606,18 @@ router.get("/new", (req, res) => {
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
             // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -621,8 +627,9 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
+          addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
@@ -730,18 +737,18 @@ router.get("/new", (req, res) => {
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
             // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -751,8 +758,9 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
+          addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
@@ -860,18 +868,18 @@ router.get("/new", (req, res) => {
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
             // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -881,8 +889,9 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
+          addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
@@ -990,18 +999,18 @@ router.get("/new", (req, res) => {
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+          // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
           // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
             // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
             // res.status(200).send("No records found.");
             // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1011,8 +1020,9 @@ router.get("/new", (req, res) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
+          addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
@@ -1040,22 +1050,22 @@ router.get("/update", (req, res) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), "get /update", sqlQuery);
 
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+        console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
         res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /update No Results");
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1065,8 +1075,9 @@ router.get("/update", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /update", records, error);
       // res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
@@ -1109,6 +1120,7 @@ router.get("/markviewed", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
 
+      addErrorLog(`${controllerName}-controller`, "get /markviewed", records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -1168,6 +1180,7 @@ router.post("/", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
@@ -1192,7 +1205,7 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1200,18 +1213,18 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID records`, records);
 
         res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1221,8 +1234,9 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, "put /display/:itemID", records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -1247,7 +1261,7 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1255,18 +1269,18 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID records`, records);
 
         res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1276,8 +1290,9 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, "put /posted/:itemID", records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -1302,7 +1317,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
   // const where = { itemID: req.params.itemID };
   const where = { itemID: itemID };
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID itemID`, itemID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1310,18 +1325,18 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID records`, records);
 
         res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID No Results`);
 
         // res.status(200).send("No records found.");
         // res.status(200).send({resultsFound: false, message: "No records found."})
@@ -1331,8 +1346,9 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, "put /alwaysFilter/:itemID", records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });

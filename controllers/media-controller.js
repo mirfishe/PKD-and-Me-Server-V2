@@ -5,13 +5,15 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "media";
 const tableName = "media";
 const select = "*";
 const orderBy = [{ column: "sortID", order: "asc" }];
+
+let records;
 
 
 /******************************
@@ -60,6 +62,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -99,7 +102,10 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+
+//       addErrorLog(`${controllerName}-controller`, "get /:mediaID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -135,7 +141,10 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
+
+//       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -182,7 +191,10 @@ router.get("/", (req, res) => {
 //     })
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+
+//       addErrorLog(`${controllerName}-controller`, "get /:media", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
 //     });
 
 // });
@@ -260,6 +272,7 @@ router.post("/", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
@@ -310,6 +323,7 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -354,6 +368,7 @@ router.delete("/:mediaID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });

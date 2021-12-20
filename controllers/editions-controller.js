@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "editions";
 const tableName = "editions";
@@ -14,7 +14,6 @@ const select = "*";
 // const activeWhere = { "editions.active": true, "titles.active": true, "media.active": true };
 const activeDataWhere = { "titles.active": true, "media.active": true };
 const orderBy = [{ column: "editions.publicationDate", order: "desc" }];
-
 
 // ! How does Knex handle the leftOuterJoin with two columns of the same name?:  active, publicationDate, imageName, sortID, updatedBy, createDate, updateDate -- 06/01/2021 MF
 const columnsList = ["*", "editions.publicationDate AS editionPublicationDate", "editions.imageName AS editionImageName", "editions.active AS editionActive", "editions.createDate AS editionCreateDate", "editions.updateDate AS editionUpdatedDate", "titles.publicationDate AS titlePublicationDate", "titles.imageName AS titleImageName", "titles.active AS titleActive", "titles.createDate AS titleCreateDate", "titles.updateDate AS titleUpdatedDate", "media.sortID AS mediaSortID", "media.active AS mediaActive", "media.createDate AS mediaCreateDate", "media.updateDate AS mediaUpdatedDate"];
@@ -38,6 +37,8 @@ userReviews
 users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreateDate", "users.updateDate AS usersUpdatedDate")
 */
+
+let records;
 
 
 /******************************
@@ -74,6 +75,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -87,7 +89,7 @@ router.get("/", (req, res) => {
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:editionID", (req, res) => {
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken editionID", req.params.editionID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, req.params.editionID);
 
   // res.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. editionID ${req.params.editionID}` });
 
@@ -107,29 +109,38 @@ router.get("/broken/:editionID", (req, res) => {
 
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, records);
+
         console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID records`, "editionID", records[0].editionID, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
-        // res.status(200).json({
-        // editionID:  edition.editionID,
-        // titleID:    edition.titleID,
-        // mediaID:    edition.mediaID,
-        // amazonLinkID:   edition.amazonLinkID,
-        // publicationDate:  edition.publicationDate,
-        // imageName:  edition.imageName,
-        // ASIN:              edition.ASIN,
-        // textLinkShort:     edition.textLinkShort,
-        // textLinkFull:     edition.textLinkFull,
-        // imageLinkSmall:     edition.imageLinkSmall,
-        // imageLinkMedium:     edition.imageLinkMedium,
-        // imageLinkLarge:     edition.imageLinkLarge,
-        // textImageLink:     edition.textImageLink,
-        // active:     edition.active,
-        // message:    "Successfully retrieved edition."
-        // });
+        const recordObject = {
+          endpoint: `get /broken/:${controllerName}ID records`,
+          editionID: records[0].editionID,
+          titleID: records[0].titleID,
+          titleName: records[0].titleName,
+          imageName: records[0].imageName,
+          createDate: GetDateTime()
+        };
+
+        db("brokenLinks")
+          // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+          // .returning(select)
+          .insert(recordObject)
+          .then((records) => {
+            // console.log(`${ controllerName } - controller`, GetDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
+
+          })
+          .catch((error) => {
+            console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
+
+            addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
+            // res.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
+
+          });
+
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved brokenLinks.`, records: records });
 
       } else {
-        console.log(`${controllerName} - controller`, GetDateTime(), `get /broken/: ${controllerName}ID No Results`);
+        console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID No Results`);
 
         // res.status(200).send(`No ${ tableName } found.`);
         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
@@ -139,8 +150,9 @@ router.get("/broken/:editionID", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName} - controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -198,6 +210,7 @@ router.get("/broken/:editionID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -275,6 +288,7 @@ router.get("/broken/:editionID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);  
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -301,7 +315,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", records);
 
         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
         // res.status(200).json({
@@ -323,7 +337,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
         // });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /ASIN/:ASIN No Results`);
 
         // res.status(200).send(`No ${tableName} found.`);
         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
@@ -333,8 +347,9 @@ router.get("/ASIN/:ASIN", (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /ASIN/:ASIN", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -378,6 +393,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /title/:titleID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -421,6 +437,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -451,6 +468,7 @@ router.get("/ASIN/:ASIN", (req, res) => {
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /category/:categoryID error", error);
 
+//         addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
 //         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: error});
 
 //     });
@@ -526,6 +544,7 @@ router.post("/", validateAdmin, (req, res) => {
 
       };
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, errorMessages: errorMessages, error: error });
 
     });
@@ -585,6 +604,7 @@ router.put("/:editionID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -629,6 +649,7 @@ router.delete("/:editionID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });

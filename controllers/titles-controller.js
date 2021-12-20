@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "titles";
 const tableName = "titles";
@@ -40,6 +40,8 @@ userReviews
 users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreateDate", "users.updateDate AS usersUpdatedDate")
 */
+
+let records;
 
 
 /******************************
@@ -76,6 +78,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -89,7 +92,7 @@ router.get("/", (req, res) => {
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:titleID", (req, res) => {
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken titleID", req.params.titleID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), get /broken/:${controllerName}ID ${tableName}, req.params.titleID);
 
   // res.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. titleID ${req.params.titleID}` });
 
@@ -112,27 +115,39 @@ router.get("/broken/:titleID", (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
+
         console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID records`, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
 
-        // res.status(200).json({
-        // titleID:   title.titleID,
-        // titleName:     title.titleName,
-        // titleSort:  title.titleSort,
-        // authorFirstName:   title.authorFirstName,
-        // authorLastName:     title.authorLastName,
-        // publicationDate:  title.publicationDate,
-        // imageName:   title.imageName,
-        // categoryID:   title.categoryID,
-        // shortDescription:     title.shortDescription,
-        // urlPKDWeb:  title.urlPKDWeb,
-        // active:     title.active,
-        // message:    `Successfully retrieved ${ tableName }.`
-        // });
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        const recordObject = {
+          endpoint: `get /broken/:${controllerName}ID records`,
+          // editionID: records[0].editionID,
+          titleID: records[0].titleID,
+          titleName: records[0].titleName,
+          imageName: records[0].imageName,
+          createDate: GetDateTime()
+        };
+
+        db("brokenLinks")
+          // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+          // .returning(select)
+          .insert(recordObject)
+          .then((records) => {
+            // console.log(`${ controllerName } - controller`, GetDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
+
+          })
+          .catch((error) => {
+            console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
+
+            addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
+            // res.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
+
+          });
+
+        res.status(200).json({ resultsFound: true, message: `Successfully retrieved brokenLinks.`, records: records });
 
       } else {
-        console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/: ${controllerName}ID No Results`);
+        console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID No Results`);
 
         // res.status(200).send(`No ${tableName} found.`);
         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
@@ -143,7 +158,10 @@ router.get("/broken/:titleID", (req, res) => {
     })
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
+
+      addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+
     });
 
 });
@@ -188,6 +206,7 @@ router.get("/broken/:titleID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get / error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
@@ -251,6 +270,7 @@ router.get("/broken/:titleID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /:titleID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
@@ -290,6 +310,7 @@ router.get("/broken/:titleID", (req, res) => {
 //         .catch((error) => {
 //             console.log(`${ controllerName } - controller`, GetDateTime(), "get /media/:mediaID error", error);
 
+//             addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
 //             res.status(500).json({resultsFound: false, message: `No ${ tableName } found.`, error: err});
 
 //         });
@@ -353,6 +374,7 @@ router.get("/broken/:titleID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
@@ -421,6 +443,7 @@ router.get("/broken/:titleID", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /admin/category/:categoryID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
@@ -515,12 +538,12 @@ router.get("/checklist", validateSession, (req, res) => {
       records = convertBitTrueFalse(records);
 
       if (records.length > 0) {
-        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/list records[0]", records[0]);
+        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist records[0]", records[0]);
 
         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records[0] });
 
       } else {
-        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/list No Results");
+        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist No Results");
 
         // res.status(200).send(`No ${ tableName } found.`);
         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
@@ -530,8 +553,9 @@ router.get("/checklist", validateSession, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName} - controller`, GetDateTime(), "get /checklist/list error", error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /checklist error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /checklist", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -597,6 +621,7 @@ router.get("/checklist", validateSession, (req, res) => {
 //     .catch((error) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/:categoryID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /checklist/:categoryID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
@@ -653,8 +678,9 @@ router.post("/", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName} - controller`, GetDateTime(), "post / error", error);
+      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
@@ -712,8 +738,9 @@ router.put("/:titleID", validateAdmin, (req, res) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName} - controller`, GetDateTime(), `put /: ${controllerName}ID error`, error);
+      console.log(`${controllerName}-controller`, GetDateTime(), `put /: ${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -758,6 +785,7 @@ router.delete("/:titleID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });

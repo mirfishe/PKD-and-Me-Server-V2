@@ -5,13 +5,13 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
-const controllerName = "computerLog";
+const controllerName = "computerLogs";
 const tableName = "computerLogs";
 const select = "*";
-const orderBy = [{ column: "lastAccessed", order: "desc" }];
+const orderBy = [{ column: "timestamp", order: "desc" }];
 
 let records;
 
@@ -25,28 +25,68 @@ router.get("/", (req, res) => {
     .from(tableName)
     .orderBy(orderBy)
     .then((results) => {
-      // console.log(`${controllerName}s-controller`, GetDateTime(), "get / results", results);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / results", results);
 
       records = results;
 
-      // console.log(`${controllerName}s-controller`, GetDateTime(), "get / records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
 
       if (records.length > 0) {
 
-        // console.log(`${controllerName}s-controller`, GetDateTime(), "get / records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
         res.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
 
       } else {
 
-        // console.log(`${controllerName}s-controller`, GetDateTime(), "get / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
         res.status(200).json({ resultsFound: false, message: "No records found." });
 
       };
 
     })
     .catch((error) => {
-      console.error(`${controllerName}s-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      res.status(500).json({ resultsFound: true, message: "No records found." });
+
+    });
+
+});
+
+
+/******************************
+ ***** Get Broken Links *********
+ ******************************/
+router.get("/broken", (req, res) => {
+
+  db.select(select)
+    .from("brokenLinks")
+    .orderBy([{ column: "timestamp", order: "desc" }])
+    .then((results) => {
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken results", results);
+
+      records = results;
+
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
+
+      if (records.length > 0) {
+
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
+        res.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+
+      } else {
+
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken No Results");
+        res.status(200).json({ resultsFound: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /broken error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /broken", records, error);
       res.status(500).json({ resultsFound: true, message: "No records found." });
 
     });
@@ -89,28 +129,29 @@ router.post("/", (req, res) => {
 
     })
     .then((results) => {
-      // console.log(`${controllerName}s-controller`, GetDateTime(), "post / results", results);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "post / results", results);
 
       records = results;
 
-      // console.log(`${controllerName}s-controller`, GetDateTime(), "post / records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
       if (records.length > 0) {
 
-        // console.log(`${controllerName}s-controller`, GetDateTime(), "post / records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
         res.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
 
-        // console.log(`${controllerName}s-controller`, GetDateTime(), "post / No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
         res.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       };
 
     })
     .catch((error) => {
-      console.error(`${controllerName}s-controller`, GetDateTime(), "post / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });

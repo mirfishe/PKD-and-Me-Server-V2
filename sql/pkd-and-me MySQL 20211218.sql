@@ -66,6 +66,24 @@ INSERT INTO `categories` (`categoryID`, `category`, `sortID`, `active`, `createD
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `brokenLinks`
+--
+
+CREATE TABLE `brokenLinks` (
+  `endpoint` varchar(500) DEFAULT NULL,
+  `editionID` int DEFAULT NULL,
+  `titleID` int DEFAULT NULL,
+  `titleName` varchar(255) DEFAULT NULL,
+  `imageName` varchar(500) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `computerLogs`
 --
 
@@ -88,23 +106,20 @@ CREATE TABLE `computerLogs` (
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `computerLogs`
+-- Table structure for table `errorLogs`
 --
 
-INSERT INTO `computerLogs` (`title`, `href`, `applicationVersion`, `ipAddress`, `lastAccessed`, `city`, `state`, `stateCode`, `countryName`, `countryCode`, `continentName`, `continentCode`, `latitude`, `longitude`, `postal`, `timestamp`) VALUES
-('Homepage', 'http://localhost:3000/', '0.4.0', '', '2021-12-18 18:17:46', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:17:47'),
-('Homepage', 'http://localhost:3000/', '0.4.0', '', '2021-12-18 18:29:01', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:29:01'),
-('Homepage', 'http://localhost:3000/', '0.4.0', '', '2021-12-18 18:36:08', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:36:08'),
-('Homepage', 'http://localhost:3000/', '0.4.0', '', '2021-12-18 18:39:38', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:39:38'),
-('The Broken Bubble', 'http://localhost:3000/The-Broken-Bubble', NULL, '', '2021-12-18 18:40:11', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:40:11'),
-('The Broken Bubble', 'http://localhost:3000/Short-Stories', NULL, '', '2021-12-18 18:40:38', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:40:38'),
-('Upon The Dull Earth', 'http://localhost:3000/Upon-The-Dull-Earth', NULL, '', '2021-12-18 18:40:40', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:40:40'),
-('Upon The Dull Earth', 'http://localhost:3000/Hardcover', NULL, '', '2021-12-18 18:40:43', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:40:44'),
-('The Art and Soul of Blade Runner 2049', 'http://localhost:3000/The-Art-And-Soul-Of-Blade-Runner-2049', NULL, '', '2021-12-18 18:40:47', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:40:47'),
-('The Art and Soul of Blade Runner 2049', 'http://localhost:3000/The-Art-And-Soul-Of-Blade-Runner-2049', '0.4.0', '', '2021-12-18 18:42:02', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:42:03'),
-('The Art and Soul of Blade Runner 2049', 'http://localhost:3000/Novels', '0.4.0', '', '2021-12-18 18:42:16', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:42:16'),
-('Counter-Clock World', 'http://localhost:3000/Counter-Clock-World', '0.4.0', '', '2021-12-18 18:42:18', '', '', '', '', '', '', '', '', '', '', '2021-12-18 23:42:18');
+CREATE TABLE `errorLogs` (
+  `operation` varchar(255) DEFAULT NULL,
+  `componentName` varchar(255) DEFAULT NULL,
+  `transactionData` text,
+  `errorData` text,
+  `createDate` datetime DEFAULT NULL,
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 

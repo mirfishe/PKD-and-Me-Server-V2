@@ -5,13 +5,15 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "titleSuggestions";
 const tableName = "titleSuggestions";
 const select = "*";
 const orderBy = [{ column: "dateEntered", order: "desc" }];
+
+let records;
 
 
 /******************************
@@ -42,6 +44,7 @@ router.get("/", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -52,38 +55,39 @@ router.get("/", validateAdmin, (req, res) => {
 /**************************************
  ***** Get Title Suggestion By titleSuggestionID *****
 ***************************************/
-router.get("/:titleSuggestionID", validateAdmin, (req, res) => {
+// router.get("/:titleSuggestionID", validateAdmin, (req, res) => {
 
-  const where = { titleSuggestionID: req.params.titleSuggestionID };
+//   const where = { titleSuggestionID: req.params.titleSuggestionID };
 
-  db.select(select)
-    .from(tableName)
-    .where(where)
-    .then((records) => {
+//   db.select(select)
+//     .from(tableName)
+//     .where(where)
+//     .then((records) => {
 
-      if (records.length > 0) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+//       if (records.length > 0) {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:titleSuggestionID ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
+//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
 
-      } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+//       } else {
+//         // console.log(`${controllerName}-controller`, GetDateTime(), "get /:titleSuggestionID No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // res.status(200).send(`No ${tableName} found.`);
+//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
-      };
+//       };
 
-    })
-    .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//     })
+//     .catch((error) => {
+//       console.log(`${controllerName}-controller`, GetDateTime(), "get /:titleSuggestionID error", error);
 
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       addErrorLog(`${controllerName}-controller`, "get /:titleSuggestionID", records, error);
+//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
-    });
+//     });
 
-});
+// });
 
 
 /* ******************************
@@ -131,6 +135,7 @@ router.post("/", /*validateSession,*/(req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });
 
     });

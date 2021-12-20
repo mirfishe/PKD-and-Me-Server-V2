@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-
 const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "userReviews";
 const tableName = "userReviews";
@@ -83,6 +83,8 @@ users
 
 // };
 
+let records;
+
 
 /******************************
  ***** Get User Reviews *********
@@ -123,6 +125,7 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
@@ -165,6 +168,7 @@ router.get("/", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -223,6 +227,7 @@ router.get("/", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
+//       addErrorLog(`${controllerName}-controller`, `get /:${controllerName}ID`, records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -252,6 +257,7 @@ router.get("/", (req, res) => {
 //         .catch((error) => {
 //             console.log(`${controllerName}-controller`, GetDateTime(), "get /rating/:titleID error", error);
 
+//             addErrorLog(`${controllerName}-controller`, "get /rating/:titleID", records, error);
 //             res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
 
 //         });
@@ -283,6 +289,7 @@ router.get("/", (req, res) => {
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /count/:titleID error", error);
 
+//         addErrorLog(`${controllerName}-controller`, "get /count/:titleID", records, error);
 //         res.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: err});
 
 //     });
@@ -332,6 +339,7 @@ router.get("/", (req, res) => {
 //     .catch((error) => {
 //         console.log(`${controllerName}-controller`, GetDateTime(), "get /sum/:titleID error", error);
 
+//         addErrorLog(`${controllerName}-controller`, "get /sum/:titleID", records, error);
 //         res.status(500).json({resultsFound: false, message: "Did not successfully retrieved user review sum.", error: err});
 
 //     });
@@ -404,6 +412,7 @@ router.get("/rating", (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /rating error", error);
 
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
 
     });
@@ -469,6 +478,7 @@ router.get("/rating", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /rating/:titleID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /rating/:titleID", records, error);
 //       res.status(500).json({ resultsFound: false, message: "No user ratings found.", error: error });
 
 //     });
@@ -518,6 +528,7 @@ router.get("/rating", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /title/:titleID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -563,6 +574,7 @@ router.get("/rating", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /user/:userID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -612,6 +624,7 @@ router.get("/rating", (req, res) => {
 //     .catch((error) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /user/:userID/title/:titleID error", error);
 
+//       addErrorLog(`${controllerName}-controller`, "get /user/:userID/title/:titleID", records, error);
 //       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
@@ -670,6 +683,7 @@ router.post("/", validateSession, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
+      addErrorLog(`${controllerName}-controller`, "post /", records, error);
       res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
@@ -737,6 +751,7 @@ router.put("/:reviewID", validateSession, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -804,6 +819,7 @@ router.put("/admin/:reviewID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
@@ -848,6 +864,7 @@ router.delete("/:reviewID", validateAdmin, (req, res) => {
     .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
+      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });
