@@ -20,8 +20,8 @@ let records;
  ***** Get Media *********
  ******************************/
 // * Returns all media active or not -- 03/28/2021 MF
-// router.get("/list", (req, res) => {
-router.get("/", (req, res) => {
+// router.get("/list", (request, response) => {
+router.get("/", (request, response) => {
 
   db.select(select)
     .from(tableName)
@@ -47,14 +47,14 @@ router.get("/", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -63,7 +63,7 @@ router.get("/", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -73,7 +73,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Get Media *********
  ******************************/
-// router.get("/", (req, res) => {
+// router.get("/", (request, response) => {
 
 //   const where = { active: true };
 
@@ -88,14 +88,14 @@ router.get("/", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
@@ -104,7 +104,7 @@ router.get("/", (req, res) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /:mediaID", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
 
@@ -115,7 +115,7 @@ router.get("/", (req, res) => {
  ***** Get Media Admin *********
  ******************************/
 // * Return all categories to adminster them -- 03/28/2021 MF
-// router.get("/admin", validateAdmin, (req, res) => {
+// router.get("/admin", validateAdmin, (request, response) => {
 
 //   db.select(select)
 //     .from(tableName)
@@ -127,14 +127,14 @@ router.get("/", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /admin ${tableName}`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin No Results");
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
@@ -143,7 +143,7 @@ router.get("/", (req, res) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
 
@@ -153,9 +153,9 @@ router.get("/", (req, res) => {
 /**************************************
  ***** Get Media By MediaID *****
 ***************************************/
-// router.get("/:mediaID", (req, res) => {
+// router.get("/:mediaID", (request, response) => {
 
-//   const where = { mediaID: req.params.mediaID };
+//   const where = { mediaID: request.params.mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -171,8 +171,8 @@ router.get("/", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
-//         // res.status(200).json({
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         // response.status(200).json({
 //         //     media:   records.media,
 //         //     sortID:     records.sortID,
 //         //     active:     records.active,
@@ -182,9 +182,9 @@ router.get("/", (req, res) => {
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
-//         // res.status(200).send(`No ${tableName} found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         // response.status(200).send(`No ${tableName} found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
 //       };
 
@@ -193,7 +193,7 @@ router.get("/", (req, res) => {
 //       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /:media", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
 //     });
 
@@ -204,14 +204,14 @@ router.get("/", (req, res) => {
  *** Add Media ***************
 *********************************/
 // * Allows an admin to add a new media -- 03/28/2021 MF
-router.post("/", validateAdmin, (req, res) => {
+router.post("/", validateAdmin, (request, response) => {
 
   // ! Don't need this anymore; was trying to fix scoping issues -- 03/28/2021 MF
   // let newSortID = 0;
 
   // * Moved this inside the function for scoping issues with newSortID -- 03/28/2021 MF
   // const createMedia = {
-  //     media:      req.body.media.media,
+  //     media:      request.body.media.media,
   //     sortID:     newSortID
   //   };
 
@@ -235,8 +235,8 @@ router.post("/", validateAdmin, (req, res) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "newSortID", newSortID);
 
       const recordObject = {
-        media: req.body.media.media,
-        electronic: req.body.media.electronic,
+        media: request.body.media.media,
+        electronic: request.body.media.electronic,
         sortID: newSortID
       };
 
@@ -257,14 +257,14 @@ router.post("/", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
@@ -273,7 +273,7 @@ router.post("/", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
-      res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
 
@@ -284,14 +284,14 @@ router.post("/", validateAdmin, (req, res) => {
  ******* Update Media *******
  ***************************/
 // * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
-router.put("/:mediaID", validateAdmin, (req, res) => {
+router.put("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: req.params.mediaID };
+  const where = { mediaID: request.params.mediaID };
 
   const recordObject = {
-    media: req.body.media.media,
-    sortID: req.body.media.sortID,
-    active: req.body.media.active
+    media: request.body.media.media,
+    sortID: request.body.media.sortID,
+    active: request.body.media.active
   };
 
   db(tableName)
@@ -308,14 +308,14 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
@@ -324,7 +324,7 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 
@@ -335,9 +335,9 @@ router.put("/:mediaID", validateAdmin, (req, res) => {
  ******* Delete Media *******
  ***************************/
 // * Allows an admin to hard delete the media -- 03/28/2021 MF
-router.delete("/:mediaID", validateAdmin, (req, res) => {
+router.delete("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: req.params.mediaID };
+  const where = { mediaID: request.params.mediaID };
 
   db(tableName)
     .where(where)
@@ -353,14 +353,14 @@ router.delete("/:mediaID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, mediaID: req.params.mediaID });
+        response.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, mediaID: request.params.mediaID });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", mediaID: req.params.mediaID });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordDeleted: false, message: "Nothing to delete.", mediaID: request.params.mediaID });
 
       };
 
@@ -369,7 +369,7 @@ router.delete("/:mediaID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
-      res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+      response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });
 

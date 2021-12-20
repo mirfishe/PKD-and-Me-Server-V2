@@ -28,14 +28,14 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
 
       // if (records > 0) {
       //   // console.log(functionName, GetDateTime(), "post / records", records);
-      //   res.status(200).json({ recordAdded: true, message: `Successfully created ${functionName}.`, records: [recordObject] });
+      //   response.status(200).json({ recordAdded: true, message: `Successfully created ${functionName}.`, records: [recordObject] });
 
       // } else {
       //   // console.log(functionName, GetDateTime(), "post / No Results");
 
-      //   // res.status(200).send("No records found.");
-      //   // res.status(200).send({resultsFound: false, message: "No records found."})
-      //   res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+      //   // response.status(200).send("No records found.");
+      //   // response.status(200).send({resultsFound: false, message: "No records found."})
+      //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       // };
 
@@ -43,7 +43,7 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
     .catch((error) => {
       console.log(functionName, GetDateTime(), "post / error", error);
 
-      // res.status(500).json({ recordAdded: false, message: `Not successfully created ${functionName}.`, error: error });
+      // response.status(500).json({ recordAdded: false, message: `Not successfully created ${functionName}.`, error: error });
 
     });
 

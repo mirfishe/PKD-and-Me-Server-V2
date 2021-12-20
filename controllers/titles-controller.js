@@ -49,8 +49,8 @@ let records;
  ******************************/
 // * Returns all titles active or not -- 03/28/2021 MF
 // * Just the title data and not the related tables data -- 03/28/2021 MF
-// router.get("/list", (req, res) => {
-router.get("/", (req, res) => {
+// router.get("/list", (request, response) => {
+router.get("/", (request, response) => {
 
   db.select(columnsList)
     .from(tableName)
@@ -63,14 +63,14 @@ router.get("/", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -79,7 +79,7 @@ router.get("/", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -90,13 +90,13 @@ router.get("/", (req, res) => {
  ***** Log Image Links *********
  ******************************/
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
-router.get("/broken/:titleID", (req, res) => {
+router.get("/broken/:titleID", (request, response) => {
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), get /broken/:${controllerName}ID ${tableName}, req.params.titleID);
+  // console.log(`${controllerName}-controller`, GetDateTime(), get /broken/:${controllerName}ID ${tableName}, request.params.titleID);
 
-  // res.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. titleID ${req.params.titleID}` });
+  // response.status(200).json({ resultsFound: true, message: `Successfully logged broken image link. titleID ${request.params.titleID}` });
 
-  const where = { "titles.titleID": req.params.titleID };
+  const where = { "titles.titleID": request.params.titleID };
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -140,18 +140,18 @@ router.get("/broken/:titleID", (req, res) => {
             console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
 
             addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
-            // res.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
+            // response.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
 
           });
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved brokenLinks.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved brokenLinks.`, records: records });
 
       } else {
         console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID No Results`);
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -160,7 +160,7 @@ router.get("/broken/:titleID", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -171,7 +171,7 @@ router.get("/broken/:titleID", (req, res) => {
  ***** Get Titles *********
  ******************************/
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
-// router.get("/", (req, res) => {
+// router.get("/", (request, response) => {
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -191,14 +191,14 @@ router.get("/broken/:titleID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get / records", records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
 
 //       } else {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get / No Results");
 
-//         // res.status(200).send(`No ${ tableName } found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
+//         // response.status(200).send(`No ${ tableName } found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
 
 //       };
 
@@ -207,7 +207,7 @@ router.get("/broken/:titleID", (req, res) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
 
@@ -218,9 +218,9 @@ router.get("/broken/:titleID", (req, res) => {
  ***** Get Title By TitleID *****
 ***************************************/
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
-// router.get("/:titleID", (req, res) => {
+// router.get("/:titleID", (request, response) => {
 
-//   const where = { "titles.titleID": req.params.titleID };
+//   const where = { "titles.titleID": request.params.titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -241,7 +241,7 @@ router.get("/broken/:titleID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), `get /:${controllerName}ID records`, records);
 
-//         // res.status(200).json({
+//         // response.status(200).json({
 //         // titleID:   title.titleID,
 //         // titleName:     title.titleName,
 //         // titleSort:  title.titleSort,
@@ -255,14 +255,14 @@ router.get("/broken/:titleID", (req, res) => {
 //         // active:     title.active,
 //         // message:    `Successfully retrieved ${ tableName }.`
 //         // });
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
 
 //       } else {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), `get /: ${ controllerName }ID ${ tableName } No Results`);
 
-//         // res.status(200).send(`No ${ tableName } found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
+//         // response.status(200).send(`No ${ tableName } found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
 
 //       };
 
@@ -271,7 +271,7 @@ router.get("/broken/:titleID", (req, res) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /:titleID", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
 
@@ -285,7 +285,7 @@ router.get("/broken/:titleID", (req, res) => {
 // ! There is no column for mediaID in the titles table -- 03/28/2021 MF
 // ! Query needs to be changed to work -- 03/28/2021 MF
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
-// router.get("/media/:mediaID", (req, res) => {
+// router.get("/media/:mediaID", (request, response) => {
 
 //     // const attributes = {
 //     //     attributes: [
@@ -297,7 +297,7 @@ router.get("/broken/:titleID", (req, res) => {
 
 //     const query = {where: {
 //         [Op.and]: [
-//             {mediaID: {[Op.eq]: req.params.mediaID}},
+//             {mediaID: {[Op.eq]: request.params.mediaID}},
 //             {active: {[Op.eq]: true}}
 //             ]
 //     }, order: [["titleSort", "DESC"]]};
@@ -305,13 +305,13 @@ router.get("/broken/:titleID", (req, res) => {
 //     Title.findAll(query)
 //     .then((records) => {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /media/:mediaID" records", records);
-//         res.status(200).json({message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({message: `Successfully retrieved ${ tableName }.`, records: records });
 //     })
 //         .catch((error) => {
 //             console.log(`${ controllerName } - controller`, GetDateTime(), "get /media/:mediaID error", error);
 
 //             addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
-//             res.status(500).json({resultsFound: false, message: `No ${ tableName } found.`, error: err});
+//             response.status(500).json({resultsFound: false, message: `No ${ tableName } found.`, error: err});
 
 //         });
 
@@ -322,11 +322,11 @@ router.get("/broken/:titleID", (req, res) => {
  ***** Get Titles By CategoryID *****
 ***************************************/
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
-// router.get("/category/:categoryID/:sort?", (req, res) => {
+// router.get("/category/:categoryID/:sort?", (request, response) => {
 
 //   let orderByColumn = "titleSort";
 
-//   if (req.params.sort == "publicationDate") {
+//   if (request.params.sort == "publicationDate") {
 
 //     orderByColumn = "publicationDate";
 
@@ -338,7 +338,7 @@ router.get("/broken/:titleID", (req, res) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": req.params.categoryID };
+//   const where = { "titles.categoryID": request.params.categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -359,14 +359,14 @@ router.get("/broken/:titleID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID records", records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
 
 //       } else {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID No Results");
 
-//         // res.status(200).send(`No ${ tableName } found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
+//         // response.status(200).send(`No ${ tableName } found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
 
 //       };
 
@@ -375,7 +375,7 @@ router.get("/broken/:titleID", (req, res) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
 
@@ -386,11 +386,11 @@ router.get("/broken/:titleID", (req, res) => {
  ***** Get Titles By CategoryID Admin *****
 ***************************************/
 // * Return all titles to adminster them -- 03/28/2021 MF
-// router.get("/admin/category/:categoryID/:sort?", validateAdmin, (req, res) => {
+// router.get("/admin/category/:categoryID/:sort?", validateAdmin, (request, response) => {
 
 //   let orderByColumn = "titleSort";
 
-//   if (req.params.sort == "publicationDate") {
+//   if (request.params.sort == "publicationDate") {
 
 //     orderByColumn = "publicationDate";
 
@@ -402,7 +402,7 @@ router.get("/broken/:titleID", (req, res) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": req.params.categoryID };
+//   const where = { "titles.categoryID": request.params.categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -428,14 +428,14 @@ router.get("/broken/:titleID", (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID records", records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
 
 //       } else {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID No Results");
 
-//         // res.status(200).send(`No ${ tableName } found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
+//         // response.status(200).send(`No ${ tableName } found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
 
 //       };
 
@@ -444,7 +444,7 @@ router.get("/broken/:titleID", (req, res) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /category/:categoryID error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /admin/category/:categoryID", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
 
@@ -454,8 +454,8 @@ router.get("/broken/:titleID", (req, res) => {
 /**************************************
  ***** Get Titles/Checklist *****
 ***************************************/
-// router.get("/checklist/list", validateSession, (req, res) => {
-router.get("/checklist", validateSession, (req, res) => {
+// router.get("/checklist/list", validateSession, (request, response) => {
+router.get("/checklist", validateSession, (request, response) => {
 
   // SELECT * FROM titles LEFT OUTER JOIN userReviews on titles.titleID = userReviews.titleID
   // LEFT OUTER JOIN categories on categories.categoryID = titles.categoryID
@@ -465,7 +465,7 @@ router.get("/checklist", validateSession, (req, res) => {
   // let orderByColumn = "titleSort";
   let orderByDynamic;
 
-  if (req.params.sort == "publicationDate") {
+  if (request.params.sort == "publicationDate") {
 
     // orderByColumn = "publicationDate";
     // orderByDynamic = [{ column: "publicationDate", order: "asc" }, { column: "titleSort", order: "asc" }];
@@ -510,7 +510,7 @@ router.get("/checklist", validateSession, (req, res) => {
 
   // ORDER BY titleSort ASC
 
-  let sqlQuery = `SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${req.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1 UNION ALL SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE titles.titleID NOT IN (SELECT titles.titleID FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${req.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1) AND titles.active = 1 AND categories.active = 1 ORDER BY ${orderByDynamic}`;
+  let sqlQuery = `SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${request.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1 UNION ALL SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE titles.titleID NOT IN (SELECT titles.titleID FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${request.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1) AND titles.active = 1 AND categories.active = 1 ORDER BY ${orderByDynamic}`;
 
   // console.log(`${ controllerName } - controller`, GetDateTime(), "get / sqlQuery", sqlQuery);
 
@@ -521,10 +521,10 @@ router.get("/checklist", validateSession, (req, res) => {
   //   .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
   //   // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
   //   // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-  //   // .where("users.userID", req.user.userID)
-  //   // .where("userReviews.userID", req.user.userID)
-  //   .where(function () { this.where("userReviews.userID", req.user.userID).orWhereNull("userReviews.userID"); })
-  //   // .where("userID", req.user.userID)
+  //   // .where("users.userID", request.user.userID)
+  //   // .where("userReviews.userID", request.user.userID)
+  //   .where(function () { this.where("userReviews.userID", request.user.userID).orWhereNull("userReviews.userID"); })
+  //   // .where("userID", request.user.userID)
   //   // .where(activeChecklist)
   //   .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
   //   .where({ "titles.active": true, "categories.active": true })
@@ -540,14 +540,14 @@ router.get("/checklist", validateSession, (req, res) => {
       if (records.length > 0) {
         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist records[0]", records[0]);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records[0] });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records[0] });
 
       } else {
         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist No Results");
 
-        // res.status(200).send(`No ${ tableName } found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${ tableName } found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -556,7 +556,7 @@ router.get("/checklist", validateSession, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /checklist error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /checklist", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -566,11 +566,11 @@ router.get("/checklist", validateSession, (req, res) => {
 /**************************************
  ***** Get Titles/Checklist By CategoryID *****
 ***************************************/
-// router.get("/checklist/:categoryID/:sort?", validateSession, (req, res) => {
+// router.get("/checklist/:categoryID/:sort?", validateSession, (request, response) => {
 
 //   let orderByColumn = "titleSort";
 
-//   if (req.params.sort == "publicationDate") {
+//   if (request.params.sort == "publicationDate") {
 
 //     orderByColumn = "publicationDate";
 
@@ -582,7 +582,7 @@ router.get("/checklist", validateSession, (req, res) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": req.params.categoryID };
+//   const where = { "titles.categoryID": request.params.categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -594,7 +594,7 @@ router.get("/checklist", validateSession, (req, res) => {
 //     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
 //     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
 //     .where(where)
-//     .where("users.userID", req.user.userID)
+//     .where("users.userID", request.user.userID)
 //     .where(activeChecklist)
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
@@ -606,14 +606,14 @@ router.get("/checklist", validateSession, (req, res) => {
 //       if (records.length > 0) {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/:categoryID records", records);
 
-//         res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
+//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${ tableName }.`, records: records });
 
 //       } else {
 //         // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/:categoryID No Results");
 
-//         // res.status(200).send(`No ${ tableName } found.`);
-//         // res.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
-//         res.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
+//         // response.status(200).send(`No ${ tableName } found.`);
+//         // response.status(200).send({resultsFound: false, message: `No ${ tableName } found.`})
+//         response.status(200).json({ resultsFound: false, message: `No ${ tableName } found.` });
 
 //       };
 
@@ -622,7 +622,7 @@ router.get("/checklist", validateSession, (req, res) => {
 //       console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist/:categoryID error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /checklist/:categoryID", records, error);
-//       res.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
+//       response.status(500).json({ resultsFound: false, message: `No ${ tableName } found.`, error: error });
 
 //     });
 
@@ -633,20 +633,20 @@ router.get("/checklist", validateSession, (req, res) => {
  *** Add Title ***************
 *********************************/
 // * Allows an admin to add a new title -- 03/28/2021 MF
-router.post("/", validateAdmin, (req, res) => {
+router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleName: req.body.title.titleName,
-    titleSort: req.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
-    titleURL: req.body.title.titleURL,
-    authorFirstName: req.body.title.authorFirstName,
-    authorLastName: req.body.title.authorLastName,
-    submissionDate: req.body.title.submissionDate,
-    publicationDate: req.body.title.publicationDate,
-    imageName: req.body.title.imageName,
-    categoryID: req.body.title.categoryID,
-    shortDescription: req.body.title.shortDescription,
-    urlPKDWeb: req.body.title.urlPKDWeb,
+    titleName: request.body.title.titleName,
+    titleSort: request.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleURL: request.body.title.titleURL,
+    authorFirstName: request.body.title.authorFirstName,
+    authorLastName: request.body.title.authorLastName,
+    submissionDate: request.body.title.submissionDate,
+    publicationDate: request.body.title.publicationDate,
+    imageName: request.body.title.imageName,
+    categoryID: request.body.title.categoryID,
+    shortDescription: request.body.title.shortDescription,
+    urlPKDWeb: request.body.title.urlPKDWeb,
     active: true
   };
 
@@ -665,14 +665,14 @@ router.post("/", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${ controllerName } - controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${ controllerName } - controller`, GetDateTime(), "post / No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
@@ -681,7 +681,7 @@ router.post("/", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
-      res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
 
@@ -692,24 +692,24 @@ router.post("/", validateAdmin, (req, res) => {
  ******* Update Title *******
  ***************************/
 // * Allows the admin to update the title including soft delete it -- 03/28/2021 MF
-router.put("/:titleID", validateAdmin, (req, res) => {
+router.put("/:titleID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleName: req.body.title.titleName,
-    titleSort: req.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
-    titleURL: req.body.title.titleURL,
-    authorFirstName: req.body.title.authorFirstName,
-    authorLastName: req.body.title.authorLastName,
-    submissionDate: req.body.title.submissionDate,
-    publicationDate: req.body.title.publicationDate,
-    imageName: req.body.title.imageName,
-    categoryID: req.body.title.categoryID,
-    shortDescription: req.body.title.shortDescription,
-    urlPKDWeb: req.body.title.urlPKDWeb,
-    active: req.body.title.active
+    titleName: request.body.title.titleName,
+    titleSort: request.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleURL: request.body.title.titleURL,
+    authorFirstName: request.body.title.authorFirstName,
+    authorLastName: request.body.title.authorLastName,
+    submissionDate: request.body.title.submissionDate,
+    publicationDate: request.body.title.publicationDate,
+    imageName: request.body.title.imageName,
+    categoryID: request.body.title.categoryID,
+    shortDescription: request.body.title.shortDescription,
+    urlPKDWeb: request.body.title.urlPKDWeb,
+    active: request.body.title.active
   };
 
-  const where = { titleID: req.params.titleID };
+  const where = { titleID: request.params.titleID };
 
   db(tableName)
     .where(where)
@@ -725,14 +725,14 @@ router.put("/:titleID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${ controllerName } - controller`, GetDateTime(), `put /: ${ controllerName }ID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${ controllerName } - controller`, GetDateTime(), `put /: ${ controllerName }ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
@@ -741,7 +741,7 @@ router.put("/:titleID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /: ${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 
@@ -752,9 +752,9 @@ router.put("/:titleID", validateAdmin, (req, res) => {
  ******* Delete Title *******
  ***************************/
 // * Allows an admin to hard delete a title -- 03/28/2021 MF
-router.delete("/:titleID", validateAdmin, (req, res) => {
+router.delete("/:titleID", validateAdmin, (request, response) => {
 
-  const where = { titleID: req.params.titleID };
+  const where = { titleID: request.params.titleID };
 
   db(tableName)
     .where(where)
@@ -770,14 +770,14 @@ router.delete("/:titleID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, titleID: req.params.titleID });
+        response.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, titleID: request.params.titleID });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", titleID: req.params.titleID });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordDeleted: false, message: "Nothing to delete.", titleID: request.params.titleID });
 
       };
 
@@ -786,7 +786,7 @@ router.delete("/:titleID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
-      res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+      response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });
 

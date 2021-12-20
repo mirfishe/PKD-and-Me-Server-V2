@@ -194,7 +194,7 @@ let records;
 /******************************
  ***** Get *********
  ******************************/
-router.get("/", (req, res) => {
+router.get("/", (request, response) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
@@ -220,14 +220,14 @@ router.get("/", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -236,7 +236,7 @@ router.get("/", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -246,7 +246,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Get New Items To Review  *********
  ******************************/
-router.get("/review", (req, res) => {
+router.get("/review", (request, response) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
@@ -272,14 +272,14 @@ router.get("/review", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /review ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /review No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -288,7 +288,7 @@ router.get("/review", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /review", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -298,9 +298,9 @@ router.get("/review", (req, res) => {
 /******************************
  ***** Get *********
  ******************************/
-router.get("/top/:topNumber", (req, res) => {
+router.get("/top/:topNumber", (request, response) => {
 
-  let topNumber = req.params.topNumber;
+  let topNumber = request.params.topNumber;
 
   if (isNaN(topNumber.toString().trim()) === true) {
 
@@ -335,14 +335,14 @@ router.get("/top/:topNumber", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /top/:topNumber ${tableName}`, records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -351,7 +351,7 @@ router.get("/top/:topNumber", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /top/:topNumber", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -363,7 +363,7 @@ router.get("/top/:topNumber", (req, res) => {
 /******************************
  ***** Fetch  *********
  ******************************/
-router.get("/new", (req, res) => {
+router.get("/new", (request, response) => {
 
   let Parser = require('rss-parser');
   let rssParser = new Parser({
@@ -483,14 +483,14 @@ router.get("/new", (req, res) => {
           if (records > 0) {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-            // res.status(200).send("No records found.");
-            // res.status(200).send({resultsFound: false, message: "No records found."})
-            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+            // response.status(200).send("No records found.");
+            // response.status(200).send({resultsFound: false, message: "No records found."})
+            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
 
           };
 
@@ -499,7 +499,7 @@ router.get("/new", (req, res) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
 
@@ -614,14 +614,14 @@ router.get("/new", (req, res) => {
           if (records > 0) {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-            // res.status(200).send("No records found.");
-            // res.status(200).send({resultsFound: false, message: "No records found."})
-            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+            // response.status(200).send("No records found.");
+            // response.status(200).send({resultsFound: false, message: "No records found."})
+            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
 
           };
 
@@ -630,7 +630,7 @@ router.get("/new", (req, res) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
 
@@ -745,14 +745,14 @@ router.get("/new", (req, res) => {
           if (records > 0) {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-            // res.status(200).send("No records found.");
-            // res.status(200).send({resultsFound: false, message: "No records found."})
-            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+            // response.status(200).send("No records found.");
+            // response.status(200).send({resultsFound: false, message: "No records found."})
+            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
 
           };
 
@@ -761,7 +761,7 @@ router.get("/new", (req, res) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
 
@@ -876,14 +876,14 @@ router.get("/new", (req, res) => {
           if (records > 0) {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-            // res.status(200).send("No records found.");
-            // res.status(200).send({resultsFound: false, message: "No records found."})
-            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+            // response.status(200).send("No records found.");
+            // response.status(200).send({resultsFound: false, message: "No records found."})
+            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
 
           };
 
@@ -892,7 +892,7 @@ router.get("/new", (req, res) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
 
@@ -1007,14 +1007,14 @@ router.get("/new", (req, res) => {
           if (records > 0) {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-            // res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
           } else {
             // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-            // res.status(200).send("No records found.");
-            // res.status(200).send({resultsFound: false, message: "No records found."})
-            // res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+            // response.status(200).send("No records found.");
+            // response.status(200).send({resultsFound: false, message: "No records found."})
+            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
 
           };
 
@@ -1023,7 +1023,7 @@ router.get("/new", (req, res) => {
           console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
         });
 
@@ -1034,7 +1034,7 @@ router.get("/new", (req, res) => {
   })();
 
 
-  res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.` });
+  response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.` });
 
 });
 
@@ -1042,7 +1042,7 @@ router.get("/new", (req, res) => {
 /******************************
  ***** Fetch  *********
  ******************************/
-router.get("/update", (req, res) => {
+router.get("/update", (request, response) => {
 
   // INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)
 
@@ -1062,14 +1062,14 @@ router.get("/update", (req, res) => {
       if (records > 0) {
         console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /update No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: records });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: records });
 
       };
 
@@ -1078,7 +1078,7 @@ router.get("/update", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /update", records, error);
-      // res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      // response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
 
@@ -1088,7 +1088,7 @@ router.get("/update", (req, res) => {
 /******************************
  ***** Mark All Viewed  *********
  ******************************/
-router.get("/markviewed", (req, res) => {
+router.get("/markviewed", (request, response) => {
 
   let sqlQuery = "UPDATE homeopapeRSS SET viewed = 1 WHERE viewed = 0";
 
@@ -1105,14 +1105,14 @@ router.get("/markviewed", (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /markviewed`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update." });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update." });
 
       };
 
@@ -1121,7 +1121,7 @@ router.get("/markviewed", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
 
       addErrorLog(`${controllerName}-controller`, "get /markviewed", records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 
@@ -1131,25 +1131,25 @@ router.get("/markviewed", (req, res) => {
 /* ******************************
  *** Add  ***************
 *********************************/
-router.post("/", validateAdmin, (req, res) => {
+router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
-    feedID: req.body.recordObject.feedID,
-    feedTitle: req.body.recordObject.feedTitle,
-    feedLink: req.body.recordObject.feedLink,
-    feedUpdated: req.body.recordObject.feedUpdated,
-    feedLastBuildDate: req.body.recordObject.feedLastBuildDate,
-    feedUrl: req.body.recordObject.feedUrl,
-    itemID: req.body.recordObject.itemID,
-    itemTitle: req.body.recordObject.itemTitle,
-    itemLink: req.body.recordObject.itemLink,
-    itemPubDate: req.body.recordObject.itemPubDate,
-    itemUpdated: req.body.recordObject.itemUpdated,
-    itemContent: req.body.recordObject.itemContent,
-    itemContentSnippet: req.body.recordObject.itemContentSnippet,
-    itemISODate: req.body.recordObject.itemISODate,
-    itemCreator: req.body.recordObject.itemCreator,
-    itemAuthor: req.body.recordObject.itemAuthor
+    feedID: request.body.recordObject.feedID,
+    feedTitle: request.body.recordObject.feedTitle,
+    feedLink: request.body.recordObject.feedLink,
+    feedUpdated: request.body.recordObject.feedUpdated,
+    feedLastBuildDate: request.body.recordObject.feedLastBuildDate,
+    feedUrl: request.body.recordObject.feedUrl,
+    itemID: request.body.recordObject.itemID,
+    itemTitle: request.body.recordObject.itemTitle,
+    itemLink: request.body.recordObject.itemLink,
+    itemPubDate: request.body.recordObject.itemPubDate,
+    itemUpdated: request.body.recordObject.itemUpdated,
+    itemContent: request.body.recordObject.itemContent,
+    itemContentSnippet: request.body.recordObject.itemContentSnippet,
+    itemISODate: request.body.recordObject.itemISODate,
+    itemCreator: request.body.recordObject.itemCreator,
+    itemAuthor: request.body.recordObject.itemAuthor
   };
 
   db(tableName)
@@ -1165,14 +1165,14 @@ router.post("/", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        res.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
 
       };
 
@@ -1181,7 +1181,7 @@ router.post("/", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
-      res.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
 
     });
 
@@ -1192,17 +1192,17 @@ router.post("/", validateAdmin, (req, res) => {
  ******* Hide Entry *******
  ***************************/
 // * Allows the admin to display or not display an entry. -- 08/13/2021 MF
-router.put("/display/:itemID", validateAdmin, (req, res) => {
+router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    display: req.body.recordObject.display
+    display: request.body.recordObject.display
   };
 
-  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
-  // const where = { itemID: req.params.itemID };
+  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID itemID`, itemID);
@@ -1221,14 +1221,14 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
@@ -1237,7 +1237,7 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /display/:itemID", records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 
@@ -1248,17 +1248,17 @@ router.put("/display/:itemID", validateAdmin, (req, res) => {
  ******* Posted Entry *******
  ***************************/
 // * Allows the admin to mark an entry as posted. -- 09/10/2021 MF
-router.put("/posted/:itemID", validateAdmin, (req, res) => {
+router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    posted: req.body.recordObject.posted
+    posted: request.body.recordObject.posted
   };
 
-  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
-  // const where = { itemID: req.params.itemID };
+  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID itemID`, itemID);
@@ -1277,14 +1277,14 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
@@ -1293,7 +1293,7 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /posted/:itemID", records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 
@@ -1304,17 +1304,17 @@ router.put("/posted/:itemID", validateAdmin, (req, res) => {
  ******* Always Filter Entry *******
  ***************************/
 // * Allows the admin to mark an entry as always filter. -- 09/10/2021 MF
-router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
+router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    alwaysFilter: req.body.recordObject.alwaysFilter
+    alwaysFilter: request.body.recordObject.alwaysFilter
   };
 
-  let itemID = `tag:google.com,2013:googlealerts/feed:${req.params.itemID}`;
+  let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
   // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
 
-  // const where = { itemID: req.params.itemID };
+  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID itemID`, itemID);
@@ -1333,14 +1333,14 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID records`, records);
 
-        res.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
 
       };
 
@@ -1349,7 +1349,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /alwaysFilter/:itemID", records, error);
-      res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 

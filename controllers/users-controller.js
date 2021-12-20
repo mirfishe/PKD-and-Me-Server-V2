@@ -27,16 +27,16 @@ let records;
 /* ***********************************
  *** User Registration ***************
 *********************************** */
-router.post("/register", (req, res) => {
+router.post("/register", (request, response) => {
 
   const recordObject = {
-    firstName: req.body.user.firstName,
-    lastName: req.body.user.lastName,
-    email: req.body.user.email,
-    password: bcrypt.hashSync(req.body.user.password)
+    firstName: request.body.user.firstName,
+    lastName: request.body.user.lastName,
+    email: request.body.user.email,
+    password: bcrypt.hashSync(request.body.user.password)
   };
 
-  if (req.body.user.email.match(emailRegExp)) {
+  if (request.body.user.email.match(emailRegExp)) {
 
     db(tableName)
       // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
@@ -55,7 +55,7 @@ router.post("/register", (req, res) => {
           // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
           let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "1d" });
 
-          res.json({
+          response.json({
             // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
             // user:   recordObject,
             userID: recordObject.userID,
@@ -94,20 +94,20 @@ router.post("/register", (req, res) => {
 
           };
 
-          res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
+          response.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
 
         })
       .catch((error) => {
         console.log(`${controllerName}-controller`, GetDateTime(), "post /register error", error);
 
         addErrorLog(`${controllerName}-controller`, "post /register", records, error);
-        res.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
+        response.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
 
       });
 
   } else {
 
-    res.status(200).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Please provide a valid email address." });
+    response.status(200).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Please provide a valid email address." });
 
   };
 
@@ -117,9 +117,9 @@ router.post("/register", (req, res) => {
 /* ***********************************
  *** User Login **********************
 *********************************** */
-router.post("/login", (req, res) => {
+router.post("/login", (request, response) => {
 
-  const where = { email: req.body.user.email, active: true };
+  const where = { email: request.body.user.email, active: true };
 
   db.select(select)
     .from(tableName)
@@ -131,7 +131,7 @@ router.post("/login", (req, res) => {
 
         if (records.length > 0) {
 
-          bcrypt.compare(req.body.user.password, records[0].password, (error, matches) => {
+          bcrypt.compare(request.body.user.password, records[0].password, (error, matches) => {
 
             if (matches) {
 
@@ -139,7 +139,7 @@ router.post("/login", (req, res) => {
               // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
               let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "1d" });
 
-              res.status(200).json({
+              response.status(200).json({
                 // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
                 // user:   records[0],
                 userID: records[0].userID,
@@ -159,7 +159,7 @@ router.post("/login", (req, res) => {
             } else {
 
               console.log(`${controllerName}-controller`, GetDateTime(), "post /login Login failed. 401");
-              res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
+              response.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
 
@@ -168,7 +168,7 @@ router.post("/login", (req, res) => {
         } else {
 
           // console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to authenticate. 401");
-          res.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
+          response.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
 
@@ -177,7 +177,7 @@ router.post("/login", (req, res) => {
 
         console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to process. 501 error", error);
 
-        res.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
+        response.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
     )
@@ -185,7 +185,7 @@ router.post("/login", (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "post /login error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /login", records, error);
-      res.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
+      response.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
 
     });
 });
@@ -195,7 +195,7 @@ router.post("/login", (req, res) => {
  ***** Get Users *****
  ******************************/
 // * Allows an admin to view all the users -- 03/28/2021 MF
-router.get("/admin", validateAdmin, (req, res) => {
+router.get("/admin", validateAdmin, (request, response) => {
 
   db.select(select)
     .from(tableName)
@@ -207,14 +207,14 @@ router.get("/admin", validateAdmin, (req, res) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin records", records);
 
-        res.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -223,7 +223,7 @@ router.get("/admin", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -234,9 +234,9 @@ router.get("/admin", validateAdmin, (req, res) => {
  ***** Get User By UserID *******
 *******************************/
 // * Returns User information for the logged in user -- 03/28/2021 MF
-router.get("/", validateSession, (req, res) => {
+router.get("/", validateSession, (request, response) => {
 
-  const where = { userID: req.user.userID };
+  const where = { userID: request.user.userID };
 
   db.select(select)
     .from(tableName)
@@ -249,8 +249,8 @@ router.get("/", validateSession, (req, res) => {
       if (records != null) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records[0]);
 
-        // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
-        res.status(200).json({
+        // response.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
+        response.status(200).json({
           // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
           userID: records[0].userID,
@@ -267,9 +267,9 @@ router.get("/", validateSession, (req, res) => {
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -278,7 +278,7 @@ router.get("/", validateSession, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -289,9 +289,9 @@ router.get("/", validateSession, (req, res) => {
  ***** Get User By UserID *******
 *******************************/
 // Returns User information for the admin -- 03/28/2021 MF
-router.get("/:userID", validateAdmin, (req, res) => {
+router.get("/:userID", validateAdmin, (request, response) => {
 
-  const where = { userID: req.params.userID };
+  const where = { userID: request.params.userID };
 
   db.select(select)
     .from(tableName)
@@ -304,8 +304,8 @@ router.get("/:userID", validateAdmin, (req, res) => {
       if (records != null) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records[0]);
 
-        // res.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
-        res.status(200).json({
+        // response.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
+        response.status(200).json({
           // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
           userID: records[0].userID,
@@ -322,9 +322,9 @@ router.get("/:userID", validateAdmin, (req, res) => {
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
-        // res.status(200).send(`No ${tableName} found.`);
-        // res.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        res.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        // response.status(200).send(`No ${tableName} found.`);
+        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
+        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
 
       };
 
@@ -333,7 +333,7 @@ router.get("/:userID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `get /:${controllerName}ID`, records, error);
-      res.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
 
     });
 
@@ -345,26 +345,26 @@ router.get("/:userID", validateAdmin, (req, res) => {
  ***************************/
 // * Allows an admin to update the user data including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
-router.put("/:userID", validateAdmin, (req, res) => {
+router.put("/:userID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    firstName: req.body.user.firstName,
-    lastName: req.body.user.lastName,
-    email: req.body.user.email,
-    updatedBy: req.user.userID,
-    active: req.body.user.active
+    firstName: request.body.user.firstName,
+    lastName: request.body.user.lastName,
+    email: request.body.user.email,
+    updatedBy: request.user.userID,
+    active: request.body.user.active
   };
 
   // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (req.body.user.password) {
+  if (request.body.user.password) {
 
-    Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.user.password) });
 
   };
 
-  const where = { userID: req.params.userID };
+  const where = { userID: request.params.userID };
 
-  if (req.body.user.email.match(emailRegExp)) {
+  if (request.body.user.email.match(emailRegExp)) {
 
     db(tableName)
       .where(where)
@@ -377,7 +377,7 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
         if (records > 0) {
 
-          res.status(200).json({
+          response.status(200).json({
             // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
             // user:   recordObject,
             userID: recordObject.userID,
@@ -393,7 +393,7 @@ router.put("/:userID", validateAdmin, (req, res) => {
 
         } else {
 
-          res.status(200).json({ recordUpdated: false, message: `Not successfully updated${tableName}.` });
+          response.status(200).json({ recordUpdated: false, message: `Not successfully updated${tableName}.` });
 
         };
 
@@ -419,13 +419,13 @@ router.put("/:userID", validateAdmin, (req, res) => {
         };
 
         addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
-        res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
+        response.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
       });
 
   } else {
 
-    res.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+    response.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
 
   };
 
@@ -437,26 +437,26 @@ router.put("/:userID", validateAdmin, (req, res) => {
  ***************************/
 // * Allows a user to update their own record including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
-router.put("/", validateSession, (req, res) => {
+router.put("/", validateSession, (request, response) => {
 
   const recordObject = {
-    firstName: req.body.user.firstName,
-    lastName: req.body.user.lastName,
-    email: req.body.user.email,
-    updatedBy: req.user.userID,
-    active: req.body.user.active
+    firstName: request.body.user.firstName,
+    lastName: request.body.user.lastName,
+    email: request.body.user.email,
+    updatedBy: request.user.userID,
+    active: request.body.user.active
   };
 
   // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (req.body.user.password) {
+  if (request.body.user.password) {
 
-    Object.assign(recordObject, { password: bcrypt.hashSync(req.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.user.password) });
 
   };
 
-  const where = { userID: req.user.userID };
+  const where = { userID: request.user.userID };
 
-  if (req.body.user.email.match(emailRegExp)) {
+  if (request.body.user.email.match(emailRegExp)) {
 
     db(tableName)
       .where(where)
@@ -472,7 +472,7 @@ router.put("/", validateSession, (req, res) => {
 
             // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
             // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
-            res.json({
+            response.json({
               // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
               // user:   recordObject,
               userID: recordObject.userID,
@@ -490,7 +490,7 @@ router.put("/", validateSession, (req, res) => {
 
           } else {
 
-            res.status(200).json({ recordUpdated: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
+            response.status(200).json({ recordUpdated: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
 
           };
 
@@ -517,7 +517,7 @@ router.put("/", validateSession, (req, res) => {
           };
 
           addErrorLog(`${controllerName}-controller`, `put /`, records, error);
-          res.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
+          response.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
         }
 
@@ -525,13 +525,13 @@ router.put("/", validateSession, (req, res) => {
       .catch((error) => {
         console.log(`${controllerName}-controller`, GetDateTime(), "put / error", error);
 
-        res.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+        response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
       });
 
   } else {
 
-    res.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+    response.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
 
   };
 
@@ -542,9 +542,9 @@ router.put("/", validateSession, (req, res) => {
  ******* Delete User *******
  ***************************/
 // * Allows an admin to hard delete a user -- 03/28/2021 MF
-router.delete("/:userID", validateAdmin, (req, res) => {
+router.delete("/:userID", validateAdmin, (request, response) => {
 
-  const where = { userID: req.params.userID };
+  const where = { userID: request.params.userID };
 
   db(tableName)
     .where(where)
@@ -558,14 +558,14 @@ router.delete("/:userID", validateAdmin, (req, res) => {
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        res.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, userID: req.params.userID });
+        response.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, userID: request.params.userID });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
-        // res.status(200).send("No records found.");
-        // res.status(200).send({resultsFound: false, message: "No records found."})
-        res.status(200).json({ recordDeleted: false, message: "Nothing to delete.", userID: req.params.userID });
+        // response.status(200).send("No records found.");
+        // response.status(200).send({resultsFound: false, message: "No records found."})
+        response.status(200).json({ recordDeleted: false, message: "Nothing to delete.", userID: request.params.userID });
 
       };
 
@@ -574,7 +574,7 @@ router.delete("/:userID", validateAdmin, (req, res) => {
       console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
-      res.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+      response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
 
     });
 

@@ -19,7 +19,7 @@ let records;
 /******************************
  ***** Get Computer Logs *********
  ******************************/
-router.get("/", (req, res) => {
+router.get("/", (request, response) => {
 
   db.select(select)
     .from(tableName)
@@ -34,12 +34,12 @@ router.get("/", (req, res) => {
       if (records.length > 0) {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
 
       } else {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
-        res.status(200).json({ resultsFound: false, message: "No records found." });
+        response.status(200).json({ resultsFound: false, message: "No records found." });
 
       };
 
@@ -48,7 +48,7 @@ router.get("/", (req, res) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      res.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ resultsFound: true, message: "No records found." });
 
     });
 
@@ -58,7 +58,7 @@ router.get("/", (req, res) => {
 /******************************
  ***** Get Broken Links *********
  ******************************/
-router.get("/broken", (req, res) => {
+router.get("/broken", (request, response) => {
 
   db.select(select)
     .from("brokenLinks")
@@ -73,12 +73,12 @@ router.get("/broken", (req, res) => {
       if (records.length > 0) {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
-        res.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
 
       } else {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken No Results");
-        res.status(200).json({ resultsFound: false, message: "No records found." });
+        response.status(200).json({ resultsFound: false, message: "No records found." });
 
       };
 
@@ -87,7 +87,7 @@ router.get("/broken", (req, res) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /broken error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /broken", records, error);
-      res.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ resultsFound: true, message: "No records found." });
 
     });
 
@@ -98,34 +98,34 @@ router.get("/broken", (req, res) => {
  *** Add Computer Log *******
  ***************************/
 // * Enters a log entry from the data posted. -- 08/13/2021 MF
-router.post("/", (req, res) => {
+router.post("/", (request, response) => {
 
   db(tableName)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert({
 
-      title: req.body.recordObject.title,
-      href: req.body.recordObject.href,
-      applicationVersion: req.body.recordObject.applicationVersion,
+      title: request.body.recordObject.title,
+      href: request.body.recordObject.href,
+      applicationVersion: request.body.recordObject.applicationVersion,
 
-      ipAddress: req.body.recordObject.ipAddress,
-      lastAccessed: req.body.recordObject.lastAccessed,
+      ipAddress: request.body.recordObject.ipAddress,
+      lastAccessed: request.body.recordObject.lastAccessed,
 
-      city: req.body.recordObject.city,
-      state: req.body.recordObject.state,
-      countryCode: req.body.recordObject.countryCode,
-      countryName: req.body.recordObject.countryName,
+      city: request.body.recordObject.city,
+      state: request.body.recordObject.state,
+      countryCode: request.body.recordObject.countryCode,
+      countryName: request.body.recordObject.countryName,
 
       // * Additional information from https://geolocation-db.com/json/ -- 07/19/2021 MF
-      latitude: req.body.recordObject.latitude,
-      longitude: req.body.recordObject.longitude,
-      postal: req.body.recordObject.postal,
+      latitude: request.body.recordObject.latitude,
+      longitude: request.body.recordObject.longitude,
+      postal: request.body.recordObject.postal,
 
       // * Additional information from https://api.db-ip.com/v2/free/self -- 07/19/2021 MF
-      continentCode: req.body.recordObject.continentCode,
-      continentName: req.body.recordObject.continentName,
-      stateCode: req.body.recordObject.stateCode
+      continentCode: request.body.recordObject.continentCode,
+      continentName: request.body.recordObject.continentName,
+      stateCode: request.body.recordObject.stateCode
 
     })
     .then((results) => {
@@ -138,12 +138,12 @@ router.post("/", (req, res) => {
       if (records.length > 0) {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
-        res.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
-        res.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       };
 
@@ -152,7 +152,7 @@ router.post("/", (req, res) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
-      res.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
 
