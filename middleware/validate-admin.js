@@ -50,7 +50,6 @@ const validateAdmin = (request, response, next) => {
         .catch(error => next(error));
 
     } else {
-      // console.log(controllerName, GetDateTime(), "request.errors = error");
 
       request.errors = error;
       // return response.status(401).send({isAdmin: false, message: "Unauthorized."})
