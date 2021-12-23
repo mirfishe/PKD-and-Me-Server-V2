@@ -1,9 +1,9 @@
 
 # https://github.com/Huachao/vscode-restclient
 
-@baseURL = http://localhost:4000
+# @baseURL = http://localhost:4000
 
-# @baseURL = https://api.philipdick.com
+@baseURL = https://api.philipdick.com
 
 GET {{baseURL}}/categories
 

@@ -9,7 +9,8 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = require("../jwtSecret");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/appFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
