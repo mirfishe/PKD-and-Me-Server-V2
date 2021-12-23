@@ -51,44 +51,6 @@ router.get("/", validateAdmin, (request, response) => {
 });
 
 
-/**************************************
- ***** Get Error By ErrorID *****
-***************************************/
-// router.get("/:errorID", validateAdmin, (request, response) => {
-
-//   const where = { errorID: request.params.errorID };
-
-//   db.select(select)
-//     .from(tableName)
-//     .where(where)
-//     .then((records) => {
-
-//       if (records.length > 0) {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:errorID ${tableName}`, records);
-
-//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${controllerName}.`, records: records });
-
-//       } else {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), "get /:errorID No Results");
-
-//         // response.status(200).send(`No ${tableName} found.`);
-//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
-
-//       };
-
-//     })
-//     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), "get /:errorID error", error);
-
-//       addErrorLog(`${controllerName}-controller`, "get /:errorID", records, error);
-//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
-
-//     });
-
-// });
-
-
 /* ******************************
  *** Add Error ***************
 *********************************/
@@ -110,7 +72,7 @@ router.post("/", (request, response) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-      recordObject.errorID = records[0];
+      // recordObject.errorID = records[0];
 
       if (records > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);

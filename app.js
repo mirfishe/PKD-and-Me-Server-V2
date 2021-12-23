@@ -5,6 +5,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const test = require("./controllers/test-controller");
+
 const users = require("./controllers/users-controller");
 const userReviews = require("./controllers/userReviews-controller");
 const titles = require("./controllers/titles-controller");
@@ -20,6 +22,8 @@ const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
 const computerLogs = require("./controllers/computerLogs-controller");
 
+const computerLogs = require("./controllers/computerLogs-controller");
+
 app.use(express.json());
 
 // * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working. -- 08/13/2021 MF
@@ -31,6 +35,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(require("./middleware/headers"));
 
 };
+
+app.use("/test", test);
 
 app.use("/users", users);
 app.use("/userreviews", userReviews);
