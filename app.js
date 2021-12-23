@@ -5,6 +5,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const test = require("./controllers/test-controller");
+
 const users = require("./controllers/users-controller");
 const userReviews = require("./controllers/userReviews-controller");
 const titles = require("./controllers/titles-controller");
@@ -31,6 +33,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(require("./middleware/headers"));
 
 };
+
+app.use("/test", test);
 
 app.use("/users", users);
 app.use("/userreviews", userReviews);
