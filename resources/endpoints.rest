@@ -59,6 +59,14 @@ GET {{baseURL}}/fromthehomeopape/update
 
 ###
 
+GET {{baseURL}}/test/
+
+###
+
+GET {{baseURL}}/test/addline
+
+###
+
 https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468
 
 ###

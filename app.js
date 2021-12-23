@@ -22,8 +22,6 @@ const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
 const computerLogs = require("./controllers/computerLogs-controller");
 
-const computerLogs = require("./controllers/computerLogs-controller");
-
 app.use(express.json());
 
 // * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working. -- 08/13/2021 MF
