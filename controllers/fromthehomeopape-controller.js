@@ -5,7 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const { IsEmpty, GetDateTime, FormatTrim } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/appFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "fromthehomeopape";
@@ -302,7 +303,7 @@ router.get("/top/:topNumber", (request, response) => {
 
   let topNumber = request.params.topNumber;
 
-  if (isNaN(topNumber.toString().trim()) === true) {
+  if (isNaN(FormatTrim(topNumber)) === true) {
 
     topNumber = 10;
 

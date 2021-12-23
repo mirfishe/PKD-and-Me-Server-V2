@@ -5,7 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime, convertBitTrueFalse } = require("../utilities/sharedFunctions");
+const { IsEmpty, GetDateTime, FormatLowerCase } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/appFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "titles";
@@ -637,7 +638,7 @@ router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
     titleName: request.body.title.titleName,
-    titleSort: request.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleSort: FormatLowerCase(request.body.title.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
     titleURL: request.body.title.titleURL,
     authorFirstName: request.body.title.authorFirstName,
     authorLastName: request.body.title.authorLastName,
@@ -696,7 +697,7 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
   const recordObject = {
     titleName: request.body.title.titleName,
-    titleSort: request.body.title.titleName.toLowerCase().replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleSort: FormatLowerCase(request.body.title.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
     titleURL: request.body.title.titleURL,
     authorFirstName: request.body.title.authorFirstName,
     authorLastName: request.body.title.authorLastName,
