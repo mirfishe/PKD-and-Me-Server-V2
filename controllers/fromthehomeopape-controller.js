@@ -8,6 +8,7 @@ const validateAdmin = require("../middleware/validate-admin");
 const { IsEmpty, GetDateTime, FormatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/appFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
+const addLog = require("../utilities/addLog");
 
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
@@ -481,19 +482,21 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
+          // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          // if (records > 0) {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
+          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
-            // response.status(200).send("No records found.");
-            // response.status(200).send({resultsFound: false, message: "No records found."})
-            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          // } else {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          };
+          //   // response.status(200).send("No records found.");
+          //   // response.status(200).send({resultsFound: false, message: "No records found."})
+          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          // };
 
         })
         .catch((error) => {
@@ -612,19 +615,21 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
+          // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          // if (records > 0) {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
+          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
-            // response.status(200).send("No records found.");
-            // response.status(200).send({resultsFound: false, message: "No records found."})
-            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          // } else {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          };
+          //   // response.status(200).send("No records found.");
+          //   // response.status(200).send({resultsFound: false, message: "No records found."})
+          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          // };
 
         })
         .catch((error) => {
@@ -743,19 +748,21 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
+          // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          // if (records > 0) {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
+          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
-            // response.status(200).send("No records found.");
-            // response.status(200).send({resultsFound: false, message: "No records found."})
-            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          // } else {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          };
+          //   // response.status(200).send("No records found.");
+          //   // response.status(200).send({resultsFound: false, message: "No records found."})
+          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          // };
 
         })
         .catch((error) => {
@@ -874,19 +881,21 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
+          // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          // if (records > 0) {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
+          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
-            // response.status(200).send("No records found.");
-            // response.status(200).send({resultsFound: false, message: "No records found."})
-            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          // } else {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          };
+          //   // response.status(200).send("No records found.");
+          //   // response.status(200).send({resultsFound: false, message: "No records found."})
+          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          // };
 
         })
         .catch((error) => {
@@ -1005,19 +1014,21 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          if (records > 0) {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
+          // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-            // response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          // if (records > 0) {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          } else {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
+          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
 
-            // response.status(200).send("No records found.");
-            // response.status(200).send({resultsFound: false, message: "No records found."})
-            // response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          // } else {
+          //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          };
+          //   // response.status(200).send("No records found.");
+          //   // response.status(200).send({resultsFound: false, message: "No records found."})
+          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+
+          // };
 
         })
         .catch((error) => {
@@ -1034,6 +1045,7 @@ router.get("/new", (request, response) => {
 
   })();
 
+  addLog(`${controllerName}-controller`, "get /new ", JSON.stringify({ recordAdded: true, message: `Successfully created ${tableName}.` }));
 
   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.` });
 
@@ -1057,6 +1069,8 @@ router.get("/insert", (request, response) => {
     .then((records) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /insert records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
+
+      addLog(`${controllerName}-controller`, "get /insert", JSON.stringify({ records: records }));
 
       // records = convertBitTrueFalse(records);
 
@@ -1122,17 +1136,23 @@ router.get("/update", (request, response) => {
     .then((records) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
+      addLog(`${controllerName}-controller`, "get /update sqlQueryAlwaysFiltered", JSON.stringify({ records: records }));
+
       return db.raw(sqlQueryNeverDisplay);
 
     })
     .then((records) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
+      addLog(`${controllerName}-controller`, "get /update sqlQueryNeverDisplay", JSON.stringify({ records: records }));
+
       return db.raw(sqlQueryHideStories);
 
     })
     .then((records) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+
+      addLog(`${controllerName}-controller`, "get /update sqlQueryHideStories", JSON.stringify({ records: records }));
 
       response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
 
