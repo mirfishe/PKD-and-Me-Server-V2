@@ -1041,9 +1041,9 @@ router.get("/new", (request, response) => {
 
 
 /******************************
- ***** Fetch  *********
+ ***** Insert Fetch  *********
  ******************************/
-router.get("/update", (request, response) => {
+router.get("/insert", (request, response) => {
 
   // INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)
 
@@ -1051,22 +1051,22 @@ router.get("/update", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), "get /update", sqlQuery);
+  // console.log(`${controllerName}-controller`, GetDateTime(), "get /insert", sqlQuery);
 
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /insert records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (records > 0) {
-        console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /insert records", records);
 
         response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /update No Results");
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get /insert No Results");
 
         // response.status(200).send("No records found.");
         // response.status(200).send({resultsFound: false, message: "No records found."})
@@ -1076,10 +1076,72 @@ router.get("/update", (request, response) => {
 
     })
     .catch((error) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /insert error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /insert", records, error);
+      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+
+    });
+
+});
+
+
+/******************************
+ ***** Update Fetch  *********
+ ******************************/
+router.get("/update", (request, response) => {
+
+  // UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) IN (SELECT * FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) FROM homeopapeRSS WHERE alwaysFilter = 1) AS alwaysFiltered)
+
+  let sqlQueryAlwaysFiltered = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) IN (SELECT * FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) FROM homeopapeRSS WHERE alwaysFilter = 1) AS alwaysFiltered)";
+
+  // db.raw(sqlQueryAlwaysFiltered).toSQL();
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), "get /update", sqlQueryAlwaysFiltered);
+
+
+  // UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%') AS neverDisplay)
+
+  let sqlQueryNeverDisplay = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%') AS neverDisplay)";
+
+  // db.raw(sqlQueryNeverDisplay).toSQL();
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), "get /update", sqlQueryNeverDisplay);
+
+
+  // UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%') AS neverDisplay)
+
+  let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%') AS neverDisplay)";
+
+  // db.raw(sqlQueryHideStories).toSQL();
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), "get /update", sqlQueryHideStories);
+
+
+  db.raw(sqlQueryAlwaysFiltered)
+    .then((records) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+
+      return db.raw(sqlQueryNeverDisplay);
+
+    })
+    .then((records) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+
+      return db.raw(sqlQueryHideStories);
+
+    })
+    .then((records) => {
+      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+
+      response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
+
+    })
+    .catch((error) => {
       console.log(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /update", records, error);
-      // response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
     });
 

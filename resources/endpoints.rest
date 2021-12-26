@@ -37,6 +37,10 @@ GET {{baseURL}}/computerLogs
 
 ###
 
+GET {{baseURL}}/computerLogs/broken
+
+###
+
 GET {{baseURL}}/fromthehomeopape
 
 ###
@@ -55,6 +59,11 @@ GET {{baseURL}}/fromthehomeopape/new
 ###
 
 # Runs the inserting of new data from the import. -- 11/14/2021 MF
+GET {{baseURL}}/fromthehomeopape/insert
+
+###
+
+# Runs the updating of new data from the import. -- 12/26/2021 MF
 GET {{baseURL}}/fromthehomeopape/update
 
 ###
@@ -66,6 +75,7 @@ GET {{baseURL}}/test/
 GET {{baseURL}}/test/addline
 
 ###
+
 
 https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468
 
