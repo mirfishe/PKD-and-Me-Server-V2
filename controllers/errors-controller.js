@@ -10,6 +10,7 @@ const addErrorLog = require("../utilities/addErrorLog");
 const controllerName = "errors";
 const tableName = "errorLogs";
 const select = "*";
+const limit = 50;
 const orderBy = [{ column: "createDate", order: "desc" }];
 
 let records;
@@ -20,15 +21,18 @@ let records;
  ******************************/
 router.get("/", validateAdmin, (request, response) => {
 
-  // let sqlQuery = `SELECT TOP (50) * FROM ${tableName} ORDER BY createDate DESC`;
+  // // let sqlQuery = `SELECT TOP (50) * FROM ${tableName} ORDER BY createDate DESC`;
+  // // * SQL syntax for MySQL. -- 12/27/2021 MF
+  // let sqlQuery = `SELECT * FROM ${tableName} ORDER BY createDate DESC LIMIT 50`;
 
-  // db.raw(sqlQuery).toSQL();
+  // // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
-  // db.raw(sqlQuery);
+  // db.raw(sqlQuery)
   db.select(select)
     .from(tableName)
+    .limit(limit)
     .orderBy(orderBy)
     .then((records) => {
 
