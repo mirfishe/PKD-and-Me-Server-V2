@@ -14,6 +14,7 @@ const editions = require("./controllers/editions-controller");
 const media = require("./controllers/media-controller");
 const categories = require("./controllers/categories-controller");
 
+const logs = require("./controllers/logs-controller");
 const errors = require("./controllers/errors-controller");
 const comments = require("./controllers/comments-controller");
 const titleSuggestions = require("./controllers/titleSuggestions-controller");
@@ -43,6 +44,7 @@ app.use("/editions", editions);
 app.use("/media", media);
 app.use("/categories", categories);
 
+app.use("/logs", logs);
 app.use("/errors", errors);
 app.use("/comments", comments);
 app.use("/titleSuggestions", titleSuggestions);

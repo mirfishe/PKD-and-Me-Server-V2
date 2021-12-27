@@ -4,7 +4,7 @@ const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
-// const validateAdmin = require("../middleware/validate-admin");
+const validateAdmin = require("../middleware/validate-admin");
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -19,7 +19,7 @@ let records;
 /******************************
  ***** Get Computer Logs *********
  ******************************/
-router.get("/", (request, response) => {
+router.get("/", validateAdmin, (request, response) => {
 
   db.select(select)
     .from(tableName)
@@ -58,7 +58,7 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Broken Links *********
  ******************************/
-router.get("/broken", (request, response) => {
+router.get("/broken", validateAdmin, (request, response) => {
 
   db.select(select)
     .from("brokenLinks")

@@ -7,8 +7,8 @@ const validateAdmin = require("../middleware/validate-admin");
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
-const controllerName = "errors";
-const tableName = "errorLogs";
+const controllerName = "log";
+const tableName = "logs";
 const select = "*";
 const orderBy = [{ column: "createDate", order: "desc" }];
 
@@ -16,7 +16,7 @@ let records;
 
 
 /******************************
- ***** Get Errors *********
+ ***** Get Logs *********
  ******************************/
 router.get("/", validateAdmin, (request, response) => {
 
@@ -26,7 +26,7 @@ router.get("/", validateAdmin, (request, response) => {
 
   // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
-  // db.raw(sqlQuery);
+  // db.raw(sqlQuery)
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
@@ -58,16 +58,16 @@ router.get("/", validateAdmin, (request, response) => {
 });
 
 
-/* ******************************
- *** Add Error ***************
-*********************************/
+/***************************
+ *** Add Log *******
+ ***************************/
+// * Enters a log entry from the data posted. -- 04/14/2021 MF
 router.post("/", (request, response) => {
 
   const recordObject = {
     operation: request.body.recordObject.operation,
     componentName: request.body.recordObject.componentName,
     transactionData: JSON.stringify(request.body.recordObject.transactionData),
-    errorData: JSON.stringify(request.body.recordObject.errorData),
     createDate: request.body.recordObject.createDate
   };
 
