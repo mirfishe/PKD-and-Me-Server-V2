@@ -41,7 +41,7 @@ router.get("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -89,7 +89,7 @@ router.post("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
       response.status(500).json({ recordAdded: false, message: `Not successfully created ${controllerName}.`, error: error });

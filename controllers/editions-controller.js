@@ -74,7 +74,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -111,7 +111,7 @@ router.get("/broken/:editionID", (request, response) => {
       if (records.length > 0) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID ${tableName}`, records);
 
-        console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID records`, "editionID", records[0].editionID, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
+        // console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID records`, "editionID", records[0].editionID, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
 
         const recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
@@ -131,7 +131,7 @@ router.get("/broken/:editionID", (request, response) => {
 
           })
           .catch((error) => {
-            console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
+            console.error(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID`, error);
 
             addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
             // response.status(500).json({ recordAdded: false, message: `Not successfully created brokenLinks.`, error: error });
@@ -151,7 +151,7 @@ router.get("/broken/:editionID", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `get /broken/:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -209,7 +209,7 @@ router.get("/broken/:editionID", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -287,7 +287,7 @@ router.get("/broken/:editionID", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+//       console.error(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);  
 //       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -348,7 +348,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /ASIN/:ASIN", error);
 
       addErrorLog(`${controllerName}-controller`, "get /ASIN/:ASIN", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -392,7 +392,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
+//       console.error(`${controllerName}-controller`, GetDateTime(), "get /title/:titleID error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /title/:titleID", records, error);
 //       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -436,7 +436,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID error", error);
+//       console.error(`${controllerName}-controller`, GetDateTime(), "get /media/:mediaID error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
 //       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -467,7 +467,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //         response.status(200).json({message: `Successfully retrieved ${tableName}.`, records: records });
 //     })
 //     .catch((error) => {
-//         console.log(`${controllerName}-controller`, GetDateTime(), "get /category/:categoryID error", error);
+//         console.error(`${controllerName}-controller`, GetDateTime(), "get /category/:categoryID error", error);
 
 //         addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
 //         response.status(500).json({resultsFound: false, message: `No ${tableName} found.`, error: error});
@@ -526,7 +526,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / error.name", error.name);
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / error.errors[0].message", error.errors[0].message);
 
@@ -603,7 +603,7 @@ router.put("/:editionID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
@@ -648,7 +648,7 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });

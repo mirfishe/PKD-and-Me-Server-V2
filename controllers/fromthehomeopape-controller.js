@@ -235,7 +235,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -287,7 +287,7 @@ router.get("/review", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /review", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -350,7 +350,7 @@ router.get("/top/:topNumber", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /top/:topNumber", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -500,7 +500,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
+          console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -633,7 +633,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
+          console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -766,7 +766,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
+          console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -899,7 +899,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
+          console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -1032,7 +1032,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
-          console.log(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
+          console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
           response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -1090,7 +1090,7 @@ router.get("/insert", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /insert error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /insert error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /insert", records, error);
       response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -1134,7 +1134,7 @@ router.get("/update", (request, response) => {
 
   db.raw(sqlQueryAlwaysFiltered)
     .then((records) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
       addLog(`${controllerName}-controller`, "get /update sqlQueryAlwaysFiltered", JSON.stringify({ records: records }));
 
@@ -1142,7 +1142,7 @@ router.get("/update", (request, response) => {
 
     })
     .then((records) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
       addLog(`${controllerName}-controller`, "get /update sqlQueryNeverDisplay", JSON.stringify({ records: records }));
 
@@ -1150,7 +1150,7 @@ router.get("/update", (request, response) => {
 
     })
     .then((records) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
+      // console.log(`${controllerName}-controller`, GetDateTime(), "get /update records", records);
 
       addLog(`${controllerName}-controller`, "get /update sqlQueryHideStories", JSON.stringify({ records: records }));
 
@@ -1158,7 +1158,7 @@ router.get("/update", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /update", records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
@@ -1201,7 +1201,7 @@ router.get("/markviewed", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
 
       addErrorLog(`${controllerName}-controller`, "get /markviewed", records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
@@ -1261,7 +1261,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
       response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
@@ -1317,7 +1317,7 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /display/:itemID", records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
@@ -1373,7 +1373,7 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /posted/:itemID", records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
@@ -1429,7 +1429,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /alwaysFilter/:itemID", records, error);
       response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });

@@ -47,7 +47,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -90,7 +90,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });

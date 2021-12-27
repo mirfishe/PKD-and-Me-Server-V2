@@ -41,7 +41,7 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
 
     })
     .catch((error) => {
-      console.log(functionName, GetDateTime(), "post / error", error);
+      console.error(functionName, GetDateTime(), "post / error", error);
 
       // response.status(500).json({ recordAdded: false, message: `Not successfully created ${functionName}.`, error: error });
 

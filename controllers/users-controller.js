@@ -99,7 +99,7 @@ router.post("/register", (request, response) => {
 
         })
       .catch((error) => {
-        console.log(`${controllerName}-controller`, GetDateTime(), "post /register error", error);
+        console.error(`${controllerName}-controller`, GetDateTime(), "post /register error", error);
 
         addErrorLog(`${controllerName}-controller`, "post /register", records, error);
         response.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
@@ -183,7 +183,7 @@ router.post("/login", (request, response) => {
       }
     )
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "post /login error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "post /login error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /login", records, error);
       response.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
@@ -221,7 +221,7 @@ router.get("/admin", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -276,7 +276,7 @@ router.get("/", validateSession, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -331,7 +331,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `get /:${controllerName}ID`, records, error);
       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
@@ -400,7 +400,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
       })
       .catch((error) => {
-        console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+        console.error(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.name`, error.name);
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error.errors[0].message`, error.errors[0].message);
 
@@ -524,7 +524,7 @@ router.put("/", validateSession, (request, response) => {
 
       )
       .catch((error) => {
-        console.log(`${controllerName}-controller`, GetDateTime(), "put / error", error);
+        console.error(`${controllerName}-controller`, GetDateTime(), "put / error", error);
 
         response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
 
@@ -572,7 +572,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });

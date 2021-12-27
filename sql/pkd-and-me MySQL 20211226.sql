@@ -81,6 +81,19 @@ CREATE TABLE `brokenLinks` (
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `commentID` int NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `dateEntered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`commentID`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -1056,6 +1069,26 @@ INSERT INTO `titles` (`titleID`, `titleName`, `titleSort`, `titleURL`, `authorFi
 (259, 'Appendix Dick', 'appendix dick', 'Appendix-Dick', 'Tommi', 'Brem', NULL, '2016-04-26', 'https://philipdick.com/images/covers/AppendixDick.jpg', 4, 'All names from all novels & short stories by Philip K. Dick (\"Minority Report\", \"Paycheck\", \"The Man in the High Castle\"), sorted alphabetically (as as alphabetically for each title and year of creation).\n\nhttp://www.appendix-dick.com', NULL, 1, '2021-06-26 02:55:23'),
 (260, 'Ubik', 'ubik', 'Ubik-Video-Game', NULL, 'Cryo Interactive Entertainment', NULL, '1998-01-01', 'https://philipdick.com/images/covers/UbikVideoGame.jpg', 11, 'Set in a 3D universe of decline and degradation, Ubik places you face-to-face with notorious gangs of agents fighting a vicious battle for information, power and money.\n\nAll in real-time 3D, these agents use a stunning array of weapons and psychic powers.\n\nYou\'re in charge. Select your team members, lead your squad and balance mind-power with firepower.\n\nAct fast. In the world of Ubik, trouble knows where you are.', NULL, 1, '2021-08-01 16:41:04'),
 (261, 'Blade Runner Rogue', 'blade runner rogue', 'Blade-Runner-Rogue', NULL, 'Next Games', NULL, '2019-01-16', 'https://philipdick.com/images/covers/BladeRunnerRogue.jpg', 11, 'Blade Runner Rogue is a turn-based, tactical, sci-fi RPG set in the neo-noir cyberpunk world of Blade Runner.\n\n\nAs a newly appointed blade runner in this sci-fi RPG mobile game, you’re tasked with hunting down rogue replicants as you collect clues to unravel mysteries in neo-noir cyberpunk Los Angeles. Team up with friends, take on your opponents in exciting sci-fi RPG turn-based battles and unleash unique abilities to gain the advantage. In the end it’s up to you to decide the fate of your targets! Will they be retired or will they be spared?\n\n\nFeatures:\n\n‣ Investigate multi-branched stories where each choice makes a difference to your journey.\n\n‣ Collect clues, improve your team and gain an advantage over your enemies.\n\n‣ Unlock unique skills and become stronger on each battle attempt.\n\n‣ Discover 100+ of your favourite characters from the Blade Runner universe.\n\n‣ Power up your team in this sci-fi squad RPG to take on more challenging targets with increasingly higher risks and even bigger rewards.\n\n‣ Visit familiar locations from the films and survive the seedy streets of the beautifully stylized neo-noir cyberpunk Los Angeles.\n\n‣ Join “The Hunt” and explore the thrilling sci-fi RPG world of Blade Runner with your fellow blade runners.\n\n\nYour legacy starts today!', NULL, 1, '2021-09-27 04:11:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `titlesuggestions`
+--
+
+CREATE TABLE IF NOT EXISTS `titleSuggestions` (
+  `titleSuggestionID` int NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `titleName` varchar(255) NOT NULL,
+  `titleURL` varchar(255) DEFAULT NULL,
+  `authorFirstName` varchar(255) DEFAULT NULL,
+  `authorLastName` varchar(255) DEFAULT NULL,
+  `publicationDate` date DEFAULT NULL,
+  `shortDescription` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `dateEntered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`titleSuggestionID`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
