@@ -20,8 +20,6 @@ const tableName = "users";
 const select = "*";
 const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", order: "desc" }];
 
-// TODO: Fix all the user administration routes below. They assume that no records are returned after the add, update or delete. -- 08/13/2021 MF
-
 let records;
 
 
@@ -68,7 +66,8 @@ router.post("/register", (request, response) => {
             active: recordObject.active,
             isLoggedIn: true,
             isAdmin: recordObject.admin,
-            recordAdded: true,
+            transactionSuccess: true,
+            errorOccurred: false,
             message: `Successfully created ${controllerName}.`,
             sessionToken: token
           });
@@ -95,20 +94,22 @@ router.post("/register", (request, response) => {
 
           };
 
-          response.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
+          addErrorLog(`${controllerName}-controller`, "post /register", records, error);
+
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
 
         })
       .catch((error) => {
         console.error(`${controllerName}-controller`, GetDateTime(), "post /register error", error);
 
         addErrorLog(`${controllerName}-controller`, "post /register", records, error);
-        response.status(500).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
+        response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
 
       });
 
   } else {
 
-    response.status(200).json({ recordAdded: false, isLoggedIn: false, isAdmin: false, message: "Please provide a valid email address." });
+    response.status(200).json({ transactionSuccess: false, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Please provide a valid email address." });
 
   };
 
@@ -130,7 +131,7 @@ router.post("/login", (request, response) => {
 
         records = convertBitTrueFalse(records);
 
-        if (records.length > 0) {
+        if (IsEmpty(records) === false) {
 
           bcrypt.compare(request.body.user.password, records[0].password, (error, matches) => {
 
@@ -152,41 +153,44 @@ router.post("/login", (request, response) => {
                 active: records[0].active,
                 isLoggedIn: true,
                 isAdmin: records[0].admin,
-                resultsFound: true,
+                transactionSuccess: true,
+                errorOccurred: false,
                 message: `Successfully authenticated ${controllerName}.`,
                 sessionToken: token
               });
 
             } else {
+              // console.log(`${controllerName}-controller`, GetDateTime(), "post /login Login failed. 401");
 
-              console.log(`${controllerName}-controller`, GetDateTime(), "post /login Login failed. 401");
-              response.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
+              addErrorLog(`${controllerName}-controller`, "post /login Login failed. 401", JSON.stringify({ user: request.body.user }), null);
+              response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
 
           });
 
         } else {
-
           // console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to authenticate. 401");
-          response.status(401).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
+
+          addErrorLog(`${controllerName}-controller`, "post /login Login failed. 401", JSON.stringify({ user: request.body.user }), null);
+          response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
 
       },
       error => {
-
         console.log(`${controllerName}-controller`, GetDateTime(), "post /login Failed to process. 501 error", error);
 
-        response.status(501).send({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
+        addErrorLog(`${controllerName}-controller`, "post /login Login failed. 501", JSON.stringify({ user: request.body.user }), error);
+        response.status(501).send({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
     )
     .catch((error) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "post /login error", error);
 
-      addErrorLog(`${controllerName}-controller`, "post /login", records, error);
-      response.status(500).json({ resultsFound: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
+      addErrorLog(`${controllerName}-controller`, "post /login 500 error", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
 
     });
 });
@@ -205,17 +209,15 @@ router.get("/admin", validateAdmin, (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin records", records);
 
-        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -224,7 +226,7 @@ router.get("/admin", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -246,11 +248,11 @@ router.get("/", validateSession, (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      // if (records.length > 0) {
+      // if (IsEmpty(records) === false) {
       if (records != null) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records[0]);
 
-        // response.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
+        // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
         response.status(200).json({
           // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
@@ -261,16 +263,15 @@ router.get("/", validateSession, (request, response) => {
           updatedBy: records[0].updatedBy,
           admin: records[0].admin,
           active: records[0].active,
-          resultsFound: true,
+          transactionSuccess: true,
+          errorOccurred: false,
           message: `Successfully retrieved ${controllerName} information.`
         });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -279,7 +280,7 @@ router.get("/", validateSession, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -301,11 +302,11 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      // if (records.length > 0) {
+      // if (IsEmpty(records) === false) {
       if (records != null) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records[0]);
 
-        // response.status(200).json({records: records[0], resultsFound: true, message: `Successfully retrieved ${tableName}.`});
+        // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
         response.status(200).json({
           // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
           // user:   records[0],
@@ -316,16 +317,15 @@ router.get("/:userID", validateAdmin, (request, response) => {
           updatedBy: records[0].updatedBy,
           admin: records[0].admin,
           active: records[0].active,
-          resultsFound: true,
+          transactionSuccess: true,
+          errorOccurred: false,
           message: `Successfully retrieved ${controllerName} information.`
         });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -334,7 +334,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `get /:${controllerName}ID`, records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -376,7 +376,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
       .then((records) => {
         // * Returns the number of updated records. -- 08/13/2021 MF
 
-        if (records > 0) {
+        if (IsEmpty(records) === false) {
 
           response.status(200).json({
             // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
@@ -388,13 +388,14 @@ router.put("/:userID", validateAdmin, (request, response) => {
             updatedBy: recordObject.updatedBy,
             admin: recordObject.admin,
             active: recordObject.active,
-            recordUpdated: true,
+            transactionSuccess: true,
+            errorOccurred: false,
             message: `Successfully updated${controllerName}.`
           });
 
         } else {
 
-          response.status(200).json({ recordUpdated: false, message: `Not successfully updated${tableName}.` });
+          response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: false, errorOccurred: false, message: `Not successfully updated${tableName}.` });
 
         };
 
@@ -420,13 +421,13 @@ router.put("/:userID", validateAdmin, (request, response) => {
         };
 
         addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
-        response.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
+        response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
       });
 
   } else {
 
-    response.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+    response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
 
   };
 
@@ -469,7 +470,7 @@ router.put("/", validateSession, (request, response) => {
         updateSuccess = (records) => {
           // * Returns the number of updated records. -- 08/13/2021 MF
 
-          if (records > 0) {
+          if (IsEmpty(records) === false) {
 
             // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
             // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
@@ -484,14 +485,15 @@ router.put("/", validateSession, (request, response) => {
               admin: recordObject.admin,
               active: recordObject.active,
               isLoggedIn: true,
-              recordUpdated: true,
+              transactionSuccess: true,
+              errorOccurred: false,
               message: `Successfully updated ${controllerName}.`,
               // sessionToken:   token // * User gets a new sessionToken even if they haven't updated their password -- 03/28/2021 MF
             });
 
           } else {
 
-            response.status(200).json({ recordUpdated: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
+            response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
 
           };
 
@@ -518,7 +520,7 @@ router.put("/", validateSession, (request, response) => {
           };
 
           addErrorLog(`${controllerName}-controller`, `put /`, records, error);
-          response.status(500).json({ recordUpdated: false, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
         }
 
@@ -526,13 +528,13 @@ router.put("/", validateSession, (request, response) => {
       .catch((error) => {
         console.error(`${controllerName}-controller`, GetDateTime(), "put / error", error);
 
-        response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+        response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
       });
 
   } else {
 
-    response.status(200).json({ recordUpdated: false, message: "Please provide a valid email address." });
+    response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
 
   };
 
@@ -556,17 +558,15 @@ router.delete("/:userID", validateAdmin, (request, response) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
       // * Returns the number of deleted records. -- 08/13/2021 MF
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
 
-        response.status(200).json({ recordDeleted: true, message: `Successfully deleted ${tableName}.`, userID: request.params.userID });
+        response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: true, errorOccurred: false, message: "Successfully deleted.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordDeleted: false, message: "Nothing to delete.", userID: request.params.userID });
+        response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: false, errorOccurred: false, message: "Nothing to delete." });
 
       };
 
@@ -575,7 +575,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
-      response.status(500).json({ recordDeleted: false, message: `Not successfully deleted ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });
 

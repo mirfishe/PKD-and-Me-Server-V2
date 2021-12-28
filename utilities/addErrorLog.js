@@ -24,18 +24,14 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
       // console.log(functionName, GetDateTime(), "post / records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-      // recordObject.errorID = records[0];
-
-      // if (records > 0) {
+      // if (IsEmpty(records) === false) {
       //   // console.log(functionName, GetDateTime(), "post / records", records);
-      //   response.status(200).json({ recordAdded: true, message: `Successfully created ${functionName}.`, records: [recordObject] });
+      //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       // } else {
       //   // console.log(functionName, GetDateTime(), "post / No Results");
 
-      //   // response.status(200).send("No records found.");
-      //   // response.status(200).send({resultsFound: false, message: "No records found."})
-      //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+      //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       // };
 
@@ -43,7 +39,7 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
     .catch((error) => {
       console.error(functionName, GetDateTime(), "post / error", error);
 
-      // response.status(500).json({ recordAdded: false, message: `Not successfully created ${functionName}.`, error: error });
+      // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
 

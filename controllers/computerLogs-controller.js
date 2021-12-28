@@ -42,15 +42,15 @@ router.get("/", validateAdmin, (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
-        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
-        response.status(200).json({ resultsFound: false, message: "No records found." });
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -59,7 +59,7 @@ router.get("/", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -82,15 +82,15 @@ router.get("/broken", validateAdmin, (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
-        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken No Results");
-        response.status(200).json({ resultsFound: false, message: "No records found." });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -99,7 +99,7 @@ router.get("/broken", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /broken error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /broken", records, error);
-      response.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -147,7 +147,7 @@ router.post("/", (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });

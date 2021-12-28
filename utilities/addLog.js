@@ -24,9 +24,7 @@ const addLog = (controllerName, operation, transactionData) => {
     .then((results) => {
       // console.log(functionName, GetDateTime(), "results", results);
 
-      // databaseVersion = results[0].databaseVersion;
-
-      // if (records.length > 0) {
+      // if (IsEmpty(records) === false) {
 
       //   console.log(functionName, GetDateTime(), "records", records);
 

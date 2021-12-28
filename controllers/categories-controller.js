@@ -31,17 +31,15 @@ router.get("/", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -50,7 +48,7 @@ router.get("/", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -74,17 +72,15 @@ router.get("/", (request, response) => {
 
 //       records = convertBitTrueFalse(records);
 
-//       if (records.length > 0) {
+//       if (IsEmpty(records) === false) {
 //         console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
 
-//         response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+//         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
 //         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-//         // response.status(200).send(`No ${tableName} found.`);
-//         // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-//         response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+//         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
 //       };
 
@@ -93,7 +89,7 @@ router.get("/", (request, response) => {
 //       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-//       response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+//       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
 

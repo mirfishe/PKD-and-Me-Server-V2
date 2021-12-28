@@ -7,8 +7,8 @@ const db = require("knex")(databaseConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
 const { IsEmpty, GetDateTime, FormatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/appFunctions");
-const addErrorLog = require("../utilities/addErrorLog");
 const addLog = require("../utilities/addLog");
+const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
@@ -219,17 +219,15 @@ router.get("/", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /${tableName}`, records);
 
-        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -238,7 +236,7 @@ router.get("/", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -271,17 +269,15 @@ router.get("/review", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /review ${tableName}`, records);
 
-        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /review No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -290,7 +286,7 @@ router.get("/review", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /review error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /review", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -334,17 +330,15 @@ router.get("/top/:topNumber", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /top/:topNumber ${tableName}`, records);
 
-        response.status(200).json({ resultsFound: true, message: `Successfully retrieved ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber No Results");
 
-        // response.status(200).send(`No ${tableName} found.`);
-        // response.status(200).send({resultsFound: false, message: `No ${tableName} found.`})
-        response.status(200).json({ resultsFound: false, message: `No ${tableName} found.` });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -353,7 +347,7 @@ router.get("/top/:topNumber", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /top/:topNumber error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /top/:topNumber", records, error);
-      response.status(500).json({ resultsFound: false, message: `No ${tableName} found.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -484,17 +478,15 @@ router.get("/new", (request, response) => {
 
           // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-          // if (records > 0) {
+          // if (IsEmpty(records) === false) {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          //   // response.status(200).send("No records found.");
-          //   // response.status(200).send({resultsFound: false, message: "No records found."})
-          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
           // };
 
@@ -503,7 +495,7 @@ router.get("/new", (request, response) => {
           console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
 
@@ -617,17 +609,15 @@ router.get("/new", (request, response) => {
 
           // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-          // if (records > 0) {
+          // if (IsEmpty(records) === false) {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          //   // response.status(200).send("No records found.");
-          //   // response.status(200).send({resultsFound: false, message: "No records found."})
-          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
           // };
 
@@ -636,7 +626,7 @@ router.get("/new", (request, response) => {
           console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
 
@@ -750,17 +740,15 @@ router.get("/new", (request, response) => {
 
           // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-          // if (records > 0) {
+          // if (IsEmpty(records) === false) {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          //   // response.status(200).send("No records found.");
-          //   // response.status(200).send({resultsFound: false, message: "No records found."})
-          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
           // };
 
@@ -769,7 +757,7 @@ router.get("/new", (request, response) => {
           console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
 
@@ -883,17 +871,15 @@ router.get("/new", (request, response) => {
 
           // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-          // if (records > 0) {
+          // if (IsEmpty(records) === false) {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          //   // response.status(200).send("No records found.");
-          //   // response.status(200).send({resultsFound: false, message: "No records found."})
-          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
           // };
 
@@ -902,7 +888,7 @@ router.get("/new", (request, response) => {
           console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
 
@@ -1016,17 +1002,15 @@ router.get("/new", (request, response) => {
 
           // addLog(`${controllerName}-controller`, `get /new ${url}`, JSON.stringify({ records: records }));
 
-          // if (records > 0) {
+          // if (IsEmpty(records) === false) {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new records", records);
 
-          //   response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
           //   // console.log(`${controllerName}-controller`, GetDateTime(), "get /new No Results");
 
-          //   // response.status(200).send("No records found.");
-          //   // response.status(200).send({resultsFound: false, message: "No records found."})
-          //   response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [feedObject] });
+          //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
           // };
 
@@ -1035,7 +1019,7 @@ router.get("/new", (request, response) => {
           console.error(`${controllerName}-controller`, GetDateTime(), "get /new error", error);
 
           addErrorLog(`${controllerName}-controller`, "get /new", records, error);
-          response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+          response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
 
@@ -1045,9 +1029,9 @@ router.get("/new", (request, response) => {
 
   })();
 
-  addLog(`${controllerName}-controller`, "get /new ", JSON.stringify({ recordAdded: true, message: `Successfully created ${tableName}.` }));
+  addLog(`${controllerName}-controller`, "get /new ", JSON.stringify({ transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` }));
 
-  response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.` });
+  response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` });
 
 });
 
@@ -1074,17 +1058,15 @@ router.get("/insert", (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /insert records", records);
 
-        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: records });
+        response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "get /insert No Results");
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: records });
+        response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       };
 
@@ -1093,7 +1075,7 @@ router.get("/insert", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /insert error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /insert", records, error);
-      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
 
@@ -1154,14 +1136,14 @@ router.get("/update", (request, response) => {
 
       addLog(`${controllerName}-controller`, "get /update sqlQueryHideStories", JSON.stringify({ records: records }));
 
-      response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
     })
     .catch((error) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /update error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /update", records, error);
-      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
@@ -1185,17 +1167,15 @@ router.get("/markviewed", (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get /markviewed`, records);
 
-        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `get /markviewed No Results`);
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordUpdated: false, message: "Nothing to update." });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
       };
 
@@ -1204,7 +1184,7 @@ router.get("/markviewed", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `get /markviewed error`, error);
 
       addErrorLog(`${controllerName}-controller`, "get /markviewed", records, error);
-      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
@@ -1245,17 +1225,15 @@ router.post("/", validateAdmin, (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-        response.status(200).json({ recordAdded: true, message: `Successfully created ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordAdded: false, message: "Nothing to add.", records: [recordObject] });
+        response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       };
 
@@ -1264,7 +1242,7 @@ router.post("/", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
-      response.status(500).json({ recordAdded: false, message: `Not successfully created ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
 
@@ -1301,17 +1279,15 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID records`, records);
 
-        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID No Results`);
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
       };
 
@@ -1320,7 +1296,7 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `put /display/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /display/:itemID", records, error);
-      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
@@ -1357,17 +1333,15 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID records`, records);
 
-        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID No Results`);
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
       };
 
@@ -1376,7 +1350,7 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `put /posted/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /posted/:itemID", records, error);
-      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
@@ -1413,17 +1387,15 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
       // records = convertBitTrueFalse(records);
 
-      if (records > 0) {
+      if (IsEmpty(records) === false) {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID records`, records);
 
-        response.status(200).json({ recordUpdated: true, message: `Successfully updated ${tableName}.`, records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
         // console.log(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID No Results`);
 
-        // response.status(200).send("No records found.");
-        // response.status(200).send({resultsFound: false, message: "No records found."})
-        response.status(200).json({ recordUpdated: false, message: "Nothing to update.", records: [recordObject] });
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
       };
 
@@ -1432,7 +1404,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), `put /alwaysFilter/:itemID error`, error);
 
       addErrorLog(`${controllerName}-controller`, "put /alwaysFilter/:itemID", records, error);
-      response.status(500).json({ recordUpdated: false, message: `Not successfully updated ${tableName}.`, error: error });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
