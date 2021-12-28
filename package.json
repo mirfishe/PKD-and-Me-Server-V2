@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "description": "Project using Node.js to allow users to rate and review works by and related to Philip K. Dick.",
   "author": "Michael Fisher",
-  "copyrightYear": "2021",
+  "copyrightYear": "2022",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -22,11 +22,12 @@
   "nodemonConfig": {
     "verbose": true,
     "ignore": [
-      "build/*",
-      "dist/*",
-      "logs/*",
-      "node_modules/*",
-      "tokens/*"
+      "**/build/**",
+      "**/dist/**",
+      "**/logs/**",
+      "**/resources/**",
+      "**/sql scripts/**",
+      "**/src/**"
     ],
     "env": {
       "NODE_ENV": "development"
