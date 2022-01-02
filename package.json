@@ -39,9 +39,15 @@
     "mysql2": "^2.3.3",
     "pg": "^8.7.1",
     "rss-parser": "^3.12.0",
-    "tedious": "^14.0.0"
+    "tedious": "^14.0.0",
+    "superagent": "3.7.0",
+    "crypto-js": "^3.1.9-1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "mocha": "~2.3.4",
+    "sinon": "1.17.3",
+    "expect.js": "~0.3.1",
+    "eslint": "^5.8.0"
   }
 }

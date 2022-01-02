@@ -21,6 +21,8 @@ const titleSuggestions = require("./controllers/titleSuggestions-controller");
 
 const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
+const amazon = require("./controllers/amazon-controller");
+
 const computerLogs = require("./controllers/computerLogs-controller");
 
 app.use(express.json());
@@ -50,6 +52,8 @@ app.use("/comments", comments);
 app.use("/titleSuggestions", titleSuggestions);
 
 app.use("/fromthehomeopape", fromthehomeopape);
+
+app.use("/amazon", amazon);
 
 app.use("/computerLogs", computerLogs);
 

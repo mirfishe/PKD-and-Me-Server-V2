@@ -1,0 +1,95 @@
+C:\Program Files\nodejs\node.exe .\Personal\paapi5-nodejs-sdk-example\sampleSearchItemsApi.js
+API called successfully.
+Complete Response: 
+{
+ "SearchResult": {
+  "TotalResultCount": 1200,
+  "SearchURL": "https://www.amazon.com/s?k=Philip+Dick&i=stripbooks&rh=p_n_availability%3A-1&tag=bulbocreat-20&linkCode=osi",
+  "Items": [
+   {
+    "ASIN": "1598530496",
+    "DetailPageURL": "https://www.amazon.com/dp/1598530496?tag=bulbocreat-20&linkCode=osi&th=1&psc=1",
+    "Images": {
+     "Primary": {
+      "Medium": {
+       "URL": "https://m.media-amazon.com/images/I/51MPLKzB1BL._SL160_.jpg",
+       "Height": 160,
+       "Width": 148
+      }
+     }
+    },
+    "ItemInfo": {
+     "Title": {
+      "DisplayValue": "The Philip K. Dick Collection: A Library of America Boxed Set",
+      "Label": "Title",
+      "Locale": "en_US"
+     }
+    },
+    "Offers": {
+     "Listings": [
+      {
+       "Id": "jF1DbzlJJUHP8S6TEa3aeZI9y%2FSKS7J%2Bj3DtHO%2BE3iv1EBN3hchEDiMABKDWt6XauQCm1i9pnZyJtQ5vAusfr1gMJxsHZA8dokwQWIehZ9HFiloLP97pkA%3D%3D",
+       "Price": {
+        "Amount": 56.99,
+        "Currency": "USD",
+        "DisplayAmount": "$56.99",
+        "Savings": {
+         "Amount": 53.01,
+         "Currency": "USD",
+         "DisplayAmount": "$53.01 (48%)",
+         "Percentage": 48
+        }
+       },
+       "ViolatesMAP": false
+      }
+     ]
+    }
+   },
+   {
+    "ASIN": "0547572484",
+    "DetailPageURL": "https://www.amazon.com/dp/0547572484?tag=bulbocreat-20&linkCode=osi&th=1&psc=1",
+    "Images": {
+     "Primary": {
+      "Medium": {
+       "URL": "https://m.media-amazon.com/images/I/31xhRmc82HL._SL160_.jpg",
+       "Height": 160,
+       "Width": 106
+      }
+     }
+    },
+    "ItemInfo": {
+     "Title": {
+      "DisplayValue": "The Man in the High Castle",
+      "Label": "Title",
+      "Locale": "en_US"
+     }
+    },
+    "Offers": {
+     "Listings": [
+      {
+       "Id": "jF1DbzlJJUHp9DXPMTfi3t5rwF2rfcQildViSlxA9yVMclxGKdCaFFnGwAtAphTbRzP2UI%2Bp%2FeMuRTjNJfodYn3yxkS0ocWMiVpo%2FxtsfAM6CCfeI8epXQ%3D%3D",
+       "Price": {
+        "Amount": 10.59,
+        "Currency": "USD",
+        "DisplayAmount": "$10.59",
+        "Savings": {
+         "Amount": 5.4,
+         "Currency": "USD",
+         "DisplayAmount": "$5.40 (34%)",
+         "Percentage": 34
+        }
+       },
+       "ViolatesMAP": false
+      }
+     ]
+    }
+   }
+  ]
+ }
+}
+Printing First Item Information in SearchResult:
+ASIN: 1598530496
+DetailPageURL: https://www.amazon.com/dp/1598530496?tag=bulbocreat-20&linkCode=osi&th=1&psc=1
+Title: The Philip K. Dick Collection: A Library of America Boxed Set
+Buying Price: $56.99
+

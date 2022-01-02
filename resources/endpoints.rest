@@ -76,6 +76,10 @@ GET {{baseURL}}/fromthehomeopape/update
 
 ###
 
+GET {{baseURL}}/amazon/pkd
+
+###
+
 GET {{baseURL}}/test/
 
 ###

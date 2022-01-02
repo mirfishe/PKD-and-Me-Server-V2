@@ -138,3 +138,6 @@ database.js
 
 # jsonwebtoken configuration
 jwtSecret.js
+
+# Amazon API credentials
+amazon.js
