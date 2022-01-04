@@ -25,10 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Table structure for table `amazon`
 --
 
 CREATE TABLE `amazon` (
+  `ASIN` varchar(255) DEFAULT NULL,
+  `titleName` text DEFAULT NULL,
+  `authorName` text DEFAULT NULL,
+  -- `publicationDate` date DEFAULT NULL,
+  `publicationDate` varchar(255) DEFAULT NULL,
+  `imageName` varchar(255) DEFAULT NULL,
+  `textLinkFull` text DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `amazonImport`
+--
+
+CREATE TABLE `amazonImport` (
+  `searchCategory` varchar(255) DEFAULT NULL,
+  `totalResultCount` int DEFAULT NULL,
+  `searchURL` varchar(255) DEFAULT NULL,
   `ASIN` varchar(255) DEFAULT NULL,
   `titleName` text DEFAULT NULL,
   `authorName` text DEFAULT NULL,

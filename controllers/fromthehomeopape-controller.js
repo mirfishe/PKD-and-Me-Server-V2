@@ -1411,4 +1411,58 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 });
 
 
+/***************************
+ ******* Viewed Entry *******
+ ***************************/
+// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
+router.put("/viewed/:itemID", validateAdmin, (request, response) => {
+
+  const recordObject = {
+    viewed: request.body.recordObject.viewed
+  };
+
+  let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
+
+  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
+
+  // const where = { itemID: request.params.itemID };
+  const where = { itemID: itemID };
+
+  // console.log(`${controllerName}-controller`, GetDateTime(), `put /viewed/:itemID itemID`, itemID);
+
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, GetDateTime(), `put /viewed/:itemID records`, records);
+      // * Returns the number of updated records. -- 08/13/2021 MF
+
+      // records = convertBitTrueFalse(records);
+
+      if (IsEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /viewed/:itemID records`, records);
+
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, GetDateTime(), `put /viewed/:itemID No Results`);
+
+        response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, GetDateTime(), `put /viewed/:itemID error`, error);
+
+      addErrorLog(`${controllerName}-controller`, "put /viewed/:itemID", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
+
+    });
+
+});
+
+
 module.exports = router;

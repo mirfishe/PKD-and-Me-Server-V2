@@ -76,7 +76,75 @@ GET {{baseURL}}/fromthehomeopape/update
 
 ###
 
-GET {{baseURL}}/amazon/pkd
+GET {{baseURL}}/amazon/authorPhilipKDick/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Featured
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Relevance
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance
 
 ###
 
