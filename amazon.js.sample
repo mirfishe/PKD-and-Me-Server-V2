@@ -1,0 +1,8 @@
+module.exports = {
+  accessKey: "<YOUR ACCESS KEY>",
+  secretKey: "<YOUR SECRET KEY>",
+  host: "<YOUR HOST>",
+  region: "<YOUR REGION>",
+  PartnerTag: "<YOUR PARTNER TAG>",
+  PartnerType: "Associates"
+}

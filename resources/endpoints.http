@@ -33,6 +33,22 @@ GET {{baseURL}}/userreviews
 
 ###
 
+GET {{baseURL}}/terms
+
+###
+
+GET {{baseURL}}/terms/4
+
+###
+
+GET {{baseURL}}/logs
+
+###
+
+GET {{baseURL}}/errors
+
+###
+
 GET {{baseURL}}/computerLogs
 
 ###
@@ -59,7 +75,84 @@ GET {{baseURL}}/fromthehomeopape/new
 ###
 
 # Runs the inserting of new data from the import. -- 11/14/2021 MF
+GET {{baseURL}}/fromthehomeopape/insert
+
+###
+
+# Runs the updating of new data from the import. -- 12/26/2021 MF
 GET {{baseURL}}/fromthehomeopape/update
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Featured
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Relevance
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance
 
 ###
 

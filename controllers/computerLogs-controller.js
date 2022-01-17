@@ -4,13 +4,14 @@ const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
-// const validateAdmin = require("../middleware/validate-admin");
+const validateAdmin = require("../middleware/validate-admin");
 const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "computerLogs";
 const tableName = "computerLogs";
 const select = "*";
+const limit = 50;
 const orderBy = [{ column: "timestamp", order: "desc" }];
 
 let records;
@@ -19,10 +20,20 @@ let records;
 /******************************
  ***** Get Computer Logs *********
  ******************************/
-router.get("/", (request, response) => {
+router.get("/", validateAdmin, (request, response) => {
 
+  // // let sqlQuery = `SELECT TOP (50) * FROM ${tableName} ORDER BY createDate DESC`;
+  // // * SQL syntax for MySQL. -- 12/27/2021 MF
+  // let sqlQuery = `SELECT * FROM ${tableName} ORDER BY createDate DESC LIMIT 50`;
+
+  // // db.raw(sqlQuery).toSQL();
+
+  // // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+
+  // db.raw(sqlQuery)
   db.select(select)
     .from(tableName)
+    .limit(limit)
     .orderBy(orderBy)
     .then((results) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / results", results);
@@ -31,15 +42,15 @@ router.get("/", (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
-        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-
         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
-        response.status(200).json({ resultsFound: false, message: "No records found." });
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -48,7 +59,7 @@ router.get("/", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -58,11 +69,12 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Broken Links *********
  ******************************/
-router.get("/broken", (request, response) => {
+router.get("/broken", validateAdmin, (request, response) => {
 
   db.select(select)
     .from("brokenLinks")
-    .orderBy([{ column: "timestamp", order: "desc" }])
+    .limit(limit)
+    .orderBy(orderBy)
     .then((results) => {
       // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken results", results);
 
@@ -70,15 +82,15 @@ router.get("/broken", (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken records", records);
-        response.status(200).json({ resultsFound: true, message: "Successfully retrieved records.", records: records });
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
+        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get /broken No Results");
-        response.status(200).json({ resultsFound: false, message: "No records found." });
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
       };
 
@@ -87,7 +99,7 @@ router.get("/broken", (request, response) => {
       console.error(`${controllerName}-controller`, GetDateTime(), "get /broken error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /broken", records, error);
-      response.status(500).json({ resultsFound: true, message: "No records found." });
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
 
@@ -135,7 +147,7 @@ router.post("/", (request, response) => {
 
       // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
 
-      if (records.length > 0) {
+      if (IsEmpty(records) === false) {
 
         // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
