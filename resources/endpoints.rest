@@ -1,9 +1,9 @@
 
 # https://github.com/Huachao/vscode-restclient
 
-@baseURL = http://localhost:4000
+# @baseURL = http://localhost:4000
 
-# @baseURL = https://api.philipdick.com
+@baseURL = https://api.philipdick.com
 
 GET {{baseURL}}/categories
 
@@ -30,6 +30,14 @@ GET {{baseURL}}/editions/broken/1
 ###
 
 GET {{baseURL}}/userreviews
+
+###
+
+GET {{baseURL}}/terms
+
+###
+
+GET {{baseURL}}/terms/2
 
 ###
 
@@ -100,51 +108,51 @@ GET {{baseURL}}/amazon/authorPhilipKDick/Relevance
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/PriceHighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/PriceLowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/PriceHighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/PriceLowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance
 
 ###
 

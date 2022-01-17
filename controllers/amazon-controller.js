@@ -126,6 +126,8 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   const numberOfResultsPages = 11;
   // const numberOfResultsPages = 2;
 
+  let waitTime = 10000; // * 10 seconds -- 01/09/2022 MF
+
   let defaultClient = ProductAdvertisingAPIv1.ApiClient.instance;
 
   // Specify your credentials here. These are used to create and sign the request.
@@ -435,7 +437,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
       );
 
       // * Then the created Promise can be awaited. -- 01/02/2022
-      await timer(10000);
+      await timer(waitTime);
 
     };
 

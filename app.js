@@ -19,6 +19,8 @@ const errors = require("./controllers/errors-controller");
 const comments = require("./controllers/comments-controller");
 const titleSuggestions = require("./controllers/titleSuggestions-controller");
 
+const terms = require("./controllers/terms-controller");
+
 const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
 const amazon = require("./controllers/amazon-controller");
@@ -50,6 +52,8 @@ app.use("/logs", logs);
 app.use("/errors", errors);
 app.use("/comments", comments);
 app.use("/titleSuggestions", titleSuggestions);
+
+app.use("/terms", terms);
 
 app.use("/fromthehomeopape", fromthehomeopape);
 
