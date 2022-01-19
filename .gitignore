@@ -133,9 +133,6 @@ ehthumbs_vista.db
 # postcss compiled file
 /src/css/styles.css
 
-# Image Files
-/assets
-
 # database configuration
 db.js
 database.js
