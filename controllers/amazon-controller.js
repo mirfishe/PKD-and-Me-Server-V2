@@ -123,8 +123,8 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "credentials", credentials);
 
-  const numberOfResultsPages = 11;
-  // const numberOfResultsPages = 2;
+  // const numberOfResultsPages = 11;
+  const numberOfResultsPages = 2;
 
   let waitTime = 10000; // * 10 seconds -- 01/09/2022 MF
 
