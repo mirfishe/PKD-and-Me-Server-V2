@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
-const { convertBitTrueFalse } = require("../utilities/appFunctions");
+const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "categories";
@@ -31,13 +31,13 @@ router.get("/", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "", GetDateTime(), `get / ${tableName}`, records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -45,7 +45,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -72,13 +72,13 @@ router.get("/", (request, response) => {
 
 //       records = convertBitTrueFalse(records);
 
-//       if (IsEmpty(records) === false) {
-//         console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+//       if (isEmpty(records) === false) {
+//         console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+//         // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -86,7 +86,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//       console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });

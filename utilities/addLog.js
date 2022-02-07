@@ -2,7 +2,7 @@
 
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-const { IsEmpty, GetDateTime } = require("./sharedFunctions");
+const { isEmpty, getDateTime } = require("./sharedFunctions");
 // const addErrorLog = require("./addErrorLog");
 
 const functionName = "addLog";
@@ -19,24 +19,24 @@ const addLog = (controllerName, operation, transactionData) => {
       operation: operation,
       componentName: controllerName,
       transactionData: transactionData,
-      createDate: GetDateTime()
+      createDate: getDateTime()
     })
     .then((results) => {
-      // console.log(functionName, GetDateTime(), "results", results);
+      // console.log(functionName, getDateTime(), "results", results);
 
-      // if (IsEmpty(records) === false) {
+      // if (isEmpty(records) === false) {
 
-      //   console.log(functionName, GetDateTime(), "records", records);
+      //   console.log(functionName, getDateTime(), "records", records);
 
       // } else {
 
-      //   console.log(functionName, GetDateTime(), "No Results");
+      //   console.log(functionName, getDateTime(), "No Results");
 
       // };
 
     })
     .catch((error) => {
-      console.error(functionName, GetDateTime(), "error", error);
+      console.error(functionName, getDateTime(), "error", error);
 
       // * Removed because was causing an error because of circular dependency. -- 12/23/2021 MF
       // * https://stackoverflow.com/questions/33865068/typeerror-is-not-a-function-in-node-js/53246444 -- 12/23/2021 MF

@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
-const { convertBitTrueFalse } = require("../utilities/appFunctions");
+const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "media";
@@ -45,13 +45,13 @@ router.get("/", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -59,7 +59,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -84,13 +84,13 @@ router.get("/", (request, response) => {
 
 //       records = convertBitTrueFalse(records);
 
-//       if (IsEmpty(records) === false) {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+//       if (isEmpty(records) === false) {
+//         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+//         // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -98,7 +98,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+//       console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /:mediaID", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -121,13 +121,13 @@ router.get("/", (request, response) => {
 
 //       records = convertBitTrueFalse(records);
 
-//       if (IsEmpty(records) === false) {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /admin ${tableName}`, records);
+//       if (isEmpty(records) === false) {
+//         // console.log(`${controllerName}-controller`, getDateTime(), `get /admin ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), "get /admin No Results");
+//         // console.log(`${controllerName}-controller`, getDateTime(), "get /admin No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -135,7 +135,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.error(`${controllerName}-controller`, GetDateTime(), "get /admin error", error);
+//       console.error(`${controllerName}-controller`, getDateTime(), "get /admin error", error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /admin", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -157,14 +157,14 @@ router.get("/", (request, response) => {
 //     .where(where)
 //     .orderBy(orderBy)
 //     .then((records) => {
-//       // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records);
+//       // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID records`, records);
 
 //       records = convertBitTrueFalse(records);
 
 //       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne. -- 05/24/2021 MF
 //       // if (records === null) {
-//       if (IsEmpty(records) === false) {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID records`, records);
+//       if (isEmpty(records) === false) {
+//         // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID records`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -175,7 +175,7 @@ router.get("/", (request, response) => {
 //         //     });
 
 //       } else {
-//         // console.log(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
+//         // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -183,7 +183,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.error(`${controllerName}-controller`, GetDateTime(), `get /:${controllerName}ID error`, error);
+//       console.error(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID error`, error);
 
 //       addErrorLog(`${controllerName}-controller`, "get /:media", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -213,7 +213,7 @@ router.post("/", validateAdmin, (request, response) => {
     .max("sortID")
     .first() // * Add this to get an object. -- 05/06/2021 MF
     .then((maxSortID) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "maxSortID", maxSortID);
+      // console.log(`${controllerName}-controller`, getDateTime(), "maxSortID", maxSortID);
 
       if (isNaN(maxSortID)) {
 
@@ -229,7 +229,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .then((newSortID) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "newSortID", newSortID);
+      // console.log(`${controllerName}-controller`, getDateTime(), "newSortID", newSortID);
 
       const recordObject = {
         media: request.body.media.media,
@@ -244,18 +244,18 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+      // console.log(`${controllerName}-controller`, getDateTime(), "post / records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "post / records", records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "post / records", records);
 
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "post / No Results");
+        // console.log(`${controllerName}-controller`, getDateTime(), "post / No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -263,7 +263,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), "post / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "post / error", error);
 
       addErrorLog(`${controllerName}-controller`, "post /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
@@ -293,18 +293,18 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID records`, records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID No Results`);
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -312,7 +312,7 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), `put /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
@@ -336,18 +336,18 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     // .returning(select)
     .del()
     .then((records) => {
-      // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID records`, records);
       // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID records`, records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: true, errorOccurred: false, message: "Successfully deleted.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID No Results`);
+        // console.log(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: false, errorOccurred: false, message: "Nothing to delete." });
 
@@ -355,7 +355,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), `delete /:${controllerName}ID error`, error);
+      console.error(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });

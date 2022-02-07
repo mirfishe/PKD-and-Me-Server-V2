@@ -5,8 +5,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime, FormatTrim } = require("../utilities/sharedFunctions");
-const { convertBitTrueFalse } = require("../utilities/appFunctions");
+const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "terms";
@@ -36,13 +36,13 @@ router.get("/", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, records);
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -50,7 +50,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
@@ -67,7 +67,7 @@ router.get("/:termID", (request, response) => {
 
   let termID = request.params.termID;
 
-  if (isNaN(FormatTrim(termID)) === true) {
+  if (isNaN(formatTrim(termID)) === true) {
 
     termID = 0;
 
@@ -80,7 +80,7 @@ router.get("/:termID", (request, response) => {
   let sqlQuery = `SELECT terms.termID, terms.term, terms.definition, terms.partOfSpeech, terms.parentTermID, termsParent.term AS termParent, termCategories.termCategoryID, termCategories.termCategory, synonyms.synonymID, termsSynonyms.term AS termsSynonym, alternateForms.alternateFormID, termsAlternateForms.term AS termsAlternateForm, titles.titleID, titles.titleName, titles.titleSort, titles.titleURL, titles.authorFirstName, titles.authorLastName, titles.submissionDate, titles.publicationDate, titles.imageName, titles.categoryID, titles.shortDescription, titles.urlPKDWeb FROM terms LEFT OUTER JOIN terms AS termsParent ON terms.parentTermID = termsParent.termID LEFT OUTER JOIN termsCategories ON terms.termID = termsCategories.termID LEFT OUTER JOIN termCategories ON termsCategories.termCategoryID = termCategories.termCategoryID LEFT OUTER JOIN synonyms ON terms.termID = synonyms.termID LEFT OUTER JOIN terms AS termsSynonyms ON synonyms.synonymID = termsSynonyms.termID LEFT OUTER JOIN alternateForms ON terms.termID = alternateForms.termID LEFT OUTER JOIN terms AS termsAlternateForms ON alternateForms.alternateFormID = termsAlternateForms.termID LEFT OUTER JOIN termsTitles ON terms.termID = termsTitles.termID LEFT OUTER JOIN titles ON termsTitles.titleID = titles.titleID WHERE terms.termID = ${termID}`;
 
 
-  // console.log(`${ controllerName } - controller`, GetDateTime(), "get / sqlQuery", sqlQuery);
+  // console.log(`${ controllerName } - controller`, getDateTime(), "get / sqlQuery", sqlQuery);
 
   // db.select(checklistColumnsList)
   //   .from(tableName)
@@ -105,13 +105,13 @@ router.get("/:termID", (request, response) => {
 
       records = convertBitTrueFalse(records);
 
-      if (IsEmpty(records) === false) {
-        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist records[0]", records[0]);
+      if (isEmpty(records) === false) {
+        // console.log(`${ controllerName } - controller`, getDateTime(), "get /checklist records[0]", records[0]);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 
       } else {
-        // console.log(`${ controllerName } - controller`, GetDateTime(), "get /checklist No Results");
+        // console.log(`${ controllerName } - controller`, getDateTime(), "get /checklist No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -119,7 +119,7 @@ router.get("/:termID", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, GetDateTime(), "get /checklist error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get /checklist error", error);
 
       addErrorLog(`${controllerName}-controller`, "get /checklist", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });

@@ -142,3 +142,6 @@ jwtSecret.js
 
 # Amazon API credentials
 amazon.js
+
+# pm2 configuration file
+ecosystem.config.js

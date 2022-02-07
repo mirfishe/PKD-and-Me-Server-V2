@@ -5,8 +5,8 @@ const router = require("express").Router();
 // const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
-const { convertBitTrueFalse } = require("../utilities/appFunctions");
+const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 // const addLog = require("../utilities/addLog");
 // const addErrorLog = require("../utilities/addErrorLog");
 
@@ -23,7 +23,7 @@ let records;
 //  ******************************/
 router.get("/", (request, response) => {
 
-  console.log(`${controllerName}s-controller`, GetDateTime(), "get /", "Test succeeded.");
+  console.log(`${controllerName}s-controller`, getDateTime(), "get /", "Test succeeded.");
 
   // addLog(databaseName, `${controllerName} succeeded.`, null);
 
@@ -37,10 +37,10 @@ router.get("/", (request, response) => {
 //  ******************************/
 router.get("/addline", (request, response) => {
 
-  console.log(`${controllerName}s-controller`, GetDateTime(), "get /addline");
+  console.log(`${controllerName}s-controller`, getDateTime(), "get /addline");
   console.log("######################################################################################################");
 
-  console.error(`${controllerName}s-controller`, GetDateTime(), "get /addline");
+  console.error(`${controllerName}s-controller`, getDateTime(), "get /addline");
   console.error("######################################################################################################");
 
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Add line succeeded." });
