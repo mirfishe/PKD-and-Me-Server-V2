@@ -2,13 +2,13 @@
 
 // const componentName = "sharedFunctions.js";
 
-const IsEmpty = (value) => {
-  // console.log(componentName, GetDateTime(), "IsEmpty value", value);
+const isEmpty = (value) => {
+  // console.log(componentName, getDateTime(), "isEmpty value", value);
 
   // * https://stackoverflow.com/questions/4597900/checking-something-isempty-in-javascript -- 03/06/2021 MF
   // * https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in -- 03/06/2021 MF
 
-  // const IsEmpty = (object) => {
+  // const isEmpty = (object) => {
 
   //   for (var key in object) {
 
@@ -28,28 +28,28 @@ const IsEmpty = (value) => {
   return value === undefined || value === null || (typeof value === "object" && Object.keys(value).length === 0) || (typeof value === "string" && value.trim().length === 0);
 
   // * Returns true -- 03/06/2021 MF
-  // console.log(componentName, GetDateTime(), "IsEmpty(\"\")", IsEmpty(""));
-  // console.log(componentName, GetDateTime(), "IsEmpty(null)", IsEmpty(null));
-  // console.log(componentName, GetDateTime(), "IsEmpty(undefined)", IsEmpty(undefined));
-  // console.log(componentName, GetDateTime(), "IsEmpty([])", IsEmpty([]));
-  // console.log(componentName, GetDateTime(), "IsEmpty({})", IsEmpty({}));
+  // console.log(componentName, getDateTime(), "isEmpty(\"\")", isEmpty(""));
+  // console.log(componentName, getDateTime(), "isEmpty(null)", isEmpty(null));
+  // console.log(componentName, getDateTime(), "isEmpty(undefined)", isEmpty(undefined));
+  // console.log(componentName, getDateTime(), "isEmpty([])", isEmpty([]));
+  // console.log(componentName, getDateTime(), "isEmpty({})", isEmpty({}));
 
   // * Returns false -- 03/06/2021 MF
-  // console.log(componentName, GetDateTime(), "IsEmpty(\"test\")", IsEmpty("test"));
-  // console.log(componentName, GetDateTime(), "IsEmpty(5)", IsEmpty(5));
-  // console.log(componentName, GetDateTime(), "IsEmpty(true)", IsEmpty(true));
-  // console.log(componentName, GetDateTime(), "IsEmpty([\"test\"])", IsEmpty(["test"]));
-  // console.log(componentName, GetDateTime(), "IsEmpty({test: \"test\"})", IsEmpty({ test: "test" }));
+  // console.log(componentName, getDateTime(), "isEmpty(\"test\")", isEmpty("test"));
+  // console.log(componentName, getDateTime(), "isEmpty(5)", isEmpty(5));
+  // console.log(componentName, getDateTime(), "isEmpty(true)", isEmpty(true));
+  // console.log(componentName, getDateTime(), "isEmpty([\"test\"])", isEmpty(["test"]));
+  // console.log(componentName, getDateTime(), "isEmpty({test: \"test\"})", isEmpty({ test: "test" }));
 
 };
 
 
-const GetDateTime = () => {
-  // console.log("GetDateTime");
-  // console.log("GetDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \" \")", new Date().toISOString().slice(0, 19).replace("T", " "));
-  // console.log("GetDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \"\")", new Date().toISOString().slice(0, 19).replace("T", ""));
-  // console.log("GetDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \" \")", new Date().toLocaleString().slice(0, 19).replace("T", " "));
-  // console.log("GetDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \"\")", new Date().toLocaleString().slice(0, 19).replace("T", ""));
+const getDateTime = () => {
+  // console.log("getDateTime");
+  // console.log("getDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \" \")", new Date().toISOString().slice(0, 19).replace("T", " "));
+  // console.log("getDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \"\")", new Date().toISOString().slice(0, 19).replace("T", ""));
+  // console.log("getDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \" \")", new Date().toLocaleString().slice(0, 19).replace("T", " "));
+  // console.log("getDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \"\")", new Date().toLocaleString().slice(0, 19).replace("T", ""));
 
   // * Time returned does not consider the time zone without adjustments. -- 08/09/2021 MF
   // * https://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes -- 08/09/2021 MF
@@ -65,8 +65,8 @@ const GetDateTime = () => {
 };
 
 
-const TryParseJSON = (jsonString) => {
-  // console.log(componentName, GetDateTime(), "tryParseJSON jsonString", jsonString);
+const tryParseJSON = (jsonString) => {
+  // console.log(componentName, getDateTime(), "tryParseJSON jsonString", jsonString);
 
   // * https://stackoverflow.com/questions/3710204/how-to-check-if-a-string-is-a-valid-json-string-in-javascript-without-using-try -- 06/24/2021 MF
   try {
@@ -85,7 +85,7 @@ const TryParseJSON = (jsonString) => {
   }
   catch (error) {
     // ! Don't display this error in the console. This function is already returning false is the JSON file is not in the correct format. -- 06/24/2021 MF
-    // console.log(componentName, GetDateTime(), "tryParseJSON error", error);
+    // console.log(componentName, getDateTime(), "tryParseJSON error", error);
   };
 
   return false;
@@ -93,12 +93,12 @@ const TryParseJSON = (jsonString) => {
 };
 
 
-const FormatLowerCase = (value) => {
-  // console.log(componentName, GetDateTime(), "FormatLowerCase value", value);
+const formatLowerCase = (value) => {
+  // console.log(componentName, getDateTime(), "formatLowerCase value", value);
 
   let lowerCaseValue = value;
 
-  if (IsEmpty(value) === false) {
+  if (isEmpty(value) === false) {
 
     lowerCaseValue = value.toString().toLowerCase();
 
@@ -109,12 +109,12 @@ const FormatLowerCase = (value) => {
 };
 
 
-const FormatUpperCase = (value) => {
-  // console.log(componentName, GetDateTime(), "FormatUpperCase value", value);
+const formatUpperCase = (value) => {
+  // console.log(componentName, getDateTime(), "formatUpperCase value", value);
 
   let upperCaseValue = value;
 
-  if (IsEmpty(value) === false) {
+  if (isEmpty(value) === false) {
 
     upperCaseValue = value.toString().toUpperCase();
 
@@ -125,12 +125,12 @@ const FormatUpperCase = (value) => {
 };
 
 
-const FormatTrim = (value) => {
-  // console.log(componentName, GetDateTime(), "FormatTrim value", value);
+const formatTrim = (value) => {
+  // console.log(componentName, getDateTime(), "formatTrim value", value);
 
   let trimValue = value;
 
-  if (IsEmpty(value) === false) {
+  if (isEmpty(value) === false) {
 
     trimValue = value.toString().trim();
 
@@ -141,12 +141,12 @@ const FormatTrim = (value) => {
 };
 
 
-const FormatToString = (value) => {
-  // console.log(componentName, GetDateTime(), "FormatToString value", value);
+const formatToString = (value) => {
+  // console.log(componentName, getDateTime(), "formatToString value", value);
 
   let toStringValue = value;
 
-  if (IsEmpty(value) === false) {
+  if (isEmpty(value) === false) {
 
     toStringValue = value.toString();
 
@@ -157,14 +157,14 @@ const FormatToString = (value) => {
 };
 
 
-const FormatSearchInput = (value) => {
-  // console.log(componentName, GetDateTime(), "FormatSearchInput value", value);
+const formatSearchInput = (value) => {
+  // console.log(componentName, getDateTime(), "formatSearchInput value", value);
 
   let formatedSearchInput = value;
 
-  if (IsEmpty(value) === false) {
+  if (isEmpty(value) === false) {
 
-    formatedSearchInput = FormatTrim(value).toLowerCase();
+    formatedSearchInput = formatTrim(value).toLowerCase();
 
   };
 
@@ -173,11 +173,11 @@ const FormatSearchInput = (value) => {
 };
 
 
-exports.IsEmpty = IsEmpty;
-exports.GetDateTime = GetDateTime;
-exports.TryParseJSON = TryParseJSON;
-exports.FormatLowerCase = FormatLowerCase;
-exports.FormatUpperCase = FormatUpperCase;
-exports.FormatTrim = FormatTrim;
-exports.FormatToString = FormatToString;
-exports.FormatSearchInput = FormatSearchInput;
+exports.isEmpty = isEmpty;
+exports.getDateTime = getDateTime;
+exports.tryParseJSON = tryParseJSON;
+exports.formatLowerCase = formatLowerCase;
+exports.formatUpperCase = formatUpperCase;
+exports.formatTrim = formatTrim;
+exports.formatToString = formatToString;
+exports.formatSearchInput = formatSearchInput;

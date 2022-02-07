@@ -1,6 +1,6 @@
 "use strict";
 
-// const componentName = "sharedFunctions.js";
+// const componentName = "applicationFunctions.js";
 
 const convertBitTrueFalse = (records) => {
   // console.log(componentName, "convertBitTrueFalse records", records);

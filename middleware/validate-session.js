@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = require("../jwtSecret");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-const { IsEmpty, GetDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -20,11 +20,11 @@ const validateSession = (request, response, next) => {
   // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
   // jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
   jwt.verify(token, jwtSecret, (error, decoded) => {
-    // console.log(controllerName, GetDateTime(), "token", token);
-    // console.log(controllerName, GetDateTime(), "decoded", decoded);
-    // console.log(controllerName, GetDateTime(), "error", error);
+    // console.log(controllerName, getDateTime(), "token", token);
+    // console.log(controllerName, getDateTime(), "decoded", decoded);
+    // console.log(controllerName, getDateTime(), "error", error);
 
-    if (IsEmpty(error) === true && IsEmpty(decoded) === false) {
+    if (isEmpty(error) === true && isEmpty(decoded) === false) {
 
       const where = { userID: decoded.userID, active: true };
 
@@ -32,10 +32,10 @@ const validateSession = (request, response, next) => {
         .from(tableName)
         .where(where)
         .then(records => {
-          // console.log(controllerName, GetDateTime(), "records", records);
+          // console.log(controllerName, getDateTime(), "records", records);
 
-          // if (IsEmpty(records) === true) throw "Unauthorized."; // "error";
-          if (IsEmpty(records) === true) {
+          // if (isEmpty(records) === true) throw "Unauthorized."; // "error";
+          if (isEmpty(records) === true) {
 
             addErrorLog(`${controllerName}-controller`, "Unauthorized.", JSON.stringify({ decoded: decoded, token: token }), null);
 
@@ -48,7 +48,7 @@ const validateSession = (request, response, next) => {
             // ? Need to return all the properties of the user? -- 03/28/2021 MF
             // request.user = records[0];
             request.user = { userID: records[0].userID };
-            // console.log(controllerName, GetDateTime(), "request.user", request.user);
+            // console.log(controllerName, getDateTime(), "request.user", request.user);
             return next();
 
           };

@@ -6,8 +6,8 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { IsEmpty, GetDateTime, FormatTrim } = require("../utilities/sharedFunctions");
-const { convertBitTrueFalse } = require("../utilities/appFunctions");
+const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -58,7 +58,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   };
 
-  if (IsEmpty(searchIndex) === true) {
+  if (isEmpty(searchIndex) === true) {
 
     searchIndex = "All";
 
@@ -117,11 +117,11 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   };
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchCategory", searchCategory);
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "sortBy", sortBy);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchCategory", searchCategory);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "sortBy", sortBy);
 
-  // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "credentials", credentials);
+  // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "credentials", credentials);
 
   // const numberOfResultsPages = 11;
   const numberOfResultsPages = 2;
@@ -152,11 +152,11 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   searchItemsRequest["PartnerType"] = credentials.PartnerType;
 
   /** Specify Keywords */
-  if (IsEmpty(searchKeywords) === false) {
+  if (isEmpty(searchKeywords) === false) {
 
     searchItemsRequest["Keywords"] = searchKeywords;
 
-  } else if (IsEmpty(searchAuthor) === false) {
+  } else if (isEmpty(searchAuthor) === false) {
 
     searchItemsRequest["Author"] = searchAuthor;
 
@@ -167,13 +167,13 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
    * For more details, refer: https://webservices.amazon.com/paapi5/documentation/use-cases/organization-of-items-on-amazon/search-index.html
    */
   // searchItemsRequest["SearchIndex"] = "Books";
-  if (IsEmpty(searchIndex) === false) {
+  if (isEmpty(searchIndex) === false) {
 
     searchItemsRequest["SearchIndex"] = searchIndex;
 
   };
 
-  if (IsEmpty(sortBy) === false) {
+  if (isEmpty(sortBy) === false) {
 
     searchItemsRequest["SortBy"] = sortBy;
 
@@ -205,21 +205,21 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       // console.log("Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
       // console.log(JSON.stringify(searchItemsResponse, null, 1));
-      console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
+      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
 
     } else {
 
-      if (IsEmpty(searchItemsResponse["SearchResult"]) === false) {
+      if (isEmpty(searchItemsResponse["SearchResult"]) === false) {
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
 
         let totalResultCount = searchItemsResponse["SearchResult"]["TotalResultCount"];
         let searchURL = searchItemsResponse["SearchResult"]["SearchURL"];
-        // let searchDate = GetDateTime();
+        // let searchDate = getDateTime();
 
         let itemArray = [];
 
-        if (IsEmpty(searchItemsResponse["SearchResult"]["Items"]) === false) {
+        if (isEmpty(searchItemsResponse["SearchResult"]["Items"]) === false) {
 
           for (let i = 0; i < searchItemsResponse["SearchResult"]["Items"].length; i++) {
 
@@ -230,20 +230,20 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
             let itemObject = { searchCategory: searchCategory, totalResultCount: totalResultCount, searchURL: searchURL, page: page, searchIndex: searchIndex, sortBy: sortBy };
             // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
 
-            if (IsEmpty(item_0) === false) {
+            if (isEmpty(item_0) === false) {
 
-              // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "######################################################");
+              // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "######################################################");
 
-              if (IsEmpty(item_0["ItemInfo"]) === false && IsEmpty(item_0["ItemInfo"]["Title"]) === false && IsEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
+              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["displayValue"]) === false
               ) {
 
-                // console.log("Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
+                // console.log("Title: " + item_0["ItemInfo"]["Title"]["displayValue"]);
 
-                itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
+                itemObject.titleName = item_0["ItemInfo"]["Title"]["displayValue"];
 
               };
 
-              if (IsEmpty(item_0["ItemInfo"]) === false && IsEmpty(item_0["ItemInfo"]["ByLineInfo"]) === false && IsEmpty(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
+              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
               ) {
 
                 for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
@@ -265,16 +265,16 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               };
 
-              if (IsEmpty(item_0["ItemInfo"]) === false && IsEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && IsEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
+              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
               ) {
 
-                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"]);
 
-                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
+                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"];
 
               };
 
-              if (IsEmpty(item_0["ASIN"]) === false) {
+              if (isEmpty(item_0["ASIN"]) === false) {
 
                 // console.log("ASIN: " + item_0["ASIN"]);
 
@@ -282,7 +282,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               };
 
-              if (IsEmpty(item_0["DetailPageURL"]) === false) {
+              if (isEmpty(item_0["DetailPageURL"]) === false) {
 
                 // console.log("DetailPageURL: " + item_0["DetailPageURL"]);
 
@@ -290,7 +290,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               };
 
-              if (IsEmpty(item_0["Images"]) === false && IsEmpty(item_0["Images"]["Primary"]) === false && IsEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
+              if (isEmpty(item_0["Images"]) === false && isEmpty(item_0["Images"]["Primary"]) === false && isEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
 
                 // console.log("Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
 
@@ -298,7 +298,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               };
 
-              // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "######################################################");
+              // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "######################################################");
 
               itemArray.push(itemObject);
 
@@ -308,24 +308,24 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
         };
 
-        // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, itemArray);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, itemArray);
 
         db("amazonImport")
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning("*")
           .insert(itemArray)
           .then((records) => {
-            // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
+            // console.log(`${controllerName}-controller`, getDateTime(), "get / records", records);
             // * Returns the ID value of the added record. -- 08/13/2021 MF
 
             addLog(`${controllerName}-controller`, "get / insert", JSON.stringify({ records: records }));
 
-            // if (IsEmpty(records) === false) {
-            //   // console.log(`${controllerName}-controller`, GetDateTime(), "get / records", records);
+            // if (isEmpty(records) === false) {
+            //   // console.log(`${controllerName}-controller`, getDateTime(), "get / records", records);
             //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
             // } else {
-            //   // console.log(`${controllerName}-controller`, GetDateTime(), "get / No Results");
+            //   // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
 
             //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -333,7 +333,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
           })
           .catch((error) => {
-            console.error(`${controllerName}-controller`, GetDateTime(), "get / error", error);
+            console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
 
             addErrorLog(`${controllerName}-controller`, "get /", records, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
@@ -344,10 +344,10 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
     };
 
-    if (IsEmpty(searchItemsResponse["Errors"]) === false) {
+    if (isEmpty(searchItemsResponse["Errors"]) === false) {
 
       // console.error("Errors:");
-      console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
+      console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
       addErrorLog(`${controllerName}-controller`, "get / searchItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
@@ -368,7 +368,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //     searchItemsRequest["ItemPage"] = i;
 
-  //     // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //     // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //     addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -376,7 +376,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //       function (data) {
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //         onSuccess(data);
 
@@ -385,7 +385,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //       },
   //       function (error) {
 
-  //         console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //         console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //         addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -411,7 +411,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       searchItemsRequest["ItemPage"] = i;
 
-      console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
       addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -419,7 +419,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
         function (data) {
 
-          console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+          console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
           onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
@@ -428,7 +428,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
         },
         function (error) {
 
-          console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+          console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
           addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -464,7 +464,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -472,7 +472,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -480,7 +480,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -489,7 +489,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -524,7 +524,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -532,7 +532,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -540,7 +540,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -549,7 +549,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -584,7 +584,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -592,7 +592,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -600,7 +600,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -609,7 +609,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -644,7 +644,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -652,7 +652,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -660,7 +660,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -669,7 +669,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -704,7 +704,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -712,7 +712,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -720,7 +720,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -729,7 +729,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -764,7 +764,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -772,7 +772,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -780,7 +780,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -789,7 +789,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -824,7 +824,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -832,7 +832,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -840,7 +840,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -849,7 +849,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -884,7 +884,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -892,7 +892,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -900,7 +900,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -909,7 +909,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -944,7 +944,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -952,7 +952,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -960,7 +960,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -969,7 +969,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -1004,7 +1004,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -1012,7 +1012,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -1020,7 +1020,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -1029,7 +1029,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -1064,7 +1064,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     // searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -1072,7 +1072,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -1080,7 +1080,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -1089,7 +1089,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
@@ -1124,7 +1124,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //     searchIndex = "VideoGames";
   //     searchItemsRequest["SearchIndex"] = searchIndex;
 
-  //     console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
+  //     console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
 
   //     for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -1132,7 +1132,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //         searchItemsRequest["ItemPage"] = i;
 
-  //         // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+  //         // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
   //         addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -1140,7 +1140,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   //           function (data) {
 
-  //             // console.log(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify(data));
+  //             // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
   //             onSuccess(data);
 
@@ -1149,7 +1149,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   //           },
   //           function (error) {
 
-  //             console.error(`${controllerName}-controller`, GetDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+  //             console.error(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
   //             addErrorLog(`${controllerName}-controller`, "get / error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
