@@ -1,6 +1,6 @@
 "use strict";
 
-// const componentName = "applicationFunctions.js";
+// const componentName = "applicationFunctions";
 
 const convertBitTrueFalse = (records) => {
   // console.log(componentName, "convertBitTrueFalse records", records);
