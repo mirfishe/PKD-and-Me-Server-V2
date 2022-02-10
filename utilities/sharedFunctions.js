@@ -1,6 +1,6 @@
 "use strict";
 
-// const componentName = "sharedFunctions.js";
+// const componentName = "sharedFunctions";
 
 const isEmpty = (value) => {
   // console.log(componentName, getDateTime(), "isEmpty value", value);
