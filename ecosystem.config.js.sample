@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: "api",
-    script: "app.js",
+    script: "./app.js",
     watch: true,
     // * Delay between restart. -- 02/05/2022 MF
     watch_delay: 1000,

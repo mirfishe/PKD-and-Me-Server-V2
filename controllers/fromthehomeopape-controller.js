@@ -20,6 +20,76 @@ const tableName = "homeopapeRSS";
 let records;
 
 
+const formatItemLink = (itemLink) => {
+  // console.log(controllerName, getDateTime(), "formatItemLink itemLink", itemLink);
+
+  let param = "";
+  let regExp = "";
+  // let newURL = decodeURI(itemLink);
+  let newURL = itemLink.replaceAll("https://www.google.com/url?rct=j&sa=t&url=", "");
+
+  // * Remove &ct=ga&cd=CAIyGjFhOTgyNzMwYWNlOTE1ZDI6Y29tOmVuOlVT&usg=AFQjCNEhFPEPL8--91umtz1jWdrmBW2JZQ -- 06/26/2021 MF
+  // * Google -- 06/26/2021 MF
+  // * Removes everything after the ct= -- 06/26/2021 MF
+  // * https://gist.github.com/hehe24h/acfa46c57bc4f37a5ca6814cb1652537 -- 06/26/2021 MF
+  param = "ct";
+  regExp = new RegExp("[?&]" + param + "=.*$");
+  newURL = newURL.replace(regExp, "");
+  newURL = newURL.replace("%3F", "?");
+  newURL = newURL.replace("%3D", "=");
+
+  newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=");
+  // let newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "=");
+
+  // if (/*newURL.includes("\%3F") === true || newURL.includes("\%3f") === true ||*/ newURL.includes("www.heavymetal.com")) {
+
+  //   console.log(controllerName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\")", itemLink.replaceAll("\%3F", "?"));
+  //   console.log(controllerName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\").replaceAll(\"\%3f\", \"?\").replaceAll(\"\%26\", \"&\").replaceAll(\"\%3D\", \"=\").replaceAll(\"\%3d\", \"=\")", itemLink.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "="));
+  //   console.log(controllerName, getDateTime(), "formatPost newURL", newURL);
+  //   console.log(controllerName, getDateTime(), "formatPost decodeURI(itemLink)", decodeURI(itemLink));
+  //   console.log(controllerName, getDateTime(), "formatPost decodeURI(newURL)", decodeURI(newURL));
+  // };
+
+  // * Remove fbclid= -- 06/26/2021 MF
+  // * FaceBook analytics and tracking -- 06/26/2021 MF
+  // * Removes everything after the fbclid= -- 06/26/2021 MF
+  // * https://gist.github.com/hehe24h/acfa46c57bc4f37a5ca6814cb1652537 -- 06/26/2021 MF
+  param = "fbclid";
+  regExp = new RegExp("[?&]" + param + "=.*$");
+  newURL = newURL.replace(regExp, "");
+  // console.log(controllerName, getDateTime(), "formatPost newURL", newURL);
+
+  // * Remove utm_medium= -- 06/26/2021 MF
+  // * Google Analytics and tracking -- 06/26/2021 MF
+  // * Removes everything after the utm_medium= -- 06/26/2021 MF
+  param = "utm_medium";
+  regExp = new RegExp("[?&]" + param + "=.*$");
+  newURL = newURL.replace(regExp, "");
+  // console.log(controllerName, getDateTime(), "formatPost newURL", newURL);
+
+  // * Remove utm_campaign= -- 06/26/2021 MF
+  // * Google Analytics and tracking -- 06/26/2021 MF
+  // * Removes everything after the utm_campaign= -- 06/26/2021 MF
+  param = "utm_campaign";
+  regExp = new RegExp("[?&]" + param + "=.*$");
+  newURL = newURL.replace(regExp, "");
+  // console.log(controllerName, getDateTime(), "formatPost newURL", newURL);
+
+  // * Remove utm_source= -- 06/26/2021 MF
+  // * Google Analytics and tracking -- 06/26/2021 MF
+  // * Removes everything after the utm_source= -- 06/26/2021 MF
+  param = "utm_source";
+  regExp = new RegExp("[?&]" + param + "=.*$");
+  newURL = newURL.replace(regExp, "");
+  // console.log(controllerName, getDateTime(), "formatPost newURL", newURL);
+
+  // console.log(controllerName, getDateTime(), "formatItemLink newURL", newURL);
+
+  return newURL;
+
+};
+
+
 // const fetchNews = async () => {
 
 //   // https://cors-anywhere.herokuapp.com -- 06/05/2021 MF
@@ -112,7 +182,8 @@ let records;
 //       itemContentSnippet: item.contentSnippet,
 //       itemISODate: item.isoDate,
 //       itemCreator: item.creator,
-//       itemAuthor: item.author
+//       itemAuthor: item.author,
+//       itemLinkFormatted: formatItemLink(item.link)
 //     };
 
 //     itemsArray.push(feedObject);
@@ -446,7 +517,8 @@ router.get("/new", (request, response) => {
         itemContentSnippet: item.contentSnippet,
         itemISODate: item.isoDate,
         itemCreator: item.creator,
-        itemAuthor: item.author
+        itemAuthor: item.author,
+        itemLinkFormatted: formatItemLink(item.link)
       };
 
       // itemsArray.push(feedObject);
@@ -577,7 +649,8 @@ router.get("/new", (request, response) => {
         itemContentSnippet: item.contentSnippet,
         itemISODate: item.isoDate,
         itemCreator: item.creator,
-        itemAuthor: item.author
+        itemAuthor: item.author,
+        itemLinkFormatted: formatItemLink(item.link)
       };
 
       // itemsArray.push(feedObject);
@@ -708,7 +781,8 @@ router.get("/new", (request, response) => {
         itemContentSnippet: item.contentSnippet,
         itemISODate: item.isoDate,
         itemCreator: item.creator,
-        itemAuthor: item.author
+        itemAuthor: item.author,
+        itemLinkFormatted: formatItemLink(item.link)
       };
 
       // itemsArray.push(feedObject);
@@ -839,7 +913,8 @@ router.get("/new", (request, response) => {
         itemContentSnippet: item.contentSnippet,
         itemISODate: item.isoDate,
         itemCreator: item.creator,
-        itemAuthor: item.author
+        itemAuthor: item.author,
+        itemLinkFormatted: formatItemLink(item.link)
       };
 
       // itemsArray.push(feedObject);
@@ -970,7 +1045,8 @@ router.get("/new", (request, response) => {
         itemContentSnippet: item.contentSnippet,
         itemISODate: item.isoDate,
         itemCreator: item.creator,
-        itemAuthor: item.author
+        itemAuthor: item.author,
+        itemLinkFormatted: formatItemLink(item.link)
       };
 
       // itemsArray.push(feedObject);
@@ -1041,9 +1117,9 @@ router.get("/new", (request, response) => {
  ******************************/
 router.get("/insert", (request, response) => {
 
-  // INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)
+  // INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor, itemLinkFormatted) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor, itemLinkFormatted FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)
 
-  let sqlQuery = "INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)";
+  let sqlQuery = "INSERT INTO homeopapeRSS (feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor, itemLinkFormatted) SELECT DISTINCT feedID, feedTitle, feedLink, feedUpdated, feedLastBuildDate, feedUrl, itemID, itemTitle, itemLink, itemPubDate, itemUpdated, itemContent, itemContentSnippet, itemISODate, itemCreator, itemAuthor, itemLinkFormatted FROM homeopapeRSSImport WHERE itemID NOT IN (SELECT itemID FROM homeopapeRSS)";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -1051,7 +1127,7 @@ router.get("/insert", (request, response) => {
 
   db.raw(sqlQuery)
     .then((records) => {
-      console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
+      // console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       addLog(`${controllerName}-controller`, "get /insert", JSON.stringify({ records: records }));
@@ -1107,7 +1183,7 @@ router.get("/update", (request, response) => {
 
   // UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)
 
-  let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
+  let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%running blade%' OR LOWER(itemContentSnippet) LIKE '%running blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
 
   // db.raw(sqlQueryHideStories).toSQL();
 
@@ -1212,7 +1288,8 @@ router.post("/", validateAdmin, (request, response) => {
     itemContentSnippet: request.body.recordObject.itemContentSnippet,
     itemISODate: request.body.recordObject.itemISODate,
     itemCreator: request.body.recordObject.itemCreator,
-    itemAuthor: request.body.recordObject.itemAuthor
+    itemAuthor: request.body.recordObject.itemAuthor,
+    itemLinkFormatted: request.body.recordObject.itemLinkFormatted
   };
 
   db(tableName)
