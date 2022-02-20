@@ -48,6 +48,9 @@ const formatItemLink = (itemLink) => {
   // UPDATE homeopapeRSS
   // SET itemLinkFormatted = REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', ''), '[?&]utm_source=.*$', '')
 
+  // UPDATE homeopapeRSSImport
+  // SET itemLinkFormatted = REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', ''), '[?&]utm_source=.*$', '')
+
   // SELECT * FROM homeopapeRSS
   // WHERE itemLinkFormatted IN (
   // SELECT itemLinkFormatted FROM homeopapeRSS
