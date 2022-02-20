@@ -23,6 +23,37 @@ let records;
 const formatItemLink = (itemLink) => {
   // console.log(controllerName, getDateTime(), "formatItemLink itemLink", itemLink);
 
+  // SELECT itemLink, 
+  // REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', '') AS itemLinkFormatted
+  // FROM homeopapeRSS
+
+  // REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?')
+  // REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&')
+  // REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '=')
+
+  // REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', '')
+
+  // REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', '')
+
+  // REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', '')
+
+  // REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', '')
+
+  // REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', ''), '[?&]utm_source=.*$', '')
+
+  // SELECT itemID, 
+  // REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', ''), '[?&]utm_source=.*$', '') AS itemLinkFormatted
+  // FROM homeopapeRSS
+
+  // UPDATE homeopapeRSS
+  // SET itemLinkFormatted = REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '\%3F', '?'), '\%26', '&'), '\%3D', '='), '[?&]ct=.*$', ''), '[?&]fbclid=.*$', ''), '[?&]utm_medium=.*$', ''), '[?&]utm_campaign=.*$', ''), '[?&]utm_source=.*$', '')
+
+  // SELECT * FROM homeopapeRSS
+  // WHERE itemLinkFormatted IN (
+  // SELECT itemLinkFormatted FROM homeopapeRSS
+  // GROUP BY itemLinkFormatted
+  // HAVING COUNT(*) > 1)
+
   let param = "";
   let regExp = "";
   // let newURL = decodeURI(itemLink);
