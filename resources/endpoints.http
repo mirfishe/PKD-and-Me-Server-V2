@@ -61,6 +61,10 @@ GET {{baseURL}}/fromthehomeopape
 
 ###
 
+GET {{baseURL}}/fromthehomeopape/top/50
+
+###
+
 GET {{baseURL}}/fromthehomeopape/review
 
 ###
@@ -81,6 +85,10 @@ GET {{baseURL}}/fromthehomeopape/insert
 
 # Runs the updating of new data from the import. -- 12/26/2021 MF
 GET {{baseURL}}/fromthehomeopape/update
+
+###
+
+GET {{baseURL}}/amazon/
 
 ###
 

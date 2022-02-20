@@ -10,12 +10,15 @@ const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
 
+// const Parser = require('rss-parser');
+
 const controllerName = "fromthehomeopape";
 const tableName = "homeopapeRSS";
-// const select = "*";
-// const orderBy = [{ column: "createDate", order: "desc" }];
-
-// const Parser = require('rss-parser');
+const select = ["itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "viewed", "display", "alwaysFilter", "posted", "itemLinkFormatted"];
+const limit = 20;
+const displayWhere = { "display": true };
+const viewedWhere = { "viewed": false };
+const orderBy = [{ column: "itemPubDate", order: "desc" }];
 
 let records;
 
@@ -305,19 +308,18 @@ router.get("/", (request, response) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber } itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
   // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
   // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
-  db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "viewed", "display", "alwaysFilter", "posted")
+  db.distinct(select)
     .from(tableName)
-    .where({ display: true })
+    .where(displayWhere)
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
-    .orderBy([{ column: "itemPubDate", order: "desc" }])
-    // .orderBy([{ column: "createDate", order: "desc" }])
+    .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
       // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
@@ -362,12 +364,11 @@ router.get("/review", (request, response) => {
 
   // console.log(`${controllerName}-controller`, getDateTime(), `get /review ${tableName}`, sqlQuery);
 
-  db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "viewed", "display", "alwaysFilter", "posted")
+  db.distinct(select)
     .from(tableName)
-    .where({ viewed: false })
+    .where(viewedWhere)
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
-    .orderBy([{ column: "itemPubDate", order: "desc" }])
-    // .orderBy([{ column: "createDate", order: "desc" }])
+    .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
       // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /review ${tableName}`, records);
@@ -407,7 +408,7 @@ router.get("/top/:topNumber", (request, response) => {
 
   if (isNaN(formatTrim(topNumber)) === true) {
 
-    topNumber = 10;
+    topNumber = limit;
 
   } else {
 
@@ -415,21 +416,26 @@ router.get("/top/:topNumber", (request, response) => {
 
   };
 
-  // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
-  // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
-  let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
+  // // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+  // // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
+  // // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
-  // db.raw(sqlQuery).toSQL();
+  // // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
+  // // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
 
-  // db.distinct("itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "viewed", "display", "alwaysFilter", "posted")
-  //   .from(tableName)
-  //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
-  //   .orderBy([{ column: "itemPubDate", order: "desc" }])
-  //   // .orderBy([{ column: "createDate", order: "desc" }])
-  db.raw(sqlQuery)
+  // // db.distinct(select)
+  // //   .from(tableName)
+  // //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+  // //   .orderBy([{ column: "itemPubDate", order: "desc" }])
+  // //   // .orderBy([{ column: "createDate", order: "desc" }])
+  // db.raw(sqlQuery)
+  db.distinct(select)
+    .from(tableName)
+    .limit(topNumber)
+    .where(displayWhere)
+    .orderBy(orderBy)
     .then((records) => {
       // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
@@ -1301,9 +1307,9 @@ router.get("/markviewed", (request, response) => {
 });
 
 
-/* ******************************
+/***************************
  *** Add  ***************
-*********************************/
+****************************/
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {

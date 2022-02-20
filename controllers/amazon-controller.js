@@ -13,8 +13,11 @@ const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "amazon";
 const tableName = "amazon";
-// const select = "*";
-// const orderBy = [{ column: "createDate", order: "desc" }];
+const select = "*";
+// const limit = 20;
+const activeWhere = { "active": true };
+// const authorWhere = { "authorName": "Dick, Philip K." };
+const orderBy = [{ column: "authorName", order: "asc" }, { column: "titleName", order: "asc" }];
 
 // const Parser = require("rss-parser");
 
@@ -23,6 +26,46 @@ const ProductAdvertisingAPIv1 = require("../amazon/index");
 const credentials = require("../amazon");
 
 let records;
+
+
+/******************************
+ ***** Get *********
+ ******************************/
+router.get("/", (request, response) => {
+
+  db.select(select)
+    .from(tableName)
+    // .limit(limit)
+    .where(activeWhere)
+    // .where(authorWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
 
 
 /******************************
