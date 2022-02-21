@@ -13,12 +13,12 @@ const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "amazon";
 const tableName = "amazon";
-const select = "*";
+// const select = "*";
 // const limit = 20;
-const activeWhere = { "active": true };
-const viewedWhere = { "viewed": false };
+// const activeWhere = { "active": true };
+// const viewedWhere = { "viewed": false };
 // const authorWhere = { "authorName": "Dick, Philip K." };
-const orderBy = [{ column: "authorName", order: "asc" }, { column: "titleName", order: "asc" }];
+// const orderBy = [{ column: "authorName", order: "asc" }, { column: "titleName", order: "asc" }];
 
 // const Parser = require("rss-parser");
 
@@ -38,7 +38,7 @@ let records;
  ******************************/
 router.get("/", (request, response) => {
 
-  let sqlQuery = `SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE viewed = 0`;
+  let sqlQuery = `SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE viewed = 0 ORDER BY authorName, titleName`;
 
   // db.raw(sqlQuery).toSQL();
 

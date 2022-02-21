@@ -12,17 +12,17 @@ let urlArrayFilteredNewestArrivals = ["http://localhost:4000/amazon/authorPhilip
 // let urlArray = [...urlArrayFiltered];
 // let urlArray = [...urlArrayFilteredNewestArrivals];
 
-// let urlArray = urlArrayFull.map((a) => (
-//   { sort: Math.random(), value: a }
-// ))
-//   .sort((a, b) => a.sort - b.sort)
-//   .map((a) => a.value);
-
-let urlArray = urlArrayFiltered.map((a) => (
+let urlArray = urlArrayFull.map((a) => (
   { sort: Math.random(), value: a }
 ))
   .sort((a, b) => a.sort - b.sort)
   .map((a) => a.value);
+
+// let urlArray = urlArrayFiltered.map((a) => (
+//   { sort: Math.random(), value: a }
+// ))
+//   .sort((a, b) => a.sort - b.sort)
+//   .map((a) => a.value);
 
 // let urlArray = urlArrayFilteredNewestArrivals.map((a) => (
 //   { sort: Math.random(), value: a }
@@ -30,8 +30,9 @@ let urlArray = urlArrayFiltered.map((a) => (
 //   .sort((a, b) => a.sort - b.sort)
 //   .map((a) => a.value);
 
+let waitTime = 6000; // * 1 minutes -- 01/09/2022 MF
 // let waitTime = 180000; // * 3 minutes -- 01/09/2022 MF
-let waitTime = 300000; // * 5 minutes -- 01/09/2022 MF
+// let waitTime = 300000; // * 5 minutes -- 01/09/2022 MF
 
 // * https://stackoverflow.com/questions/3583724/how-do-i-add-a-delay-in-a-javascript-loop -- 01/02/2022 MF
 // * Returns a Promise that resolves after "ms" Milliseconds. -- 01/02/2022
