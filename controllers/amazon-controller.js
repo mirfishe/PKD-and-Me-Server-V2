@@ -290,12 +290,12 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "######################################################");
 
-              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["displayValue"]) === false
+              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
               ) {
 
-                // console.log("Title: " + item_0["ItemInfo"]["Title"]["displayValue"]);
+                // console.log("Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
 
-                itemObject.titleName = item_0["ItemInfo"]["Title"]["displayValue"];
+                itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
 
               };
 
@@ -324,9 +324,9 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
               if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
               ) {
 
-                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"]);
+                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
 
-                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"];
+                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
 
               };
 

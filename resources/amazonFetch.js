@@ -30,7 +30,8 @@ let urlArray = urlArrayFull.map((a) => (
 //   .sort((a, b) => a.sort - b.sort)
 //   .map((a) => a.value);
 
-let waitTime = 6000; // * 1 minutes -- 01/09/2022 MF
+// let waitTime = 6000; // * 10 seconds -- 01/09/2022 MF
+let waitTime = 60000; // * 1 minutes -- 01/09/2022 MF
 // let waitTime = 180000; // * 3 minutes -- 01/09/2022 MF
 // let waitTime = 300000; // * 5 minutes -- 01/09/2022 MF
 
