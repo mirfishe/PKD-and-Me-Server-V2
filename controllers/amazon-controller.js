@@ -5,7 +5,7 @@ const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
-// const validateAdmin = require("../middleware/validate-admin");
+const validateAdmin = require("../middleware/validate-admin");
 const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
@@ -14,7 +14,11 @@ const addErrorLog = require("../utilities/addErrorLog");
 const controllerName = "amazon";
 const tableName = "amazon";
 // const select = "*";
-// const orderBy = [{ column: "createDate", order: "desc" }];
+// const limit = 20;
+// const activeWhere = { "active": true };
+// const viewedWhere = { "viewed": false };
+// const authorWhere = { "authorName": "Dick, Philip K." };
+// const orderBy = [{ column: "authorName", order: "asc" }, { column: "titleName", order: "asc" }];
 
 // const Parser = require("rss-parser");
 
@@ -23,6 +27,58 @@ const ProductAdvertisingAPIv1 = require("../amazon/index");
 const credentials = require("../amazon");
 
 let records;
+
+// INSERT INTO amazon (ASIN, titleName, authorName, publicationDate, imageName, textLinkFull)
+// SELECT DISTINCT ASIN, titleName, authorName, publicationDate, imageName, textLinkFull FROM amazonImport
+// WHERE ASIN NOT IN (SELECT ASIN FROM amazon)
+
+
+/******************************
+ ***** Get *********
+ ******************************/
+router.get("/", (request, response) => {
+
+  let sqlQuery = `SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE viewed = 0 ORDER BY authorName, titleName`;
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+
+  // db.select(select)
+  //   .from(tableName)
+  //   // .limit(limit)
+  //   // .where(activeWhere)
+  //   .where(viewedWhere)
+  //   // .where(authorWhere)
+  //   .orderBy(orderBy)
+  db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
 
 
 /******************************
@@ -205,7 +261,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       // console.log("Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
       // console.log(JSON.stringify(searchItemsResponse, null, 1));
-      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
 
     } else {
 
@@ -234,12 +290,12 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "######################################################");
 
-              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["displayValue"]) === false
+              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
               ) {
 
-                // console.log("Title: " + item_0["ItemInfo"]["Title"]["displayValue"]);
+                // console.log("Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
 
-                itemObject.titleName = item_0["ItemInfo"]["Title"]["displayValue"];
+                itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
 
               };
 
@@ -268,9 +324,9 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
               if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
               ) {
 
-                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"]);
+                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
 
-                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["displayValue"];
+                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
 
               };
 
@@ -411,7 +467,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       searchItemsRequest["ItemPage"] = i;
 
-      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+      // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
       addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -419,7 +475,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
         function (data) {
 
-          console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
+          // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
           onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
@@ -1169,6 +1225,105 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records." });
 
 });
+
+
+/***************************
+ ******* Active/Inactive Item *******
+ ***************************/
+// * Allows the admin to mark an item as active/inactive. -- 01/03/2022 MF
+router.put("/active/:ASIN", validateAdmin, (request, response) => {
+
+  const recordObject = {
+    active: request.body.recordObject.active
+  };
+
+  const where = { ASIN: request.params.ASIN };
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN ASIN`, ASIN);
+
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN records`, records);
+      // * Returns the number of updated records. -- 08/13/2021 MF
+
+      // records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN records`, records);
+
+        response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN No Results`);
+
+        response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN error`, error);
+
+      addErrorLog(`${controllerName}-controller`, "put /active/:ASIN", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
+
+    });
+
+});
+
+
+/***************************
+ ******* Viewed Item *******
+ ***************************/
+// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
+router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
+
+  const recordObject = {
+    viewed: request.body.recordObject.viewed
+  };
+
+  const where = { ASIN: request.params.ASIN };
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN ASIN`, ASIN);
+
+  db(tableName)
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN records`, records);
+      // * Returns the number of updated records. -- 08/13/2021 MF
+
+      // records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN records`, records);
+
+        response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN No Results`);
+
+        response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN error`, error);
+
+      addErrorLog(`${controllerName}-controller`, "put /viewed/:ASIN", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
+
+    });
+
+});
+
 
 
 module.exports = router;
