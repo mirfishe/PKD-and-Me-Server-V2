@@ -261,7 +261,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       // console.log("Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
       // console.log(JSON.stringify(searchItemsResponse, null, 1));
-      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
 
     } else {
 
@@ -467,7 +467,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
       searchItemsRequest["ItemPage"] = i;
 
-      console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
+      // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "Calling page " + i + " results.");
 
       addLog(`${controllerName}-controller`, "get /", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -475,7 +475,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
         function (data) {
 
-          console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
+          // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(data));
 
           onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
