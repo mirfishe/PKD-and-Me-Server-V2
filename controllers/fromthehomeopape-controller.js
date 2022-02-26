@@ -308,8 +308,8 @@ router.get("/", (request, response) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber } itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
-  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber} itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
@@ -357,8 +357,8 @@ router.get("/review", (request, response) => {
 
   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
-  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
+  // let sqlQuery = `SELECT DISTINCT TOP ${topNumber} itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // db.raw(sqlQuery).toSQL();
 
@@ -418,7 +418,7 @@ router.get("/top/:topNumber", (request, response) => {
 
   // // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
   // // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
-  // // let sqlQuery = `SELECT DISTINCT TOP ${topNumber }itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM  ${tableName } ORDER BY itemPubDate DESC`;
+  // // let sqlQuery = `SELECT DISTINCT TOP ${topNumber} itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC`;
   // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
 
   // // db.raw(sqlQuery).toSQL();
