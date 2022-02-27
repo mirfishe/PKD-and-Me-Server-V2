@@ -92,27 +92,39 @@ GET {{baseURL}}/amazon/
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AvgCustomerReviews
+GET {{baseURL}}/amazon/all
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Featured
+GET {{baseURL}}/amazon/insert
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/NewestArrivals
+GET {{baseURL}}/amazon/update
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/PriceHighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/PriceLowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceHighToLow
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceLowToHigh
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance
 
 ###
 

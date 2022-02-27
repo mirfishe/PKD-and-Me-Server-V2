@@ -34,11 +34,58 @@ let records;
 
 
 /******************************
- ***** Get *********
+ ***** Get Amazon Items *********
  ******************************/
 router.get("/", (request, response) => {
 
-  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 ORDER BY authorName, titleName";
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'Amazon' ORDER BY authorName, titleName";
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+
+  // db.select(select)
+  //   .from(tableName)
+  //   // .limit(limit)
+  //   // .where(activeWhere)
+  //   .where(viewedWhere)
+  //   // .where(authorWhere)
+  //   .orderBy(orderBy)
+  db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
+
+/******************************
+ ***** Get Amazon Items *********
+ ******************************/
+router.get("/all", (request, response) => {
+
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'All' ORDER BY authorName, titleName";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -207,6 +254,10 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   searchItemsRequest["PartnerTag"] = credentials.PartnerTag;
   searchItemsRequest["PartnerType"] = credentials.PartnerType;
 
+  // let merchant = "All";
+  let merchant = "Amazon";
+  searchItemsRequest["Merchant"] = merchant;
+
   /** Specify Keywords */
   if (isEmpty(searchKeywords) === false) {
 
@@ -253,14 +304,14 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
     let displayFilteredResults = true;
 
-    // console.log("API called successfully.");
+    // console.log(`${controllerName}-controller`, getDateTime(), "API called successfully.");
 
     let searchItemsResponse = ProductAdvertisingAPIv1.SearchItemsResponse.constructFromObject(data);
 
     if (displayFilteredResults === false) {
 
-      // console.log("Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
-      // console.log(JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(`${controllerName}-controller`, getDateTime(), "Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(`${controllerName}-controller`, getDateTime(), JSON.stringify(searchItemsResponse, null, 1));
       // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, JSON.stringify(searchItemsResponse, null, 1));
 
     } else {
@@ -283,7 +334,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
             // let itemObject = {};
             // let itemObject = { searchCategory: searchCategory };
-            let itemObject = { searchCategory: searchCategory, totalResultCount: totalResultCount, searchURL: searchURL, page: page, searchIndex: searchIndex, sortBy: sortBy };
+            let itemObject = { searchCategory: searchCategory, totalResultCount: totalResultCount, searchURL: searchURL, page: page, searchIndex: searchIndex, sortBy: sortBy, merchant: merchant };
             // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
 
             if (isEmpty(item_0) === false) {
@@ -293,7 +344,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
               if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
               ) {
 
-                // console.log("Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
+                // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
 
                 itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
 
@@ -304,8 +355,8 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
                 for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
-                  // console.log("ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
-                  // console.log("ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
+                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
+                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
 
                   if (j !== 0) {
 
@@ -324,7 +375,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
               if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
               ) {
 
-                // console.log("PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+                // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
 
                 itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
 
@@ -332,7 +383,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               if (isEmpty(item_0["ASIN"]) === false) {
 
-                // console.log("ASIN: " + item_0["ASIN"]);
+                // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item_0["ASIN"]);
 
                 itemObject.ASIN = item_0["ASIN"];
 
@@ -340,7 +391,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               if (isEmpty(item_0["DetailPageURL"]) === false) {
 
-                // console.log("DetailPageURL: " + item_0["DetailPageURL"]);
+                // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item_0["DetailPageURL"]);
 
                 itemObject.textLinkFull = item_0["DetailPageURL"];
 
@@ -348,7 +399,7 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
               if (isEmpty(item_0["Images"]) === false && isEmpty(item_0["Images"]["Primary"]) === false && isEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
 
-                // console.log("Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
+                // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
 
                 itemObject.imageName = item_0["Images"]["Primary"]["Large"]["URL"];
 
@@ -1223,6 +1274,102 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
 
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records." });
+
+});
+
+
+/******************************
+ ***** Insert Amazon SDK *********
+ ******************************/
+router.get("/insert", (request, response) => {
+
+  let sqlQuery = "INSERT INTO amazon(ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant) SELECT DISTINCT ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant FROM amazonImport WHERE ASIN NOT IN(SELECT ASIN FROM amazon) AND ASIN NOT IN(SELECT ASIN FROM editions)";
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+
+  // db.select(select)
+  //   .from(tableName)
+  //   // .limit(limit)
+  //   // .where(activeWhere)
+  //   .where(viewedWhere)
+  //   // .where(authorWhere)
+  //   .orderBy(orderBy)
+  db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
+
+
+/******************************
+ ***** Update Amazon SDK *********
+ ******************************/
+router.get("/update", (request, response) => {
+
+  let sqlQuery = "UPDATE amazon SET merchant = 'Amazon' WHERE ASIN IN (SELECT ASIN FROM amazonImport WHERE merchant = 'Amazon')";
+
+  // db.raw(sqlQuery).toSQL();
+
+  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+
+  // db.select(select)
+  //   .from(tableName)
+  //   // .limit(limit)
+  //   // .where(activeWhere)
+  //   .where(viewedWhere)
+  //   // .where(authorWhere)
+  //   .orderBy(orderBy)
+  db.raw(sqlQuery)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
 
 });
 
