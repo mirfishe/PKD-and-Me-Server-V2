@@ -322,12 +322,12 @@ router.get("/", (request, response) => {
     .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -371,12 +371,12 @@ router.get("/review", (request, response) => {
     .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /review ${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /review ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /review ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /review ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -437,12 +437,12 @@ router.get("/top/:topNumber", (request, response) => {
     .where(displayWhere)
     .orderBy(orderBy)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /top/:topNumber ${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /top/:topNumber ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -1279,12 +1279,12 @@ router.get("/markviewed", (request, response) => {
 
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /markviewed`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /markviewed`, records);
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /markviewed`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /markviewed`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 

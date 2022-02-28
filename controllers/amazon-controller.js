@@ -53,12 +53,12 @@ router.get("/", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -100,12 +100,12 @@ router.get("/all", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -132,11 +132,12 @@ router.get("/all", (request, response) => {
  ***** Get Amazon SDK *********
  ******************************/
 // * Returns Amazon listings -- 12/31/2021 MF
-router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
+router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
   let searchItem = request.params.searchItem;
   let searchIndex = request.params.searchIndex;
   let sort = request.params.sort;
+  let merchant = request.params.merchant;
   let searchCategory = "";
   let searchAuthor = "";
   let searchKeywords = "";
@@ -220,6 +221,15 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
 
   };
 
+  // merchant = "All";
+  // merchant = "Amazon";
+
+  if (isEmpty(merchant) === true) {
+
+    merchant = "Amazon";
+
+  };
+
   // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchCategory", searchCategory);
   // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "searchIndex", searchIndex);
   // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, "sortBy", sortBy);
@@ -254,8 +264,6 @@ router.get("/:searchItem/:searchIndex/:sort", (request, response) => {
   searchItemsRequest["PartnerTag"] = credentials.PartnerTag;
   searchItemsRequest["PartnerType"] = credentials.PartnerType;
 
-  // let merchant = "All";
-  let merchant = "Amazon";
   searchItemsRequest["Merchant"] = merchant;
 
   /** Specify Keywords */
@@ -1287,7 +1295,7 @@ router.get("/insert", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, getDateTime(), "get /insert sqlQuery", sqlQuery);
 
   // db.select(select)
   //   .from(tableName)
@@ -1298,17 +1306,17 @@ router.get("/insert", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
 
-      records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+        // console.log(`${controllerName}-controller`, getDateTime(), "get /insert No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -1316,9 +1324,9 @@ router.get("/insert", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get /insert error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      addErrorLog(`${controllerName}-controller`, "get /insert", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -1335,39 +1343,36 @@ router.get("/update", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // console.log(`${controllerName}-controller`, getDateTime(), "get /update sqlQuery", sqlQuery);
 
-  // db.select(select)
-  //   .from(tableName)
-  //   // .limit(limit)
-  //   // .where(activeWhere)
-  //   .where(viewedWhere)
-  //   // .where(authorWhere)
-  //   .orderBy(orderBy)
+  let sqlQueryElectronicMedia = "UPDATE amazon SET merchant = 'Amazon' WHERE ASIN IN (SELECT ASIN FROM `amazonImport` WHERE searchIndex IN ('KindleStore', 'AmazonVideo', 'DigitalMusic', 'MobileApps'))";
+
+  // db.raw(sqlQueryElectronicMedia).toSQL();
+
+  // console.log(`${controllerName}-controller`, getDateTime(), "get /update sqlQueryElectronicMedia", sqlQueryElectronicMedia);
+
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      // console.log(`${controllerName}-controller`, getDateTime(), "get /update records", records);
 
-      records = convertBitTrueFalse(records);
+      addLog(`${controllerName}-controller`, "get /update sqlQuery", JSON.stringify({ records: records }));
 
-      if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get /${tableName}`, records);
+      return db.raw(sqlQueryElectronicMedia);
 
-        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+    })
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), "get /update records", records);
 
-      } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+      addLog(`${controllerName}-controller`, "get /update sqlQueryElectronicMedia", JSON.stringify({ records: records }));
 
-        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
-
-      };
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(`${controllerName}-controller`, getDateTime(), "get /update error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
-      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+      addErrorLog(`${controllerName}-controller`, "get /update", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
 
