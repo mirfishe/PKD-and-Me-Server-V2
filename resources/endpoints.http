@@ -96,6 +96,10 @@ GET {{baseURL}}/amazon/all
 
 ###
 
+GET {{baseURL}}/amazon/item
+
+###
+
 GET {{baseURL}}/amazon/insert
 
 ###
