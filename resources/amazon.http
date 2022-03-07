@@ -1,9 +1,9 @@
 
 # https://github.com/Huachao/vscode-restclient
 
-@baseURL = http://localhost:4000
+@baseURL = https://api.philipdick.com
 
-# @baseURL = https://api.philipdick.com
+# @baseURL = http://localhost:4000
 
 ###
 
@@ -942,3 +942,245 @@ GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:LowToHigh
 GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Relevance
 
 ###
+
+GET {{baseURL}}/amazon/item/0
+
+###
+
+GET {{baseURL}}/amazon/item/1
+
+###
+
+GET {{baseURL}}/amazon/item/2
+
+###
+
+GET {{baseURL}}/amazon/item/3
+
+###
+
+GET {{baseURL}}/amazon/item/4
+
+###
+
+GET {{baseURL}}/amazon/item/5
+
+###
+
+GET {{baseURL}}/amazon/item/6
+
+###
+
+GET {{baseURL}}/amazon/item/7
+
+###
+
+GET {{baseURL}}/amazon/item/8
+
+###
+
+GET {{baseURL}}/amazon/item/9
+
+###
+
+GET {{baseURL}}/amazon/item/10
+
+###
+
+GET {{baseURL}}/amazon/item/11
+
+###
+
+GET {{baseURL}}/amazon/item/12
+
+###
+
+GET {{baseURL}}/amazon/item/13
+
+###
+
+GET {{baseURL}}/amazon/item/14
+
+###
+
+GET {{baseURL}}/amazon/item/15
+
+###
+
+GET {{baseURL}}/amazon/item/16
+
+###
+
+GET {{baseURL}}/amazon/item/17
+
+###
+
+GET {{baseURL}}/amazon/item/18
+
+###
+
+GET {{baseURL}}/amazon/item/19
+
+###
+
+GET {{baseURL}}/amazon/item/20
+
+###
+
+GET {{baseURL}}/amazon/item/21
+
+###
+
+GET {{baseURL}}/amazon/item/22
+
+###
+
+GET {{baseURL}}/amazon/item/23
+
+###
+
+GET {{baseURL}}/amazon/item/24
+
+###
+
+GET {{baseURL}}/amazon/item/25
+
+###
+
+GET {{baseURL}}/amazon/item/26
+
+###
+
+GET {{baseURL}}/amazon/item/27
+
+###
+
+GET {{baseURL}}/amazon/item/28
+
+###
+
+GET {{baseURL}}/amazon/item/29
+
+###
+
+GET {{baseURL}}/amazon/item/30
+
+###
+
+GET {{baseURL}}/amazon/item/31
+
+###
+
+GET {{baseURL}}/amazon/item/32
+
+###
+
+GET {{baseURL}}/amazon/item/33
+
+###
+
+GET {{baseURL}}/amazon/item/34
+
+###
+
+GET {{baseURL}}/amazon/item/35
+
+###
+
+GET {{baseURL}}/amazon/item/36
+
+###
+
+GET {{baseURL}}/amazon/item/37
+
+###
+
+GET {{baseURL}}/amazon/item/38
+
+###
+
+GET {{baseURL}}/amazon/item/39
+
+###
+
+GET {{baseURL}}/amazon/item/40
+
+###
+
+GET {{baseURL}}/amazon/item/41
+
+###
+
+GET {{baseURL}}/amazon/item/42
+
+###
+
+GET {{baseURL}}/amazon/item/43
+
+###
+
+GET {{baseURL}}/amazon/item/44
+
+###
+
+GET {{baseURL}}/amazon/item/45
+
+###
+
+GET {{baseURL}}/amazon/item/46
+
+###
+
+GET {{baseURL}}/amazon/item/47
+
+###
+
+GET {{baseURL}}/amazon/item/48
+
+###
+
+GET {{baseURL}}/amazon/item/49
+
+###
+
+GET {{baseURL}}/amazon/item/50
+
+###
+
+GET {{baseURL}}/amazon/item/51
+
+###
+
+GET {{baseURL}}/amazon/item/52
+
+###
+
+GET {{baseURL}}/amazon/item/53
+
+###
+
+GET {{baseURL}}/amazon/item/54
+
+###
+
+GET {{baseURL}}/amazon/item/55
+
+###
+
+# Probem with ASIN. -- 03/02/2022 MF
+GET {{baseURL}}/amazon/item/56
+
+###
+
+GET {{baseURL}}/amazon/item/57
+
+###
+
+GET {{baseURL}}/amazon/item/58
+
+###
+
+GET {{baseURL}}/amazon/item/59
+
+###
+
