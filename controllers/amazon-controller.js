@@ -846,8 +846,9 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
   };
 
   /** Specify item count to be returned in search result */
-  searchItemsRequest["ItemCount"] = 10;
   // searchItemsRequest["ItemPage"] = 1;
+  // searchItemsRequest["ItemCount"] = 5;
+  searchItemsRequest["ItemCount"] = 10;
 
   /**
    * Choose resources you want from SearchItemsResource enum

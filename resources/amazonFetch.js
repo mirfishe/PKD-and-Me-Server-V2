@@ -16,11 +16,11 @@ let urlArrayFiltered = ["/amazon/authorPhilipKDick/All/AvgCustomerReviews", "/am
 
 let urlArrayFilteredNewestArrivals = ["/amazon/authorPhilipKDick/All/NewestArrivals", "/amazon/authorPhilipKDick/AmazonVideo/NewestArrivals", "/amazon/authorPhilipKDick/Books/NewestArrivals", "/amazon/authorPhilipKDick/Collectibles/NewestArrivals", "/amazon/authorPhilipKDick/DigitalMusic/NewestArrivals", "/amazon/authorPhilipKDick/DigitalEducationalResources/NewestArrivals", "/amazon/authorPhilipKDick/KindleStore/NewestArrivals", "/amazon/authorPhilipKDick/MobileApps/NewestArrivals", "/amazon/authorPhilipKDick/MoviesAndTV/NewestArrivals", "/amazon/authorPhilipKDick/Music/NewestArrivals", "/amazon/authorPhilipKDick/ToysAndGames/NewestArrivals", "/amazon/authorPhilipKDick/VHS/NewestArrivals", "/amazon/authorPhilipKDick/VideoGames/NewestArrivals", "/amazon/keywordsPhilipDick/All/NewestArrivals", "/amazon/keywordsPhilipDick/AmazonVideo/NewestArrivals", "/amazon/keywordsPhilipDick/Books/NewestArrivals", "/amazon/keywordsPhilipDick/Collectibles/NewestArrivals", "/amazon/keywordsPhilipDick/DigitalMusic/NewestArrivals", "/amazon/keywordsPhilipDick/DigitalEducationalResources/NewestArrivals", "/amazon/keywordsPhilipDick/KindleStore/NewestArrivals", "/amazon/keywordsPhilipDick/MobileApps/NewestArrivals", "/amazon/keywordsPhilipDick/MoviesAndTV/NewestArrivals", "/amazon/keywordsPhilipDick/Music/NewestArrivals", "/amazon/keywordsPhilipDick/ToysAndGames/NewestArrivals", "/amazon/keywordsPhilipDick/VHS/NewestArrivals", "/amazon/keywordsPhilipDick/VideoGames/NewestArrivals", "/amazon/keywordsBladeRunner/All/NewestArrivals", "/amazon/keywordsBladeRunner/AmazonVideo/NewestArrivals", "/amazon/keywordsBladeRunner/Books/NewestArrivals", "/amazon/keywordsBladeRunner/Collectibles/NewestArrivals", "/amazon/keywordsBladeRunner/DigitalMusic/NewestArrivals", "/amazon/keywordsBladeRunner/DigitalEducationalResources/NewestArrivals", "/amazon/keywordsBladeRunner/KindleStore/NewestArrivals", "/amazon/keywordsBladeRunner/MobileApps/NewestArrivals", "/amazon/keywordsBladeRunner/MoviesAndTV/NewestArrivals", "/amazon/keywordsBladeRunner/Music/NewestArrivals", "/amazon/keywordsBladeRunner/ToysAndGames/NewestArrivals", "/amazon/keywordsBladeRunner/VHS/NewestArrivals", "/amazon/keywordsBladeRunner/VideoGames/NewestArrivals"];
 
-// let urlArray = [...urlArrayFull];
-// let urlArray = [...urlArrayFiltered];
-// let urlArray = [...urlArrayFilteredNewestArrivals];
+// let urlArraySelected = [...urlArrayFull];
+let urlArraySelected = [...urlArrayFiltered];
+// let urlArraySelected = [...urlArrayFilteredNewestArrivals];
 
-let urlArray = urlArrayFull.map((a) => (
+let urlArray = urlArraySelected.map((a) => (
   { sort: Math.random(), value: a }
 ))
   .sort((a, b) => a.sort - b.sort)
