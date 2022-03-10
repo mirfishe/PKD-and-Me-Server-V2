@@ -1092,7 +1092,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
  ******************************/
 router.get("/insert", (request, response) => {
 
-  let sqlQuery = "INSERT INTO amazon(ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant) SELECT DISTINCT ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant FROM amazonImport WHERE ASIN NOT IN(SELECT ASIN FROM amazon) AND ASIN NOT IN(SELECT ASIN FROM editions)";
+  let sqlQuery = "INSERT INTO amazon (ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant) SELECT DISTINCT ASIN, titleName, authorName, publicationDate, imageName, textLinkFull, merchant FROM amazonImport WHERE ASIN NOT IN (SELECT ASIN FROM amazon) AND ASIN NOT IN (SELECT ASIN FROM editions)";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -1146,7 +1146,7 @@ router.get("/update", (request, response) => {
 
   // console.log(`${controllerName}-controller`, getDateTime(), "get /update sqlQuery", sqlQuery);
 
-  let sqlQueryElectronicMedia = "UPDATE amazon SET merchant = 'Amazon' WHERE ASIN IN (SELECT ASIN FROM `amazonImport` WHERE searchIndex IN ('KindleStore', 'AmazonVideo', 'DigitalMusic', 'MobileApps'))";
+  let sqlQueryElectronicMedia = "UPDATE amazon SET merchant = 'Amazon' WHERE ASIN IN (SELECT ASIN FROM amazonImport WHERE searchIndex IN ('KindleStore', 'AmazonVideo', 'DigitalMusic', 'MobileApps'))";
 
   // db.raw(sqlQueryElectronicMedia).toSQL();
 
