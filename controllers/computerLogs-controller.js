@@ -43,7 +43,7 @@ router.get("/", validateAdmin, (request, response) => {
       // console.log(`${controllerName}-controller`, getDateTime(), "get / records", records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get / ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -83,7 +83,7 @@ router.get("/broken", validateAdmin, (request, response) => {
       // console.log(`${controllerName}-controller`, getDateTime(), "get /broken records", records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "", getDateTime(), `get / ${tableName}`, records);
+        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
