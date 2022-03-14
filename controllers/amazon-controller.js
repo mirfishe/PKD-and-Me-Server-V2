@@ -38,7 +38,7 @@ let records;
  ******************************/
 router.get("/", (request, response) => {
 
-  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'Amazon' ORDER BY updateDate, authorName, titleName";
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'Amazon' ORDER BY createDate, authorName, titleName";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -85,7 +85,7 @@ router.get("/", (request, response) => {
  ******************************/
 router.get("/all", (request, response) => {
 
-  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'All' ORDER BY updateDate, authorName, titleName";
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'All' ORDER BY createDate, authorName, titleName";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -785,8 +785,8 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
   // const numberOfResultsPages = 2;
 
   // let waitTime = 10000; // * 10 seconds -- 01/09/2022 MF
-  let waitTime = 20000; // * 20 seconds -- 01/09/2022 MF
-  // let waitTime = 30000; // * 30 seconds -- 01/09/2022 MF
+  // let waitTime = 20000; // * 20 seconds -- 01/09/2022 MF
+  let waitTime = 30000; // * 30 seconds -- 01/09/2022 MF
   // let waitTime = 60000; // * 1 minutes -- 01/09/2022 MF
   // let waitTime = 180000; // * 3 minutes -- 01/09/2022 MF
   // let waitTime = 300000; // * 5 minutes -- 01/09/2022 MF
