@@ -10,145 +10,149 @@ const convertBitTrueFalse = (records) => {
   // ? Need to limit this function to only MySQL? -- 08/13/2021 MF
   // if (process.env.DATABASE_DIALECT == "mysql") {
 
-  for (let i = 0; i < records.length; i++) {
+  if (Array.isArray(records) === true) {
 
-    if (records[i].active === 1) {
+    for (let i = 0; i < records.length; i++) {
 
-      records[i].active = true;
+      if (records[i].active === 1) {
 
-    } else if (records[i].active === 0) {
+        records[i].active = true;
 
-      records[i].active = false;
+      } else if (records[i].active === 0) {
 
-    };
+        records[i].active = false;
 
-    if (records[i].categoryActive === 1) {
+      };
 
-      records[i].categoryActive = true;
+      if (records[i].categoryActive === 1) {
 
-    } else if (records[i].categoryActive === 0) {
+        records[i].categoryActive = true;
 
-      records[i].categoryActive = false;
+      } else if (records[i].categoryActive === 0) {
 
-    };
+        records[i].categoryActive = false;
 
-    if (records[i].editionActive === 1) {
+      };
 
-      records[i].editionActive = true;
+      if (records[i].editionActive === 1) {
 
-    } else if (records[i].editionActive === 0) {
+        records[i].editionActive = true;
 
-      records[i].editionActive = false;
+      } else if (records[i].editionActive === 0) {
 
-    };
+        records[i].editionActive = false;
 
-    if (records[i].mediaActive === 1) {
+      };
 
-      records[i].mediaActive = true;
+      if (records[i].mediaActive === 1) {
 
-    } else if (records[i].mediaActive === 0) {
+        records[i].mediaActive = true;
 
-      records[i].mediaActive = false;
+      } else if (records[i].mediaActive === 0) {
 
-    };
+        records[i].mediaActive = false;
 
-    if (records[i].titleActive === 1) {
+      };
 
-      records[i].titleActive = true;
+      if (records[i].titleActive === 1) {
 
-    } else if (records[i].titleActive === 0) {
+        records[i].titleActive = true;
 
-      records[i].titleActive = false;
+      } else if (records[i].titleActive === 0) {
 
-    };
+        records[i].titleActive = false;
 
-    if (records[i].userreviewActive === 1) {
+      };
 
-      records[i].userreviewActive = true;
+      if (records[i].userreviewActive === 1) {
 
-    } else if (records[i].userreviewActive === 0) {
+        records[i].userreviewActive = true;
 
-      records[i].userreviewActive = false;
+      } else if (records[i].userreviewActive === 0) {
 
-    };
+        records[i].userreviewActive = false;
 
-    if (records[i].userActive === 1) {
+      };
 
-      records[i].userActive = true;
+      if (records[i].userActive === 1) {
 
-    } else if (records[i].userActive === 0) {
+        records[i].userActive = true;
 
-      records[i].userActive = false;
+      } else if (records[i].userActive === 0) {
 
-    };
+        records[i].userActive = false;
 
-    if (records[i].electronic === 1) {
+      };
 
-      records[i].electronic = true;
+      if (records[i].electronic === 1) {
 
-    } else if (records[i].electronic === 0) {
+        records[i].electronic = true;
 
-      records[i].electronic = false;
+      } else if (records[i].electronic === 0) {
 
-    };
+        records[i].electronic = false;
 
-    if (records[i].read === 1) {
+      };
 
-      records[i].read = true;
+      if (records[i].read === 1) {
 
-    } else if (records[i].read === 0) {
+        records[i].read = true;
 
-      records[i].read = false;
+      } else if (records[i].read === 0) {
 
-    };
+        records[i].read = false;
 
-    if (records[i].owned === 1) {
+      };
 
-      records[i].owned = true;
+      if (records[i].owned === 1) {
 
-    } else if (records[i].owned === 0) {
+        records[i].owned = true;
 
-      records[i].owned = false;
+      } else if (records[i].owned === 0) {
 
-    };
+        records[i].owned = false;
 
-    if (records[i].admin === 1) {
+      };
 
-      records[i].admin = true;
+      if (records[i].admin === 1) {
 
-    } else if (records[i].admin === 0) {
+        records[i].admin = true;
 
-      records[i].admin = false;
+      } else if (records[i].admin === 0) {
 
-    };
+        records[i].admin = false;
 
-    if (records[i].display === 1) {
+      };
 
-      records[i].display = true;
+      if (records[i].display === 1) {
 
-    } else if (records[i].display === 0) {
+        records[i].display = true;
 
-      records[i].display = false;
+      } else if (records[i].display === 0) {
 
-    };
+        records[i].display = false;
 
-    if (records[i].alwaysFilter === 1) {
+      };
 
-      records[i].alwaysFilter = true;
+      if (records[i].alwaysFilter === 1) {
 
-    } else if (records[i].alwaysFilter === 0) {
+        records[i].alwaysFilter = true;
 
-      records[i].alwaysFilter = false;
+      } else if (records[i].alwaysFilter === 0) {
 
-    };
+        records[i].alwaysFilter = false;
 
-    if (records[i].posted === 1) {
+      };
 
-      records[i].posted = true;
+      if (records[i].posted === 1) {
 
-    } else if (records[i].posted === 0) {
+        records[i].posted = true;
 
-      records[i].posted = false;
+      } else if (records[i].posted === 0) {
+
+        records[i].posted = false;
+
+      };
 
     };
 

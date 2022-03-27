@@ -81,16 +81,20 @@ router.post("/register", (request, response) => {
 
           let errorMessages = "";
 
-          for (let i = 0; i < error.errors.length; i++) {
-            //console.log(`${controllerName}-controller`, getDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
+          if (Array.isArray(error.errors) === true) {
 
-            if (i > 1) {
+            for (let i = 0; i < error.errors.length; i++) {
+              //console.log(`${controllerName}-controller`, getDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
 
-              errorMessages = errorMessages + ", ";
+              if (i > 1) {
+
+                errorMessages = errorMessages + ", ";
+
+              };
+
+              errorMessages = errorMessages + error.errors[i].message;
 
             };
-
-            errorMessages = errorMessages + error.errors[i].message;
 
           };
 
@@ -407,12 +411,16 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
         let errorMessages = "";
 
-        for (let i = 0; i < error.errors.length; i++) {
-          //console.log(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
+        if (Array.isArray(error.errors) === true) {
 
-          if (i > 1) {
+          for (let i = 0; i < error.errors.length; i++) {
+            //console.log(`${controllerName}-controller`, getDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
 
-            errorMessages = errorMessages + ", ";
+            if (i > 1) {
+
+              errorMessages = errorMessages + ", ";
+
+            };
 
           };
 
@@ -506,16 +514,20 @@ router.put("/", validateSession, (request, response) => {
 
           let errorMessages = "";
 
-          for (let i = 0; i < error.errors.length; i++) {
-            //console.log(`${controllerName}-controller`, getDateTime(), "put / error.errors[i].message", error.errors[i].message);
+          if (Array.isArray(error.errors) === true) {
 
-            if (i > 1) {
+            for (let i = 0; i < error.errors.length; i++) {
+              //console.log(`${controllerName}-controller`, getDateTime(), "put / error.errors[i].message", error.errors[i].message);
 
-              errorMessages = errorMessages + ", ";
+              if (i > 1) {
+
+                errorMessages = errorMessages + ", ";
+
+              };
+
+              errorMessages = errorMessages + error.errors[i].message;
 
             };
-
-            errorMessages = errorMessages + error.errors[i].message;
 
           };
 
