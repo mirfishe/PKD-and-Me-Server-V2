@@ -450,11 +450,15 @@ router.get("/item/:arrayNumber", (request, response) => {
 
     let mappedResponse = {};
 
-    for (let i in itemsResponseList) {
+    if (Array.isArray(itemsResponseList) === true) {
 
-      if (itemsResponseList.hasOwnProperty(i)) {
+      for (let i in itemsResponseList) {
 
-        mappedResponse[itemsResponseList[i]["ASIN"]] = itemsResponseList[i];
+        if (itemsResponseList.hasOwnProperty(i)) {
+
+          mappedResponse[itemsResponseList[i]["ASIN"]] = itemsResponseList[i];
+
+        };
 
       };
 
@@ -484,98 +488,106 @@ router.get("/item/:arrayNumber", (request, response) => {
 
       let response_list = parseResponse(getItemsResponse["ItemsResult"]["Items"]);
 
-      for (let i in getItemsRequest["ItemIds"]) {
+      if (Array.isArray(getItemsRequest["ItemIds"]) === true) {
 
-        if (getItemsRequest["ItemIds"].hasOwnProperty(i)) {
+        for (let i in getItemsRequest["ItemIds"]) {
 
-          let itemId = getItemsRequest["ItemIds"][i];
+          if (getItemsRequest["ItemIds"].hasOwnProperty(i)) {
 
-          if (itemId in response_list) {
+            let itemId = getItemsRequest["ItemIds"][i];
 
-            let item = response_list[itemId];
+            if (itemId in response_list) {
 
-            if (isEmpty(item) === false) {
+              let item = response_list[itemId];
 
-              // let itemObject = {};
-              // let itemObject = { searchCategory: "Get Item" };
-              let itemObject = { searchCategory: "Get Item", totalResultCount: totalResultCount, searchURL: searchURL, page: 0, searchIndex: "Get Item", sortBy: "Get Item", merchant: merchant, responseContent: JSON.stringify(item) };
-              // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
+              if (isEmpty(item) === false) {
 
-              // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
+                // let itemObject = {};
+                // let itemObject = { searchCategory: "Get Item" };
+                let itemObject = { searchCategory: "Get Item", totalResultCount: totalResultCount, searchURL: searchURL, page: 0, searchIndex: "Get Item", sortBy: "Get Item", merchant: merchant, responseContent: JSON.stringify(item) };
+                // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
 
-              if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["Title"]) === false && isEmpty(item["ItemInfo"]["Title"]["DisplayValue"]) === false
-              ) {
+                // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item["ItemInfo"]["Title"]["DisplayValue"]);
+                if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["Title"]) === false && isEmpty(item["ItemInfo"]["Title"]["DisplayValue"]) === false
+                ) {
 
-                itemObject.titleName = item["ItemInfo"]["Title"]["DisplayValue"];
+                  // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item["ItemInfo"]["Title"]["DisplayValue"]);
 
-              };
+                  itemObject.titleName = item["ItemInfo"]["Title"]["DisplayValue"];
 
-              if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
-              ) {
+                };
 
-                for (let j = 0; j < item["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
+                if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
+                ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
+                  if (Array.isArray(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
 
-                  if (j !== 0) {
+                    for (let j = 0; j < item["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
-                    itemObject.authorName = itemObject.authorName + "," + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
+                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
 
-                  } else {
+                      if (j !== 0) {
 
-                    itemObject.authorName = item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+                        itemObject.authorName = itemObject.authorName + "," + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+
+                      } else {
+
+                        itemObject.authorName = item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+
+                      };
+
+                    };
 
                   };
 
                 };
 
+                if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
+                ) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+
+                  itemObject.publicationDate = item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
+
+                };
+
+                if (isEmpty(item["ASIN"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item["ASIN"]);
+
+                  itemObject.ASIN = item["ASIN"];
+
+                };
+
+                if (isEmpty(item["DetailPageURL"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item["DetailPageURL"]);
+
+                  itemObject.textLinkFull = item["DetailPageURL"];
+
+                };
+
+                if (isEmpty(item["Images"]) === false && isEmpty(item["Images"]["Primary"]) === false && isEmpty(item["Images"]["Primary"]["Large"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item["Images"]["Primary"]["Large"]["URL"]);
+
+                  itemObject.imageName = item["Images"]["Primary"]["Large"]["URL"];
+
+                };
+
+                // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
+
+                itemArray.push(itemObject);
+
               };
 
-              if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
-              ) {
+            } else {
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
-
-                itemObject.publicationDate = item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
-
-              };
-
-              if (isEmpty(item["ASIN"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item["ASIN"]);
-
-                itemObject.ASIN = item["ASIN"];
-
-              };
-
-              if (isEmpty(item["DetailPageURL"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item["DetailPageURL"]);
-
-                itemObject.textLinkFull = item["DetailPageURL"];
-
-              };
-
-              if (isEmpty(item["Images"]) === false && isEmpty(item["Images"]["Primary"]) === false && isEmpty(item["Images"]["Primary"]["Large"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item["Images"]["Primary"]["Large"]["URL"]);
-
-                itemObject.imageName = item["Images"]["Primary"]["Large"]["URL"];
-
-              };
-
-              // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
-
-              itemArray.push(itemObject);
+              console.log("Item not found, check errors");
 
             };
-
-          } else {
-
-            console.log("Item not found, check errors");
 
           };
 
@@ -891,86 +903,94 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         if (isEmpty(searchItemsResponse["SearchResult"]["Items"]) === false) {
 
-          for (let i = 0; i < searchItemsResponse["SearchResult"]["Items"].length; i++) {
+          if (Array.isArray(searchItemsResponse["SearchResult"]["Items"]) === true) {
 
-            let item_0 = searchItemsResponse["SearchResult"]["Items"][i];
+            for (let i = 0; i < searchItemsResponse["SearchResult"]["Items"].length; i++) {
 
-            // let itemObject = {};
-            // let itemObject = { searchCategory: searchCategory };
-            let itemObject = { searchCategory: searchCategory, totalResultCount: totalResultCount, searchURL: searchURL, page: page, searchIndex: searchIndex, sortBy: sortBy, merchant: merchant, responseContent: JSON.stringify(item_0) };
-            // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
+              let item_0 = searchItemsResponse["SearchResult"]["Items"][i];
 
-            if (isEmpty(item_0) === false) {
+              // let itemObject = {};
+              // let itemObject = { searchCategory: searchCategory };
+              let itemObject = { searchCategory: searchCategory, totalResultCount: totalResultCount, searchURL: searchURL, page: page, searchIndex: searchIndex, sortBy: sortBy, merchant: merchant, responseContent: JSON.stringify(item_0) };
+              // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
 
-              // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
+              if (isEmpty(item_0) === false) {
 
-              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
-              ) {
+                // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
+                if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
+                ) {
 
-                itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
+                  // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
 
-              };
+                  itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
 
-              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
-              ) {
+                };
 
-                for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
+                if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
+                ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
+                  if (Array.isArray(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
 
-                  if (j !== 0) {
+                    for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
-                    itemObject.authorName = itemObject.authorName + "," + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
+                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
 
-                  } else {
+                      if (j !== 0) {
 
-                    itemObject.authorName = item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+                        itemObject.authorName = itemObject.authorName + "," + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+
+                      } else {
+
+                        itemObject.authorName = item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"];
+
+                      };
+
+                    };
 
                   };
 
                 };
 
+                if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
+                ) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+
+                  itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
+
+                };
+
+                if (isEmpty(item_0["ASIN"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item_0["ASIN"]);
+
+                  itemObject.ASIN = item_0["ASIN"];
+
+                };
+
+                if (isEmpty(item_0["DetailPageURL"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item_0["DetailPageURL"]);
+
+                  itemObject.textLinkFull = item_0["DetailPageURL"];
+
+                };
+
+                if (isEmpty(item_0["Images"]) === false && isEmpty(item_0["Images"]["Primary"]) === false && isEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
+
+                  // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
+
+                  itemObject.imageName = item_0["Images"]["Primary"]["Large"]["URL"];
+
+                };
+
+                // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
+
+                itemArray.push(itemObject);
+
               };
-
-              if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
-              ) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
-
-                itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
-
-              };
-
-              if (isEmpty(item_0["ASIN"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item_0["ASIN"]);
-
-                itemObject.ASIN = item_0["ASIN"];
-
-              };
-
-              if (isEmpty(item_0["DetailPageURL"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item_0["DetailPageURL"]);
-
-                itemObject.textLinkFull = item_0["DetailPageURL"];
-
-              };
-
-              if (isEmpty(item_0["Images"]) === false && isEmpty(item_0["Images"]["Primary"]) === false && isEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
-
-                // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
-
-                itemObject.imageName = item_0["Images"]["Primary"]["Large"]["URL"];
-
-              };
-
-              // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
-
-              itemArray.push(itemObject);
 
             };
 
@@ -1042,39 +1062,43 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
   // * We need to wrap the loop into an async function for this to work. -- 01/02/2022
   async function load() {
 
-    for (let i = 1; i < numberOfResultsPages; i++) {
+    if (Array.isArray(numberOfResultsPages) === true) {
 
-      // console.log(i);
+      for (let i = 1; i < numberOfResultsPages; i++) {
 
-      searchItemsRequest["ItemPage"] = i;
+        // console.log(i);
 
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
+        searchItemsRequest["ItemPage"] = i;
 
-      addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
+        // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
 
-      api.searchItems(searchItemsRequest).then(
+        addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
-        function (data) {
+        api.searchItems(searchItemsRequest).then(
 
-          // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
+          function (data) {
 
-          onSuccess(data, i, searchCategory, searchIndex, sortBy);
+            // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
 
-          addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant data", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data }));
+            onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
-        },
-        function (error) {
+            addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant data", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data }));
 
-          console.error(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+          },
+          function (error) {
 
-          addErrorLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
+            console.error(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
-        }
+            addErrorLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
-      );
+          }
 
-      // * Then the created Promise can be awaited. -- 01/02/2022
-      await timer(waitTime);
+        );
+
+        // * Then the created Promise can be awaited. -- 01/02/2022
+        await timer(waitTime);
+
+      };
 
     };
 

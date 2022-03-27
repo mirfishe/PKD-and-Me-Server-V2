@@ -188,17 +188,6 @@ const formatItemLink = (itemLink) => {
 // // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
 // // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-//   console.log(componentName, getDateTime(), "fetchNews feed", feed);
-//   console.log(componentName, getDateTime(), "fetchNews feed.id", feed.id);
-//   console.log(componentName, getDateTime(), "fetchNews feed.title", feed.title);
-//   console.log(componentName, getDateTime(), "fetchNews feed.link", feed.link);
-//   console.log(componentName, getDateTime(), "fetchNews feed.updated", feed.updated);
-//   console.log(componentName, getDateTime(), "fetchNews feed.lastBuildDate", feed.lastBuildDate);
-
-//   console.log(componentName, getDateTime(), "fetchNews feed.feedUrl", feed.feedUrl);
-
-//   console.log(componentName, getDateTime(), "fetchNews feed.items", feed.items);
-
 //   let itemsArray = [];
 
 //   feed.items.forEach(item => {
@@ -225,24 +214,7 @@ const formatItemLink = (itemLink) => {
 
 //     itemsArray.push(feedObject);
 
-//     console.log(componentName, getDateTime(), "fetchNews item.id", item.id);
-//     console.log(componentName, getDateTime(), "fetchNews item.title", item.title);
-//     console.log(componentName, getDateTime(), "fetchNews item.link", item.link);
-//     console.log(componentName, getDateTime(), "fetchNews item.pubDate", item.pubDate);
-//     console.log(componentName, getDateTime(), "fetchNews item.updated", item.updated);
-//     console.log(componentName, getDateTime(), "fetchNews item.content", item.content);
-//     console.log(componentName, getDateTime(), "fetchNews item.contentSnippet", item.contentSnippet);
-//     console.log(componentName, getDateTime(), "fetchNews item.isoDate", item.isoDate);
-//     console.log(componentName, getDateTime(), "fetchNews item.creator", item.creator);
-//     console.log(componentName, getDateTime(), "fetchNews item.author", item.author);
-//     // console.log(componentName, getDateTime(), "fetchNews item.author.name", item.author.name);
-//     // console.log(componentName, getDateTime(), "fetchNews item.name", item.name);
-
-//     // console.log(componentName, getDateTime(), "fetchNews itemsArray", itemsArray);
-
 //   });
-
-//   console.log(componentName, getDateTime(), "fetchNews itemsArray", itemsArray);
 
 //   return itemsArray;
 

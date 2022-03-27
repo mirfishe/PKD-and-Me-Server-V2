@@ -3,7 +3,6 @@
 // const componentName = "sharedFunctions";
 
 const isEmpty = (value) => {
-  // console.log(componentName, getDateTime(), "isEmpty value", value);
 
   // * https://stackoverflow.com/questions/4597900/checking-something-isempty-in-javascript -- 03/06/2021 MF
   // * https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in -- 03/06/2021 MF
@@ -45,11 +44,6 @@ const isEmpty = (value) => {
 
 
 const getDateTime = () => {
-  // console.log("getDateTime");
-  // console.log("getDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \" \")", new Date().toISOString().slice(0, 19).replace("T", " "));
-  // console.log("getDateTime new Date().toISOString().slice(0, 19).replace(\"T\", \"\")", new Date().toISOString().slice(0, 19).replace("T", ""));
-  // console.log("getDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \" \")", new Date().toLocaleString().slice(0, 19).replace("T", " "));
-  // console.log("getDateTime new Date().toLocaleString().slice(0, 19).replace(\"T\", \"\")", new Date().toLocaleString().slice(0, 19).replace("T", ""));
 
   // * Time returned does not consider the time zone without adjustments. -- 08/09/2021 MF
   // * https://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes -- 08/09/2021 MF
@@ -66,7 +60,6 @@ const getDateTime = () => {
 
 
 const tryParseJSON = (jsonString) => {
-  // console.log(componentName, getDateTime(), "tryParseJSON jsonString", jsonString);
 
   // * https://stackoverflow.com/questions/3710204/how-to-check-if-a-string-is-a-valid-json-string-in-javascript-without-using-try -- 06/24/2021 MF
   try {
@@ -85,7 +78,7 @@ const tryParseJSON = (jsonString) => {
   }
   catch (error) {
     // ! Don't display this error in the console. This function is already returning false is the JSON file is not in the correct format. -- 06/24/2021 MF
-    // console.log(componentName, getDateTime(), "tryParseJSON error", error);
+    // console.error(componentName, getDateTime(), "tryParseJSON error", error);
   };
 
   return false;
@@ -94,7 +87,6 @@ const tryParseJSON = (jsonString) => {
 
 
 const formatLowerCase = (value) => {
-  // console.log(componentName, getDateTime(), "formatLowerCase value", value);
 
   let lowerCaseValue = value;
 
@@ -110,7 +102,6 @@ const formatLowerCase = (value) => {
 
 
 const formatUpperCase = (value) => {
-  // console.log(componentName, getDateTime(), "formatUpperCase value", value);
 
   let upperCaseValue = value;
 
@@ -126,7 +117,6 @@ const formatUpperCase = (value) => {
 
 
 const formatTrim = (value) => {
-  // console.log(componentName, getDateTime(), "formatTrim value", value);
 
   let trimValue = value;
 
@@ -142,7 +132,6 @@ const formatTrim = (value) => {
 
 
 const formatToString = (value) => {
-  // console.log(componentName, getDateTime(), "formatToString value", value);
 
   let toStringValue = value;
 
@@ -158,7 +147,6 @@ const formatToString = (value) => {
 
 
 const formatSearchInput = (value) => {
-  // console.log(componentName, getDateTime(), "formatSearchInput value", value);
 
   let formatedSearchInput = value;
 
