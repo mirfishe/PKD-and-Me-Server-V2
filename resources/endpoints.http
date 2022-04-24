@@ -65,6 +65,10 @@ GET {{baseURL}}/fromthehomeopape/top/50
 
 ###
 
+GET {{baseURL}}/fromthehomeopape/posted
+
+###
+
 GET {{baseURL}}/fromthehomeopape/review
 
 ###
