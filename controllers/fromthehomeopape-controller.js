@@ -17,6 +17,7 @@ const tableName = "homeopapeRSS";
 const select = ["itemID", "itemLink", "itemTitle", "itemContentSnippet", "itemPubDate", "viewed", "display", "alwaysFilter", "posted", "itemLinkFormatted"];
 const limit = 20;
 const displayWhere = { "display": true };
+const postedWhere = { "posted": true };
 const viewedWhere = { "viewed": false };
 const orderBy = [{ column: "itemPubDate", order: "desc" }];
 
@@ -437,6 +438,70 @@ router.get("/top/:topNumber", (request, response) => {
 });
 
 
+/******************************
+ ***** Get *********
+ ******************************/
+router.get("/posted/", (request, response) => {
+
+  // let topNumber = request.params.topNumber;
+
+  // if (isNaN(formatTrim(topNumber)) === true) {
+
+  //   topNumber = limit;
+
+  // } else {
+
+  //   topNumber = parseInt(topNumber);
+
+  // };
+
+  // // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+  // // let sqlQuery = "SELECT DISTINCT itemLink, itemTitle, itemContentSnippet, itemPubDate FROM homeopapeRSS ORDER BY itemPubDate DESC";
+  // // let sqlQuery = `SELECT DISTINCT TOP ${topNumber} itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC`;
+  // let sqlQuery = `SELECT DISTINCT itemID, itemLink, itemTitle, itemContentSnippet, itemPubDate, viewed, display, alwaysFilter, posted FROM ${tableName} ORDER BY itemPubDate DESC LIMIT ${topNumber}`;
+
+  // // db.raw(sqlQuery).toSQL();
+
+  // // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
+
+  // // db.distinct(select)
+  // //   .from(tableName)
+  // //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
+  // //   .orderBy([{ column: "itemPubDate", order: "desc" }])
+  // //   // .orderBy([{ column: "createDate", order: "desc" }])
+  // db.raw(sqlQuery)
+  db.distinct(select)
+    .from(tableName)
+    // .limit(topNumber)
+    .where(postedWhere)
+    .orderBy(orderBy)
+    .then((records) => {
+      // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, records);
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(`${controllerName}-controller`, getDateTime(), `get /top/:topNumber ${tableName}`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(`${controllerName}-controller`, getDateTime(), "get /top/:topNumber No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(`${controllerName}-controller`, getDateTime(), "get /top/:topNumber error", error);
+
+      addErrorLog(`${controllerName}-controller`, "get /top/:topNumber", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
 
 
 /******************************
