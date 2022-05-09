@@ -14,6 +14,8 @@ const tableName = "categories";
 const select = "*";
 const orderBy = [{ column: "sortID", order: "asc" }];
 
+const componentName = `${controllerName}-controller`;
+
 let records;
 
 
@@ -32,12 +34,12 @@ router.get("/", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
+        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -45,9 +47,9 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      addErrorLog(componentName, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -73,12 +75,12 @@ router.get("/", (request, response) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (isEmpty(records) === false) {
-//         console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
+//         console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+//         // console.log(componentName, getDateTime(), "get / No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -86,9 +88,9 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
-//       console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+//       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
+//       addErrorLog(componentName, "get /", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });

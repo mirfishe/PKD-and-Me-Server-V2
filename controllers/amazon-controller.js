@@ -26,6 +26,8 @@ const ProductAdvertisingAPIv1 = require("../amazon/index");
 
 const credentials = require("../amazon");
 
+const componentName = componentName;
+
 let records;
 
 // INSERT INTO amazon (ASIN, titleName, authorName, publicationDate, imageName, textLinkFull)
@@ -42,7 +44,7 @@ router.get("/", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get / sqlQuery", sqlQuery);
+  // console.log(componentName, getDateTime(), "get / sqlQuery", sqlQuery);
 
   // db.select(select)
   //   .from(tableName)
@@ -53,17 +55,17 @@ router.get("/", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "get / records", records);
+      // console.log(componentName, getDateTime(), "get / records", records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / records", records);
+        // console.log(componentName, getDateTime(), "get / records", records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -71,9 +73,9 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      addErrorLog(componentName, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -89,7 +91,7 @@ router.get("/all", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /all sqlQuery", sqlQuery);
+  // console.log(componentName, getDateTime(), "get /all sqlQuery", sqlQuery);
 
   // db.select(select)
   //   .from(tableName)
@@ -100,17 +102,17 @@ router.get("/all", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /all", records);
+      // console.log(componentName, getDateTime(), "get /all", records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /all", records);
+        // console.log(componentName, getDateTime(), "get /all", records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /all No Results");
+        // console.log(componentName, getDateTime(), "get /all No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -118,9 +120,9 @@ router.get("/all", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get /all error", error);
+      console.error(componentName, getDateTime(), "get /all error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /all", records, error);
+      addErrorLog(componentName, "get /all", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -153,7 +155,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
   };
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `get /item/:arrayNumber`, "credentials", credentials);
+  // console.log(componentName, getDateTime(), `get /item/:arrayNumber`, "credentials", credentials);
 
   // const numberOfResultsPages = 11;
   // const numberOfResultsPages = 2;
@@ -478,7 +480,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
     if (isEmpty(getItemsResponse["ItemsResult"]) === false) {
 
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(componentName, getDateTime(), "get /item/:arrayNumber", JSON.stringify(searchItemsResponse, null, 1));
 
       let totalResultCount = 10; // searchItemsResponse["SearchResult"]["TotalResultCount"];
       let searchURL = "Get Item"; // searchItemsResponse["SearchResult"]["SearchURL"];
@@ -507,12 +509,12 @@ router.get("/item/:arrayNumber", (request, response) => {
                 let itemObject = { searchCategory: "Get Item", totalResultCount: totalResultCount, searchURL: searchURL, page: 0, searchIndex: "Get Item", sortBy: "Get Item", merchant: merchant, responseContent: JSON.stringify(item) };
                 // let itemObject = { totalResultCount: totalResultCount, searchURL: searchURL, searchDate: searchDate };
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
+                // console.log(componentName, getDateTime(), "get /item/:arrayNumber", "######################################################");
 
                 if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["Title"]) === false && isEmpty(item["ItemInfo"]["Title"]["DisplayValue"]) === false
                 ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item["ItemInfo"]["Title"]["DisplayValue"]);
+                  // console.log(componentName, getDateTime(), "Title: " + item["ItemInfo"]["Title"]["DisplayValue"]);
 
                   itemObject.titleName = item["ItemInfo"]["Title"]["DisplayValue"];
 
@@ -525,8 +527,8 @@ router.get("/item/:arrayNumber", (request, response) => {
 
                     for (let j = 0; j < item["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
-                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
-                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
+                      // console.log(componentName, getDateTime(), "ByLineInfo Contributors Name: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
+                      // console.log(componentName, getDateTime(), "ByLineInfo Contributors Role: " + item["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
 
                       if (j !== 0) {
 
@@ -547,7 +549,7 @@ router.get("/item/:arrayNumber", (request, response) => {
                 if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]) === false && isEmpty(item["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
                 ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+                  // console.log(componentName, getDateTime(), "PublicationDate: " + item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
 
                   itemObject.publicationDate = item["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
 
@@ -555,7 +557,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
                 if (isEmpty(item["ASIN"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item["ASIN"]);
+                  // console.log(componentName, getDateTime(), "ASIN: " + item["ASIN"]);
 
                   itemObject.ASIN = item["ASIN"];
 
@@ -563,7 +565,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
                 if (isEmpty(item["DetailPageURL"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item["DetailPageURL"]);
+                  // console.log(componentName, getDateTime(), "DetailPageURL: " + item["DetailPageURL"]);
 
                   itemObject.textLinkFull = item["DetailPageURL"];
 
@@ -571,13 +573,13 @@ router.get("/item/:arrayNumber", (request, response) => {
 
                 if (isEmpty(item["Images"]) === false && isEmpty(item["Images"]["Primary"]) === false && isEmpty(item["Images"]["Primary"]["Large"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item["Images"]["Primary"]["Large"]["URL"]);
+                  // console.log(componentName, getDateTime(), "Images Primary Large URL: " + item["Images"]["Primary"]["Large"]["URL"]);
 
                   itemObject.imageName = item["Images"]["Primary"]["Large"]["URL"];
 
                 };
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", "######################################################");
+                // console.log(componentName, getDateTime(), "get /item/:arrayNumber", "######################################################");
 
                 itemArray.push(itemObject);
 
@@ -595,7 +597,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
       };
 
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", itemArray);
+      // console.log(componentName, getDateTime(), "get /item/:arrayNumber", itemArray);
 
       if (isEmpty(itemArray) === false) {
 
@@ -604,17 +606,17 @@ router.get("/item/:arrayNumber", (request, response) => {
           // .returning("*")
           .insert(itemArray)
           .then((records) => {
-            // console.log(`${controllerName}-controller`, getDateTime(), ""get /item/:arrayNumber records", records);
+            // console.log(componentName, getDateTime(), ""get /item/:arrayNumber records", records);
             // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-            addLog(`${controllerName}-controller`, "get / insert", JSON.stringify({ records: records }));
+            addLog(componentName, "get / insert", JSON.stringify({ records: records }));
 
             // if (isEmpty(records) === false) {
-            //   // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber"records", records);
+            //   // console.log(componentName, getDateTime(), "get /item/:arrayNumber"records", records);
             //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
             // } else {
-            //   // console.log(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber No Results");
+            //   // console.log(componentName, getDateTime(), "get /item/:arrayNumber No Results");
 
             //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -622,9 +624,9 @@ router.get("/item/:arrayNumber", (request, response) => {
 
           })
           .catch((error) => {
-            console.error(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber error", error);
+            console.error(componentName, getDateTime(), "get /item/:arrayNumber error", error);
 
-            addErrorLog(`${controllerName}-controller`, "get /item/:arrayNumber", records, error);
+            addErrorLog(componentName, "get /item/:arrayNumber", records, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -636,9 +638,9 @@ router.get("/item/:arrayNumber", (request, response) => {
     if (isEmpty(getItemsResponse["Errors"]) === false) {
 
       // console.error("Errors:");
-      console.error(`${controllerName}-controller`, getDateTime(), "get /item/:arrayNumber", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), "Complete Error Response: " + JSON.stringify(getItemsResponse["Errors"], null, 1));
+      console.error(componentName, getDateTime(), "get /item/:arrayNumber", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), "Complete Error Response: " + JSON.stringify(getItemsResponse["Errors"], null, 1));
 
-      addErrorLog(`${controllerName}-controller`, "get /item/:arrayNumber getItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), JSON.stringify(getItemsResponse["Errors"], null, 1));
+      addErrorLog(componentName, "get /item/:arrayNumber getItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), JSON.stringify(getItemsResponse["Errors"], null, 1));
 
       // console.error("Printing 1st Error:");
       // let error_0 = getItemsResponse["Errors"][0];
@@ -787,11 +789,11 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
   };
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "searchCategory", searchCategory);
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "searchIndex", searchIndex);
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "sortBy", sortBy);
+  // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "searchCategory", searchCategory);
+  // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "searchIndex", searchIndex);
+  // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "sortBy", sortBy);
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "credentials", credentials);
+  // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "credentials", credentials);
 
   const numberOfResultsPages = 11;
   // const numberOfResultsPages = 2;
@@ -879,21 +881,21 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
     let displayFilteredResults = true;
 
-    // console.log(`${controllerName}-controller`, getDateTime(), "API called successfully.");
+    // console.log(componentName, getDateTime(), "API called successfully.");
 
     let searchItemsResponse = ProductAdvertisingAPIv1.SearchItemsResponse.constructFromObject(data);
 
     if (displayFilteredResults === false) {
 
-      // console.log(`${controllerName}-controller`, getDateTime(), "Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
-      // console.log(`${controllerName}-controller`, getDateTime(), JSON.stringify(searchItemsResponse, null, 1));
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(componentName, getDateTime(), "Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(componentName, getDateTime(), JSON.stringify(searchItemsResponse, null, 1));
+      // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
 
     } else {
 
       if (isEmpty(searchItemsResponse["SearchResult"]) === false) {
 
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+        // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
 
         let totalResultCount = searchItemsResponse["SearchResult"]["TotalResultCount"];
         let searchURL = searchItemsResponse["SearchResult"]["SearchURL"];
@@ -916,12 +918,12 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
               if (isEmpty(item_0) === false) {
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
+                // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
 
                 if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["Title"]) === false && isEmpty(item_0["ItemInfo"]["Title"]["DisplayValue"]) === false
                 ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
+                  // console.log(componentName, getDateTime(), "Title: " + item_0["ItemInfo"]["Title"]["DisplayValue"]);
 
                   itemObject.titleName = item_0["ItemInfo"]["Title"]["DisplayValue"];
 
@@ -934,8 +936,8 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
                     for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
-                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
-                      // console.log(`${controllerName}-controller`, getDateTime(), "ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
+                      // console.log(componentName, getDateTime(), "ByLineInfo Contributors Name: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Name"]);
+                      // console.log(componentName, getDateTime(), "ByLineInfo Contributors Role: " + item_0["ItemInfo"]["ByLineInfo"]["Contributors"][j]["Role"]);
 
                       if (j !== 0) {
 
@@ -956,7 +958,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
                 if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]) === false && isEmpty(item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]) === false
                 ) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
+                  // console.log(componentName, getDateTime(), "PublicationDate: " + item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"]);
 
                   itemObject.publicationDate = item_0["ItemInfo"]["ContentInfo"]["PublicationDate"]["DisplayValue"];
 
@@ -964,7 +966,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
                 if (isEmpty(item_0["ASIN"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "ASIN: " + item_0["ASIN"]);
+                  // console.log(componentName, getDateTime(), "ASIN: " + item_0["ASIN"]);
 
                   itemObject.ASIN = item_0["ASIN"];
 
@@ -972,7 +974,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
                 if (isEmpty(item_0["DetailPageURL"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "DetailPageURL: " + item_0["DetailPageURL"]);
+                  // console.log(componentName, getDateTime(), "DetailPageURL: " + item_0["DetailPageURL"]);
 
                   itemObject.textLinkFull = item_0["DetailPageURL"];
 
@@ -980,13 +982,13 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
                 if (isEmpty(item_0["Images"]) === false && isEmpty(item_0["Images"]["Primary"]) === false && isEmpty(item_0["Images"]["Primary"]["Large"]) === false) {
 
-                  // console.log(`${controllerName}-controller`, getDateTime(), "Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
+                  // console.log(componentName, getDateTime(), "Images Primary Large URL: " + item_0["Images"]["Primary"]["Large"]["URL"]);
 
                   itemObject.imageName = item_0["Images"]["Primary"]["Large"]["URL"];
 
                 };
 
-                // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
+                // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "######################################################");
 
                 itemArray.push(itemObject);
 
@@ -998,7 +1000,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         };
 
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", itemArray);
+        // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", itemArray);
 
         if (isEmpty(itemArray) === false) {
 
@@ -1007,17 +1009,17 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             // .returning("*")
             .insert(itemArray)
             .then((records) => {
-              // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
+              // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
               // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-              addLog(`${controllerName}-controller`, "gget /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ records: records }));
+              addLog(componentName, "gget /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ records: records }));
 
               // if (isEmpty(records) === false) {
-              //   // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
+              //   // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
               //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
               // } else {
-              //   // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant No Results");
+              //   // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant No Results");
 
               //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1025,9 +1027,9 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
             })
             .catch((error) => {
-              console.error(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant error", error);
+              console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant error", error);
 
-              addErrorLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant", records, error);
+              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", records, error);
               // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
             });
@@ -1041,9 +1043,9 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
     if (isEmpty(searchItemsResponse["Errors"]) === false) {
 
       // console.error("Errors:");
-      console.error(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
+      console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
-      addErrorLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(searchItemsResponse["Errors"], null, 1));
+      addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
       // console.error("Printing 1st Error:");
       // let error_0 = searchItemsResponse["Errors"][0];
@@ -1070,26 +1072,26 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         searchItemsRequest["ItemPage"] = i;
 
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
+        // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
 
-        addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
+        addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
         api.searchItems(searchItemsRequest).then(
 
           function (data) {
 
-            // console.log(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
+            // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
 
             onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
-            addLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant data", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data }));
+            addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data }));
 
           },
           function (error) {
 
-            console.error(`${controllerName}-controller`, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
+            console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
-            addErrorLog(`${controllerName}-controller`, "get /:searchItem/:searchIndex/:sort/:merchant error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
+            addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
 
           }
 
@@ -1120,7 +1122,7 @@ router.get("/insert", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /insert sqlQuery", sqlQuery);
+  // console.log(componentName, getDateTime(), "get /insert sqlQuery", sqlQuery);
 
   // db.select(select)
   //   .from(tableName)
@@ -1131,17 +1133,17 @@ router.get("/insert", (request, response) => {
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
+      // console.log(componentName, getDateTime(), "get /insert records", records);
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /insert records", records);
+        // console.log(componentName, getDateTime(), "get /insert records", records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get /insert No Results");
+        // console.log(componentName, getDateTime(), "get /insert No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -1149,9 +1151,9 @@ router.get("/insert", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get /insert error", error);
+      console.error(componentName, getDateTime(), "get /insert error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /insert", records, error);
+      addErrorLog(componentName, "get /insert", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -1168,35 +1170,35 @@ router.get("/update", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /update sqlQuery", sqlQuery);
+  // console.log(componentName, getDateTime(), "get /update sqlQuery", sqlQuery);
 
   let sqlQueryElectronicMedia = "UPDATE amazon SET merchant = 'Amazon' WHERE ASIN IN (SELECT ASIN FROM amazonImport WHERE searchIndex IN ('KindleStore', 'AmazonVideo', 'DigitalMusic', 'MobileApps'))";
 
   // db.raw(sqlQueryElectronicMedia).toSQL();
 
-  // console.log(`${controllerName}-controller`, getDateTime(), "get /update sqlQueryElectronicMedia", sqlQueryElectronicMedia);
+  // console.log(componentName, getDateTime(), "get /update sqlQueryElectronicMedia", sqlQueryElectronicMedia);
 
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /update records", records);
+      // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(`${controllerName}-controller`, "get /update sqlQuery", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQuery", JSON.stringify({ records: records }));
 
       return db.raw(sqlQueryElectronicMedia);
 
     })
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "get /update records", records);
+      // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(`${controllerName}-controller`, "get /update sqlQueryElectronicMedia", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryElectronicMedia", JSON.stringify({ records: records }));
 
       response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get /update error", error);
+      console.error(componentName, getDateTime(), "get /update error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /update", records, error);
+      addErrorLog(componentName, "get /update", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1216,7 +1218,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
   const where = { ASIN: request.params.ASIN };
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN ASIN`, ASIN);
+  // console.log(componentName, getDateTime(), `put /active/:ASIN ASIN`, ASIN);
 
   db(tableName)
     .where(where)
@@ -1224,18 +1226,18 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN records`, records);
+      // console.log(componentName, getDateTime(), `put /active/:ASIN records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN records`, records);
+        // console.log(componentName, getDateTime(), `put /active/:ASIN records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN No Results`);
+        // console.log(componentName, getDateTime(), `put /active/:ASIN No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1243,9 +1245,9 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), `put /active/:ASIN error`, error);
+      console.error(componentName, getDateTime(), `put /active/:ASIN error`, error);
 
-      addErrorLog(`${controllerName}-controller`, "put /active/:ASIN", records, error);
+      addErrorLog(componentName, "put /active/:ASIN", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1265,7 +1267,7 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
   const where = { ASIN: request.params.ASIN };
 
-  // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN ASIN`, ASIN);
+  // console.log(componentName, getDateTime(), `put /viewed/:ASIN ASIN`, ASIN);
 
   db(tableName)
     .where(where)
@@ -1273,18 +1275,18 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN records`, records);
+      // console.log(componentName, getDateTime(), `put /viewed/:ASIN records`, records);
       // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN records`, records);
+        // console.log(componentName, getDateTime(), `put /viewed/:ASIN records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN No Results`);
+        // console.log(componentName, getDateTime(), `put /viewed/:ASIN No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.ASIN, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1292,9 +1294,9 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), `put /viewed/:ASIN error`, error);
+      console.error(componentName, getDateTime(), `put /viewed/:ASIN error`, error);
 
-      addErrorLog(`${controllerName}-controller`, "put /viewed/:ASIN", records, error);
+      addErrorLog(componentName, "put /viewed/:ASIN", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
