@@ -306,7 +306,7 @@ router.get("/", (request, response) => {
 //     UserReview.sum("rating", query)
 //     .then((userRatingSum) => {
 
-//         if (!isNaN(userRatingSum)) {
+//         if (isNaN(userRatingSum) === false) {
 //             // console.log(componentName, getDateTime(), "get /sum/:titleID userRatingSum", userRatingSum);
 
 //             response.status(200).json({ transactionSuccess: true, errorOccurred: false, userRatingSum: userRatingSum, message: "Successfully retrieved user review sum." });
