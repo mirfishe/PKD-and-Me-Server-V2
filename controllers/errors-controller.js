@@ -13,6 +13,8 @@ const select = "*";
 const limit = 50;
 const orderBy = [{ column: "createDate", order: "desc" }];
 
+const componentName = `${controllerName}-controller`;
+
 let records;
 
 
@@ -27,7 +29,7 @@ router.get("/", validateAdmin, (request, response) => {
 
   // // db.raw(sqlQuery).toSQL();
 
-  // // console.log(`${controllerName}-controller`, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
+  // // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
   // db.raw(sqlQuery)
   db.select(select)
@@ -37,12 +39,12 @@ router.get("/", validateAdmin, (request, response) => {
     .then((records) => {
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
+        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -50,9 +52,9 @@ router.get("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      addErrorLog(componentName, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -78,15 +80,15 @@ router.post("/", (request, response) => {
     // .returning("*")
     .insert(recordObject)
     .then((records) => {
-      // console.log(`${controllerName}-controller`, getDateTime(), "post / records", records);
+      // console.log(componentName, getDateTime(), "post / records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), "post / records", records);
+        // console.log(componentName, getDateTime(), "post / records", records);
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "post / No Results");
+        // console.log(componentName, getDateTime(), "post / No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -94,9 +96,9 @@ router.post("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "post / error", error);
+      console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "post /", records, error);
+      addErrorLog(componentName, "post /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });

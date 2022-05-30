@@ -42,6 +42,8 @@ users
 ("userID", "firstName", "lastName", "email", "password", "users.updatedBy AS usersUpdatedBy", "admin", "users.active AS usersActive", "users.createDate AS usersCreateDate", "users.updateDate AS usersUpdatedDate")
 */
 
+const componentName = `${controllerName}-controller`;
+
 let records;
 
 
@@ -62,12 +64,12 @@ router.get("/", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `get / ${tableName}`, records);
+        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), "get / No Results");
+        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -75,9 +77,9 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get / error", error);
+      console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /", records, error);
+      addErrorLog(componentName, "get /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -91,7 +93,7 @@ router.get("/", (request, response) => {
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:titleID", (request, response) => {
 
-  // console.log(`${controllerName}-controller`, getDateTime(), get /broken/:${controllerName}ID ${tableName}, request.params.titleID);
+  // console.log(componentName, getDateTime(), get /broken/:${controllerName}ID ${tableName}, request.params.titleID);
 
   // response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully logged broken image link. titleID ${request.params.titleID}` });
 
@@ -114,9 +116,9 @@ router.get("/broken/:titleID", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
+        // console.log(componentName, getDateTime(), `get /broken/:${controllerName}ID brokenLinks`, records);
 
-        // console.log(`${controllerName}-controller`, getDateTime(), `get /broken/:${controllerName}ID records`, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
+        // console.log(componentName, getDateTime(), `get /broken/:${controllerName}ID records`, "titleID", records[0].titleID, "titleName", records[0].titleName, "imageName", records[0].imageName);
 
         const recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
@@ -136,9 +138,9 @@ router.get("/broken/:titleID", (request, response) => {
 
           })
           .catch((error) => {
-            console.error(`${controllerName}-controller`, getDateTime(), `get /broken/:${controllerName}ID`, error);
+            console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID`, error);
 
-            addErrorLog(`${controllerName}-controller`, `get /broken/:${controllerName}ID`, records, error);
+            addErrorLog(componentName, `get /broken/:${controllerName}ID`, records, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -146,7 +148,7 @@ router.get("/broken/:titleID", (request, response) => {
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added broken link.", records: records });
 
       } else {
-        console.log(`${controllerName}-controller`, getDateTime(), `get /broken/:${controllerName}ID No Results`);
+        console.log(componentName, getDateTime(), `get /broken/:${controllerName}ID No Results`);
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -154,9 +156,9 @@ router.get("/broken/:titleID", (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), `get /broken/:${controllerName}ID error`, error);
+      console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(`${controllerName}-controller`, "get /broken/:${controllerName}ID", records, error);
+      addErrorLog(componentName, "get /broken/:${controllerName}ID", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -201,7 +203,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get / error", error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /", records, error);
+//       addErrorLog(componentName, "get /", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -263,7 +265,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /:titleID", records, error);
+//       addErrorLog(componentName, "get /:titleID", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -303,7 +305,7 @@ router.get("/broken/:titleID", (request, response) => {
 //         .catch((error) => {
 //             console.error(`${ controllerName } - controller`, getDateTime(), "get /media/:mediaID error", error);
 
-//             addErrorLog(`${controllerName}-controller`, "get /media/:media", records, error);
+//             addErrorLog(componentName, "get /media/:media", records, error);
 //             response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //         });
@@ -365,7 +367,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /category/:categoryID error", error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /category/:categoryID", records, error);
+//       addErrorLog(componentName, "get /category/:categoryID", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -432,7 +434,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /category/:categoryID error", error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /admin/category/:categoryID", records, error);
+//       addErrorLog(componentName, "get /admin/category/:categoryID", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -540,9 +542,9 @@ router.get("/checklist", validateSession, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "get /checklist error", error);
+      console.error(componentName, getDateTime(), "get /checklist error", error);
 
-      addErrorLog(`${controllerName}-controller`, "get /checklist", records, error);
+      addErrorLog(componentName, "get /checklist", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -606,7 +608,7 @@ router.get("/checklist", validateSession, (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /checklist/:categoryID error", error);
 
-//       addErrorLog(`${controllerName}-controller`, "get /checklist/:categoryID", records, error);
+//       addErrorLog(componentName, "get /checklist/:categoryID", records, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -661,9 +663,9 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), "post / error", error);
+      console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(`${controllerName}-controller`, "post /", records, error);
+      addErrorLog(componentName, "post /", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -721,9 +723,9 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), `put /: ${controllerName}ID error`, error);
+      console.error(componentName, getDateTime(), `put /: ${controllerName}ID error`, error);
 
-      addErrorLog(`${controllerName}-controller`, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -751,12 +753,12 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID records`, records);
+        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.titleID, transactionSuccess: true, errorOccurred: false, message: "Successfully deleted.", records: records });
 
       } else {
-        // console.log(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID No Results`);
+        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.titleID, transactionSuccess: false, errorOccurred: false, message: "Nothing to delete." });
 
@@ -764,9 +766,9 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
-      console.error(`${controllerName}-controller`, getDateTime(), `delete /:${controllerName}ID error`, error);
+      console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(`${controllerName}-controller`, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

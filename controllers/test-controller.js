@@ -15,6 +15,8 @@ const controllerName = "test";
 // const select = "*";
 // const orderBy = [{ column: "lastAccessed", order: "desc" }];
 
+const componentName = `${controllerName}-controller`;
+
 let records;
 
 
@@ -23,9 +25,9 @@ let records;
 //  ******************************/
 router.get("/", (request, response) => {
 
-  console.log(`${controllerName}s-controller`, getDateTime(), "get /", "Test succeeded.");
+  console.log(componentName, getDateTime(), "get /", "Test succeeded.");
 
-  // addLog(databaseName, `${controllerName} succeeded.`, null);
+  // addLog(databaseName, `${componentName} succeeded.`, null);
 
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Test succeeded." });
 
@@ -37,10 +39,10 @@ router.get("/", (request, response) => {
 //  ******************************/
 router.get("/addline", (request, response) => {
 
-  console.log(`${controllerName}s-controller`, getDateTime(), "get /addline");
+  console.log(componentName, getDateTime(), "get /addline");
   console.log("######################################################################################################");
 
-  console.error(`${controllerName}s-controller`, getDateTime(), "get /addline");
+  console.error(componentName, getDateTime(), "get /addline");
   console.error("######################################################################################################");
 
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Add line succeeded." });
