@@ -26,7 +26,7 @@ const ProductAdvertisingAPIv1 = require("../amazon/index");
 
 const credentials = require("../amazon");
 
-const componentName = componentName;
+const componentName = `${controllerName}-controller`;
 
 let records;
 
