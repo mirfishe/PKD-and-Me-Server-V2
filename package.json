@@ -15,8 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startOLD": "node app.js",
     "start": "nodemon",
-    "amazon": "node ./resources/amazonFetch.js",
-    "amazonall": "node ./resources/amazonFetch.js All"
+    "amazon": "node ./resources/amazonFetch.js production",
+    "amazonall": "node ./resources/amazonFetch.js production All",
+    "amazondev": "node ./resources/amazonFetch.js development",
+    "amazonalldev": "node ./resources/amazonFetch.js development All"
   },
   "nodemonConfig": {
     "verbose": true,

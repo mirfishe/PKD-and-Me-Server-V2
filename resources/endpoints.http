@@ -112,75 +112,75 @@ GET {{baseURL}}/amazon/update
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceHighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceLowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance/Amazon
 
 ###
 

@@ -7,939 +7,1875 @@
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Books/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/Music/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Featured
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/NewestArrivals
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:HighToLow
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:LowToHigh
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Relevance
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/All/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Featured
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/NewestArrivals
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Relevance
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/All/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/AvgCustomerReviews
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Featured
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/NewestArrivals
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:HighToLow
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:HighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:LowToHigh
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:LowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Relevance
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Relevance/Amazon
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/AmazonVideo/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Books/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Collectibles/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalMusic/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/DigitalEducationalResources/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/KindleStore/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MobileApps/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/MoviesAndTV/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/Music/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/ToysAndGames/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VHS/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/authorPhilipKDick/VideoGames/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/All/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/AmazonVideo/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Collectibles/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalMusic/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/DigitalEducationalResources/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/KindleStore/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MobileApps/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/MoviesAndTV/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/Music/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/ToysAndGames/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VHS/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsPhilipDick/VideoGames/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/All/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/AmazonVideo/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Collectibles/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalMusic/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/DigitalEducationalResources/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/KindleStore/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MobileApps/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/MoviesAndTV/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/Music/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/ToysAndGames/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VHS/Relevance/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/AvgCustomerReviews/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Featured/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/NewestArrivals/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:HighToLow/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Price:LowToHigh/All
+
+###
+
+GET {{baseURL}}/amazon/keywordsBladeRunner/VideoGames/Relevance/All
 
 ###
 
