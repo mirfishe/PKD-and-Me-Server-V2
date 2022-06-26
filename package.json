@@ -1,6 +1,6 @@
 {
   "name": "pkd-and-me-server",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Project using Node.js to allow users to rate and review works by and related to Philip K. Dick.",
   "author": "Michael Fisher",
   "copyrightYear": "2022",
