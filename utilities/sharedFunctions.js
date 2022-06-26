@@ -43,6 +43,21 @@ const isEmpty = (value) => {
 };
 
 
+const isNonEmptyArray = (arrayItem) => {
+
+  let nonEmptyArray = false;
+
+  if (Array.isArray(arrayItem) === true && arrayItem.length > 0) {
+
+    nonEmptyArray = true;
+
+  };
+
+  return nonEmptyArray;
+
+};
+
+
 const getDateTime = () => {
 
   // * Time returned does not consider the time zone without adjustments. -- 08/09/2021 MF
@@ -161,7 +176,25 @@ const formatSearchInput = (value) => {
 };
 
 
+const removeNonAlphanumericCharacters = (text) => {
+
+  // * Removes all characters that aren't letters, numbers, spaces or a period. -- 05/12/2022 MF
+
+  let formatedText = "";
+
+  if (isEmpty(text) === false) {
+
+    formatedText = text.replace(/[^a-zA-Z0-9\. ]/g, "");
+
+  };
+
+  return formatedText;
+
+};
+
+
 exports.isEmpty = isEmpty;
+exports.isNonEmptyArray = isNonEmptyArray;
 exports.getDateTime = getDateTime;
 exports.tryParseJSON = tryParseJSON;
 exports.formatLowerCase = formatLowerCase;
@@ -169,3 +202,4 @@ exports.formatUpperCase = formatUpperCase;
 exports.formatTrim = formatTrim;
 exports.formatToString = formatToString;
 exports.formatSearchInput = formatSearchInput;
+exports.removeNonAlphanumericCharacters = removeNonAlphanumericCharacters;

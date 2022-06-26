@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = require("../jwtSecret");
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -83,7 +83,7 @@ router.post("/register", (request, response) => {
 
           let errorMessages = "";
 
-          if (Array.isArray(error.errors) === true) {
+          if (isNonEmptyArray(error.errors) === true) {
 
             for (let i = 0; i < error.errors.length; i++) {
               //console.log(componentName, getDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
@@ -413,7 +413,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
         let errorMessages = "";
 
-        if (Array.isArray(error.errors) === true) {
+        if (isNonEmptyArray(error.errors) === true) {
 
           for (let i = 0; i < error.errors.length; i++) {
             //console.log(componentName, getDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
@@ -516,7 +516,7 @@ router.put("/", validateSession, (request, response) => {
 
           let errorMessages = "";
 
-          if (Array.isArray(error.errors) === true) {
+          if (isNonEmptyArray(error.errors) === true) {
 
             for (let i = 0; i < error.errors.length; i++) {
               //console.log(componentName, getDateTime(), "put / error.errors[i].message", error.errors[i].message);

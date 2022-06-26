@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -516,7 +516,7 @@ router.post("/", validateAdmin, (request, response) => {
 
       let errorMessages = "";
 
-      if (Array.isArray(error.errors) === true) {
+      if (isNonEmptyArray(error.errors) === true) {
 
         for (let i = 0; i < error.errors.length; i++) {
           //console.log(componentName, getDateTime(), "post / error.errors[i].message", error.errors[i].message);

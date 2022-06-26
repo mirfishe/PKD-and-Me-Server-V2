@@ -6,7 +6,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
@@ -452,7 +452,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
     let mappedResponse = {};
 
-    if (Array.isArray(itemsResponseList) === true) {
+    if (isNonEmptyArray(itemsResponseList) === true) {
 
       for (let i in itemsResponseList) {
 
@@ -490,7 +490,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
       let response_list = parseResponse(getItemsResponse["ItemsResult"]["Items"]);
 
-      if (Array.isArray(getItemsRequest["ItemIds"]) === true) {
+      if (isNonEmptyArray(getItemsRequest["ItemIds"]) === true) {
 
         for (let i in getItemsRequest["ItemIds"]) {
 
@@ -523,7 +523,7 @@ router.get("/item/:arrayNumber", (request, response) => {
                 if (isEmpty(item["ItemInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
                 ) {
 
-                  if (Array.isArray(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
+                  if (isNonEmptyArray(item["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
 
                     for (let j = 0; j < item["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
@@ -881,21 +881,33 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
     let displayFilteredResults = true;
 
-    // console.log(componentName, getDateTime(), "API called successfully.");
+    if (process.env.NODE_ENV === "development") {
+
+      console.log(componentName, getDateTime(), "API called successfully.");
+
+    };
 
     let searchItemsResponse = ProductAdvertisingAPIv1.SearchItemsResponse.constructFromObject(data);
 
     if (displayFilteredResults === false) {
 
-      // console.log(componentName, getDateTime(), "Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
-      // console.log(componentName, getDateTime(), JSON.stringify(searchItemsResponse, null, 1));
-      // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+      if (process.env.NODE_ENV === "development") {
+
+        console.log(componentName, getDateTime(), "Complete Response: \n" + JSON.stringify(searchItemsResponse, null, 1));
+        console.log(componentName, getDateTime(), JSON.stringify(searchItemsResponse, null, 1));
+        console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+
+      };
 
     } else {
 
       if (isEmpty(searchItemsResponse["SearchResult"]) === false) {
 
-        // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+        if (process.env.NODE_ENV === "development") {
+
+          console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(searchItemsResponse, null, 1));
+
+        };
 
         let totalResultCount = searchItemsResponse["SearchResult"]["TotalResultCount"];
         let searchURL = searchItemsResponse["SearchResult"]["SearchURL"];
@@ -905,7 +917,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         if (isEmpty(searchItemsResponse["SearchResult"]["Items"]) === false) {
 
-          if (Array.isArray(searchItemsResponse["SearchResult"]["Items"]) === true) {
+          if (isNonEmptyArray(searchItemsResponse["SearchResult"]["Items"]) === true) {
 
             for (let i = 0; i < searchItemsResponse["SearchResult"]["Items"].length; i++) {
 
@@ -932,7 +944,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
                 if (isEmpty(item_0["ItemInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]) === false && isEmpty(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === false
                 ) {
 
-                  if (Array.isArray(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
+                  if (isNonEmptyArray(item_0["ItemInfo"]["ByLineInfo"]["Contributors"]) === true) {
 
                     for (let j = 0; j < item_0["ItemInfo"]["ByLineInfo"]["Contributors"].length; j++) {
 
@@ -1064,7 +1076,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
   // * We need to wrap the loop into an async function for this to work. -- 01/02/2022
   async function load() {
 
-    if (Array.isArray(numberOfResultsPages) === true) {
+    if (isEmpty(numberOfResultsPages) === false) {
 
       for (let i = 1; i < numberOfResultsPages; i++) {
 
@@ -1072,7 +1084,11 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         searchItemsRequest["ItemPage"] = i;
 
-        // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
+        if (process.env.NODE_ENV === "development") {
+
+          console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", "Calling page " + i + " results.");
+
+        };
 
         addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
 
@@ -1080,7 +1096,11 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
           function (data) {
 
-            // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
+            if (process.env.NODE_ENV === "development") {
+
+              console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify(data));
+
+            };
 
             onSuccess(data, i, searchCategory, searchIndex, sortBy);
 

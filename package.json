@@ -15,8 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startOLD": "node app.js",
     "start": "nodemon",
-    "amazon": "node ./resources/amazonFetch.js",
-    "amazonall": "node ./resources/amazonFetch.js All"
+    "amazon": "node ./resources/amazonFetch.js production",
+    "amazonall": "node ./resources/amazonFetch.js production All",
+    "amazondev": "node ./resources/amazonFetch.js development",
+    "amazonalldev": "node ./resources/amazonFetch.js development All"
   },
   "nodemonConfig": {
     "verbose": true,
@@ -43,6 +45,7 @@
     "mysql2": "^2.3.3",
     "pg": "^8.7.3",
     "rss-parser": "^3.12.0",
+    "shared-functions": "github:mirfishe/shared-functions",
     "superagent": "7.1.3",
     "tedious": "^14.5.0"
   },

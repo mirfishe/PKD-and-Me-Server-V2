@@ -1,5 +1,7 @@
 "use strict";
 
+const { isEmpty, getDateTime, isNonEmptyArray } = require("./sharedFunctions");
+
 // const componentName = "applicationFunctions";
 
 const convertBitTrueFalse = (records) => {
@@ -10,7 +12,7 @@ const convertBitTrueFalse = (records) => {
   // ? Need to limit this function to only MySQL? -- 08/13/2021 MF
   // if (process.env.DATABASE_DIALECT == "mysql") {
 
-  if (Array.isArray(records) === true) {
+  if (isNonEmptyArray(records) === true) {
 
     for (let i = 0; i < records.length; i++) {
 
