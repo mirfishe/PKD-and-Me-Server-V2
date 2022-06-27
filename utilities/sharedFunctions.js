@@ -43,21 +43,6 @@ const isEmpty = (value) => {
 };
 
 
-const isNonEmptyArray = (arrayItem) => {
-
-  let nonEmptyArray = false;
-
-  if (Array.isArray(arrayItem) === true && arrayItem.length > 0) {
-
-    nonEmptyArray = true;
-
-  };
-
-  return nonEmptyArray;
-
-};
-
-
 const getDateTime = () => {
 
   // * Time returned does not consider the time zone without adjustments. -- 08/09/2021 MF
@@ -70,6 +55,21 @@ const getDateTime = () => {
   // return new Date().toLocaleString().slice(0, 19).replace("T", " ");
   // return new Date().toISOString().slice(0, 19).replace("T", " ");
   return new Date(new Date() - timezoneOffset).toISOString().slice(0, 19).replace("T", " ");
+
+};
+
+
+const isNonEmptyArray = (arrayItem) => {
+
+  let nonEmptyArray = false;
+
+  if (Array.isArray(arrayItem) === true && arrayItem.length > 0) {
+
+    nonEmptyArray = true;
+
+  };
+
+  return nonEmptyArray;
 
 };
 
