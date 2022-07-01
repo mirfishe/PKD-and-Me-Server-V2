@@ -1,194 +1,194 @@
 
 # https://github.com/Huachao/vscode-restclient
 
-@baseURL = https://api.philipdick.com
+@baseURL = https://api.philipdick.com/
 
-# @baseURL = http://localhost:4000
+# @baseURL = http://localhost:4000/
 
-GET {{baseURL}}/categories
-
-###
-
-GET {{baseURL}}/media
+GET {{baseURL}}categories
 
 ###
 
-GET {{baseURL}}/titles
+GET {{baseURL}}media
 
 ###
 
-GET {{baseURL}}/titles/broken/1
+GET {{baseURL}}titles
 
 ###
 
-GET {{baseURL}}/editions
+GET {{baseURL}}titles/broken/1
 
 ###
 
-GET {{baseURL}}/editions/broken/1
+GET {{baseURL}}editions
 
 ###
 
-GET {{baseURL}}/userreviews
+GET {{baseURL}}editions/broken/1
 
 ###
 
-GET {{baseURL}}/terms
+GET {{baseURL}}userreviews
 
 ###
 
-GET {{baseURL}}/terms/4
+GET {{baseURL}}terms
 
 ###
 
-GET {{baseURL}}/logs
+GET {{baseURL}}terms/4
 
 ###
 
-GET {{baseURL}}/errors
+GET {{baseURL}}logs
 
 ###
 
-GET {{baseURL}}/computerLogs
+GET {{baseURL}}errors
 
 ###
 
-GET {{baseURL}}/computerLogs/broken
+GET {{baseURL}}computerLogs
 
 ###
 
-GET {{baseURL}}/fromthehomeopape
+GET {{baseURL}}computerLogs/broken
 
 ###
 
-GET {{baseURL}}/fromthehomeopape/top/50
+GET {{baseURL}}fromthehomeopape
 
 ###
 
-GET {{baseURL}}/fromthehomeopape/posted
+GET {{baseURL}}fromthehomeopape/top/50
 
 ###
 
-GET {{baseURL}}/fromthehomeopape/review
+GET {{baseURL}}fromthehomeopape/posted
 
 ###
 
-GET {{baseURL}}/fromthehomeopape/markviewed
+GET {{baseURL}}fromthehomeopape/review
+
+###
+
+GET {{baseURL}}fromthehomeopape/markviewed
 
 ###
 
 # Runs the import of new data from the RSS feeds. -- 11/14/2021 MF
-GET {{baseURL}}/fromthehomeopape/new
+GET {{baseURL}}fromthehomeopape/new
 
 ###
 
 # Runs the inserting of new data from the import. -- 11/14/2021 MF
-GET {{baseURL}}/fromthehomeopape/insert
+GET {{baseURL}}fromthehomeopape/insert
 
 ###
 
 # Runs the updating of new data from the import. -- 12/26/2021 MF
-GET {{baseURL}}/fromthehomeopape/update
+GET {{baseURL}}fromthehomeopape/update
 
 ###
 
-GET {{baseURL}}/amazon/
+GET {{baseURL}}amazon/
 
 ###
 
-GET {{baseURL}}/amazon/all
+GET {{baseURL}}amazon/all
 
 ###
 
-GET {{baseURL}}/amazon/item
+GET {{baseURL}}amazon/item
 
 ###
 
-GET {{baseURL}}/amazon/insert
+GET {{baseURL}}amazon/insert
 
 ###
 
-GET {{baseURL}}/amazon/update
+GET {{baseURL}}amazon/update
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/AvgCustomerReviews/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Featured/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/NewestArrivals/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceHighToLow/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/PriceLowToHigh/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/authorPhilipKDick/All/Relevance/Amazon
+GET {{baseURL}}amazon/authorPhilipKDick/All/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/AvgCustomerReviews/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Featured/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/NewestArrivals/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceHighToLow/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/PriceLowToHigh/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsPhilipDick/Books/Relevance/Amazon
+GET {{baseURL}}amazon/keywordsPhilipDick/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/AvgCustomerReviews/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/AvgCustomerReviews/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Featured/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/Featured/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/NewestArrivals/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/NewestArrivals/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceHighToLow/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/PriceHighToLow/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/PriceLowToHigh/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/PriceLowToHigh/Amazon
 
 ###
 
-GET {{baseURL}}/amazon/keywordsBladeRunner/Books/Relevance/Amazon
+GET {{baseURL}}amazon/keywordsBladeRunner/Books/Relevance/Amazon
 
 ###
 
-GET {{baseURL}}/test/
+GET {{baseURL}}test/
 
 ###
 
-GET {{baseURL}}/test/addline
+GET {{baseURL}}test/addline
 
 ###
 
