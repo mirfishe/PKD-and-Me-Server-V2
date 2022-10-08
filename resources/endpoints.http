@@ -77,6 +77,41 @@ GET {{baseURL}}fromthehomeopape/markviewed
 
 ###
 
+GET {{baseURL}}fromthehomeopape/filter
+
+###
+
+POST {{baseURL}}fromthehomeopape/filter
+Content-Type: application/json
+
+{ 
+  "recordObject": {
+    "filterLink": null,
+    "filterText": "test",
+    "viewed": 1,
+    "display": 0,
+    "alwaysFilter": 0
+  }
+}
+
+###
+
+PUT {{baseURL}}fromthehomeopape/filter/27
+Content-Type: application/json
+
+{ 
+  "recordObject": {
+    "filterLink": null,
+    "filterText": "test",
+    "viewed": 1,
+    "display": 0,
+    "alwaysFilter": 0,
+    "active": 0
+  }
+}
+
+###
+
 # Runs the import of new data from the RSS feeds. -- 11/14/2021 MF
 GET {{baseURL}}fromthehomeopape/new
 
