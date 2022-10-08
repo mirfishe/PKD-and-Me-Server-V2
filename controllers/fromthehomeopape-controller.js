@@ -1242,33 +1242,52 @@ router.get("/insert", (request, response) => {
  ******************************/
 router.get("/update", (request, response) => {
 
+  // ! This SQL is specific to MySQL. -- 10/08/2022 MF
+  let sqlQueryUpdateItemLinkDomain = "UPDATE homeopapeRSS SET itemLinkDomain = LEFT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLinkFormatted, 'https://www.', ''), 'http://www.', ''), 'https://m.', ''), 'http://m.', ''), 'https://', ''), 'http://', ''), LOCATE('/', REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLinkFormatted, 'https://www.', ''), 'http://www.', ''), 'https://m.', ''), 'http://m.', ''), 'https://', ''), 'http://', '')) - 1) WHERE itemLinkDomain IS NULL";
+  // ! This SQL is specific to SQL Server. -- 10/08/2022 MF
+  // let sqlQueryUpdateItemLinkDomain = "UPDATE homeopapeRSS SET itemLinkDomain = LEFT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLinkFormatted, 'https://www.', ''), 'http://www.', ''), 'https://m.', ''), 'http://m.', ''), 'https://', ''), 'http://', ''), CHARINDEX('/', REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(itemLinkFormatted, 'https://www.', ''), 'http://www.', ''), 'https://m.', ''), 'http://m.', ''), 'https://', ''), 'http://', '')) - 1) WHERE itemLinkDomain IS NULL";
+
   // UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) IN (SELECT * FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) FROM homeopapeRSS WHERE alwaysFilter = 1) AS alwaysFiltered)
 
-  let sqlQueryAlwaysFiltered = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE viewed = 0 AND SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) IN (SELECT * FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) FROM homeopapeRSS WHERE alwaysFilter = 1) AS alwaysFiltered)";
+  // ! This SQL is specific to MySQL. -- 10/08/2022 MF
+  // let sqlQueryAlwaysFiltered = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE viewed = 0 AND SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) IN (SELECT * FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', ''), '/', 3), '://', -1), '/', 1), '?', 1) FROM homeopapeRSS WHERE alwaysFilter = 1) AS alwaysFiltered)";
+  let sqlQueryAlwaysFiltered = "UPDATE homeopapeRSS INNER JOIN (SELECT DISTINCT itemLinkDomain FROM homeopapeRSS WHERE alwaysFilter = 1) AS vw_homeopapeRSSAlwaysFilter ON homeopapeRSS.itemLinkDomain = vw_homeopapeRSSAlwaysFilter.itemLinkDomain SET viewed = 1, display = 0, alwaysFilter = 1 WHERE alwaysFilter = 0";
+  // ! This SQL is specific to SQL Server. -- 10/08/2022 MF
+  // let sqlQueryAlwaysFiltered = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 FROM homeopapeRSS INNER JOIN (SELECT DISTINCT itemLinkDomain FROM homeopapeRSS WHERE alwaysFilter = 1) AS vw_homeopapeRSSAlwaysFilter ON homeopapeRSS.itemLinkDomain = vw_homeopapeRSSAlwaysFilter.itemLinkDomain WHERE alwaysFilter = 0";
 
   // db.raw(sqlQueryAlwaysFiltered).toSQL();
 
   // console.log(componentName, getDateTime(), "get /update", sqlQueryAlwaysFiltered);
 
-
   // UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%' OR itemLink LIKE '%.overdrive.%') AS neverDisplay)
 
-  let sqlQueryNeverDisplay = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%' OR itemLink LIKE '%.overdrive.%') AS neverDisplay)";
+  // let sqlQueryNeverDisplay = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%' OR itemLink LIKE '%.overdrive.%') AS neverDisplay)";
+  // ! This SQL is specific to MySQL. -- 10/08/2022 MF
+  let sqlQueryNeverDisplay = "UPDATE homeopapeRSS INNER JOIN vw_homeopapeRSSFilter ON homeopapeRSS.homeopapeID = vw_homeopapeRSSFilter.homeopapeID SET homeopapeRSS.viewed = vw_homeopapeRSSFilter.viewed, homeopapeRSS.display = vw_homeopapeRSSFilter.display, homeopapeRSS.alwaysFilter = vw_homeopapeRSSFilter.alwaysFilter WHERE homeopapeRSS.viewed <> 1 AND homeopapeRSS.display <> 1 AND homeopapeRSS.posted <> 1";
+  // ! This SQL is specific to SQL Server. -- 10/08/2022 MF
+  // let sqlQueryNeverDisplay = "UPDATE homeopapeRSS SET homeopapeRSS.viewed = vw_homeopapeRSSFilter.viewed, homeopapeRSS.display = vw_homeopapeRSSFilter.display, homeopapeRSS.alwaysFilter = vw_homeopapeRSSFilter.alwaysFilter FROM homeopapeRSS INNER JOIN vw_homeopapeRSSFilter ON homeopapeRSS.homeopapeID = vw_homeopapeRSSFilter.homeopapeID WHERE homeopapeRSS.viewed <> 1 AND homeopapeRSS.display <> 1 AND homeopapeRSS.posted <> 1";
 
   // db.raw(sqlQueryNeverDisplay).toSQL();
 
   // console.log(componentName, getDateTime(), "get /update", sqlQueryNeverDisplay);
 
-
   // UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)
-
-  let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' OR LOWER(itemContentSnippet) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' or lower(itemTitle) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemContentSnippet) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemTitle) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemContentSnippet) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemTitle) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemContentSnippet) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemTitle) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemContentSnippet) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemTitle) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemContentSnippet) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%running blade%' OR LOWER(itemContentSnippet) LIKE '%running blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR(LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
+  // // let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' OR LOWER(itemContentSnippet) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' or lower(itemTitle) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemContentSnippet) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemTitle) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemContentSnippet) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemTitle) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemContentSnippet) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemTitle) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemContentSnippet) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemTitle) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemContentSnippet) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%running blade%' OR LOWER(itemContentSnippet) LIKE '%running blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR(LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
+  let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
 
   // db.raw(sqlQueryHideStories).toSQL();
 
   // console.log(componentName, getDateTime(), "get /update", sqlQueryHideStories);
 
-  db.raw(sqlQueryAlwaysFiltered)
+  db.raw(sqlQueryUpdateItemLinkDomain)
+    .then((records) => {
+      // console.log(componentName, getDateTime(), "get /update records", records);
+
+      addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", JSON.stringify({ records: records }));
+
+      return db.raw(sqlQueryAlwaysFiltered);
+
+    })
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
@@ -1345,6 +1364,42 @@ router.get("/markviewed", (request, response) => {
 });
 
 
+/******************************
+ ***** Get Filters  *********
+ ******************************/
+router.get("/filter", (request, response) => {
+
+  db.select("*")
+    .from("homeopapeFilter")
+    .orderBy([{ column: "filterText", order: "asc" }, { column: "filterLink", order: "asc" }])
+    .then((records) => {
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(componentName, getDateTime(), `get /filter`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(componentName, getDateTime(), "get /filter No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(componentName, getDateTime(), "get /filter error", error);
+
+      addErrorLog(componentName, "get /filter", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
+
+
 /***************************
  *** Add  ***************
 ****************************/
@@ -1397,6 +1452,53 @@ router.post("/", validateAdmin, (request, response) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
       addErrorLog(componentName, "post /", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
+
+    });
+
+});
+
+
+/***************************
+ *** Add Filter ***************
+****************************/
+router.post("/filter", (request, response) => {
+
+  const recordObject = {
+    filterLink: request.body.recordObject.filterLink,
+    filterText: request.body.recordObject.filterText,
+    viewed: request.body.recordObject.viewed,
+    display: request.body.recordObject.display,
+    alwaysFilter: request.body.recordObject.alwaysFilter
+  };
+
+  db("homeopapeFilter")
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+    // .returning(select)
+    .insert(recordObject)
+    .then((records) => {
+      // console.log(componentName, getDateTime(), "post /filter records", records);
+      // * Returns the ID value of the added record. -- 08/13/2021 MF
+
+      // records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(componentName, getDateTime(), "post /filter records", records);
+
+        response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
+
+      } else {
+        // console.log(componentName, getDateTime(), "post /filter No Results");
+
+        response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(componentName, getDateTime(), "post /filter error", error);
+
+      addErrorLog(componentName, "post /filter", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -1613,6 +1715,60 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
       console.error(componentName, getDateTime(), `put /viewed/:itemID error`, error);
 
       addErrorLog(componentName, "put /viewed/:itemID", records, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
+
+    });
+
+});
+
+
+/***************************
+ ******* Update Filter *******
+ ***************************/
+// * Allows the admin to update a filter. -- 01/03/2022 MF
+router.put("/filter/:filterID", (request, response) => {
+
+  const recordObject = {
+    filterLink: request.body.recordObject.filterLink,
+    filterText: request.body.recordObject.filterText,
+    viewed: request.body.recordObject.viewed,
+    display: request.body.recordObject.display,
+    alwaysFilter: request.body.recordObject.alwaysFilter,
+    active: request.body.recordObject.active
+  };
+
+  const where = { filterID: request.params.filterID };
+
+  // console.log(componentName, getDateTime(), `put /filter/:filterID filterID`, filterID);
+
+  db("homeopapeFilter")
+    .where(where)
+    // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
+    // .returning(select)
+    .update(recordObject)
+    .then((records) => {
+      // console.log(componentName, getDateTime(), `put /filter/:filterID records`, records);
+      // * Returns the number of updated records. -- 08/13/2021 MF
+
+      // records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(componentName, getDateTime(), `put /filter/:filterID records`, records);
+
+        response.status(200).json({ primaryKeyID: request.params.filterID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
+
+      } else {
+        // console.log(componentName, getDateTime(), `put /filter/:filterID No Results`);
+
+        response.status(200).json({ primaryKeyID: request.params.filterID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(componentName, getDateTime(), `put /filter/:filterID error`, error);
+
+      addErrorLog(componentName, "put /filter/:filterID", records, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
