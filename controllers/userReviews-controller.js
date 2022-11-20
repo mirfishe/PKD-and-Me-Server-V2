@@ -44,7 +44,7 @@ users
 
 
 // ! Function doesn't work because it needs to wait on the results of the query -- 03/28/2021 MF
-// function hasReviewedTitle (userID, titleID) {
+// const hasReviewedTitle = (userID, titleID) => {
 
 //     const query = {where: {
 //         [Op.and]: [
