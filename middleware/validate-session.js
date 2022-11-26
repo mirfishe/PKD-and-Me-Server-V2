@@ -39,13 +39,13 @@ const validateSession = (request, response, next) => {
           // if (isEmpty(records) === true) throw "Unauthorized."; // "error";
           if (isEmpty(records) === true) {
 
-            addErrorLog(componentName, "Unauthorized.", JSON.stringify({ decoded: decoded, token: token }), null);
+            addErrorLog(componentName, "Unauthorized.", { decoded: decoded, token: token }, null);
 
             return response.status(401).json({ transactionSuccess: false, errorOccurred: false, isLoggedIn: false, message: "Unauthorized." });
 
           } else {
 
-            addLog(componentName, "Successful.", JSON.stringify({ records: records, decoded: decoded, token: token }));
+            // addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });
 
             // ? Need to return all the properties of the user? -- 03/28/2021 MF
             // request.user = records[0];
@@ -62,7 +62,7 @@ const validateSession = (request, response, next) => {
 
       request.errors = error;
 
-      addErrorLog(componentName, "Unauthorized.", JSON.stringify({ decoded: decoded, token: token }), null);
+      addErrorLog(componentName, "Unauthorized.", { decoded: decoded, token: token }, null);
 
       return response.status(401).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, message: "Unauthorized." });
 

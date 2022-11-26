@@ -63,7 +63,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -102,7 +102,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /:mediaID", records, error);
+//       addErrorLog(componentName, "get /:mediaID", {"mediaID": mediaID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -139,7 +139,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /admin error", error);
 
-//       addErrorLog(componentName, "get /admin", records, error);
+//       addErrorLog(componentName, "get /admin", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -187,7 +187,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, "get /:media", records, error);
+//       addErrorLog(componentName, "get /:media", {"mediaID": mediaID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -206,7 +206,7 @@ router.post("/", validateAdmin, (request, response) => {
 
   // * Moved this inside the function for scoping issues with newSortID -- 03/28/2021 MF
   // const createMedia = {
-  //     media:      request.body.media.media,
+  //     media:      request.body.recordObject.media,
   //     sortID:     newSortID
   //   };
 
@@ -234,8 +234,8 @@ router.post("/", validateAdmin, (request, response) => {
       // console.log(componentName, getDateTime(), "newSortID", newSortID);
 
       const recordObject = {
-        media: request.body.media.media,
-        electronic: request.body.media.electronic,
+        media: request.body.recordObject.media,
+        electronic: request.body.recordObject.electronic,
         sortID: newSortID
       };
 
@@ -267,7 +267,7 @@ router.post("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -284,9 +284,9 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
   const where = { mediaID: request.params.mediaID };
 
   const recordObject = {
-    media: request.body.media.media,
-    sortID: request.body.media.sortID,
-    active: request.body.media.active
+    media: request.body.recordObject.media,
+    sortID: request.body.recordObject.sortID,
+    active: request.body.recordObject.active
   };
 
   db(tableName)
@@ -316,7 +316,7 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { "mediaID": request.params.mediaID, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -359,7 +359,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { "mediaID": mediaID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

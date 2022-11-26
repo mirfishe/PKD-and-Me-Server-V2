@@ -76,7 +76,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -133,7 +133,7 @@ router.get("/broken/:editionID", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID`, error);
 
-            addErrorLog(componentName, `get /broken/:${controllerName}ID`, records, error);
+            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { "editionID": editionID }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -151,7 +151,7 @@ router.get("/broken/:editionID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", records, error);
+      addErrorLog(componentName, "get /broken/:${controllerName}ID", { "editionID": editionID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -207,7 +207,7 @@ router.get("/broken/:editionID", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /", records, error);
+//       addErrorLog(componentName, "get /", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -283,7 +283,7 @@ router.get("/broken/:editionID", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, "get /", records, error);  
+//       addErrorLog(componentName, "get /", {}, error);  
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -342,7 +342,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /ASIN/:ASIN", error);
 
-      addErrorLog(componentName, "get /ASIN/:ASIN", records, error);
+      addErrorLog(componentName, "get /ASIN/:ASIN", { "ASIN": ASIN }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -384,7 +384,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /title/:titleID", records, error);
+//       addErrorLog(componentName, "get /title/:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -426,7 +426,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /media/:mediaID error", error);
 
-//       addErrorLog(componentName, "get /media/:media", records, error);
+//       addErrorLog(componentName, "get /media/:media", {"mediaID": mediaID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -457,7 +457,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     .catch((error) => {
 //         console.error(componentName, getDateTime(), "get /category/:categoryID error", error);
 
-//         addErrorLog(componentName, "get /category/:categoryID", records, error);
+//         addErrorLog(componentName, "get /category/:categoryID", {"categoryID": categoryID}, error);
 //         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -472,17 +472,17 @@ router.get("/ASIN/:ASIN", (request, response) => {
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleID: request.body.edition.titleID,
-    mediaID: request.body.edition.mediaID,
-    publicationDate: request.body.edition.publicationDate,
-    imageName: request.body.edition.imageName,
-    ASIN: request.body.edition.ASIN,
-    textLinkShort: request.body.edition.textLinkShort,
-    textLinkFull: request.body.edition.textLinkFull,
-    imageLinkSmall: request.body.edition.imageLinkSmall,
-    imageLinkMedium: request.body.edition.imageLinkMedium,
-    imageLinkLarge: request.body.edition.imageLinkLarge,
-    textImageLink: request.body.edition.textImageLink,
+    titleID: request.body.recordObject.titleID,
+    mediaID: request.body.recordObject.mediaID,
+    publicationDate: request.body.recordObject.publicationDate,
+    imageName: request.body.recordObject.imageName,
+    ASIN: request.body.recordObject.ASIN,
+    textLinkShort: request.body.recordObject.textLinkShort,
+    textLinkFull: request.body.recordObject.textLinkFull,
+    imageLinkSmall: request.body.recordObject.imageLinkSmall,
+    imageLinkMedium: request.body.recordObject.imageLinkMedium,
+    imageLinkLarge: request.body.recordObject.imageLinkLarge,
+    textImageLink: request.body.recordObject.textImageLink,
     active: true
   };
 
@@ -533,7 +533,7 @@ router.post("/", validateAdmin, (request, response) => {
 
       };
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -548,18 +548,18 @@ router.post("/", validateAdmin, (request, response) => {
 router.put("/:editionID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleID: request.body.edition.titleID,
-    mediaID: request.body.edition.mediaID,
-    publicationDate: request.body.edition.publicationDate,
-    imageName: request.body.edition.imageName,
-    ASIN: request.body.edition.ASIN,
-    textLinkShort: request.body.edition.textLinkShort,
-    textLinkFull: request.body.edition.textLinkFull,
-    imageLinkSmall: request.body.edition.imageLinkSmall,
-    imageLinkMedium: request.body.edition.imageLinkMedium,
-    imageLinkLarge: request.body.edition.imageLinkLarge,
-    textImageLink: request.body.edition.textImageLink,
-    active: request.body.edition.active
+    titleID: request.body.recordObject.titleID,
+    mediaID: request.body.recordObject.mediaID,
+    publicationDate: request.body.recordObject.publicationDate,
+    imageName: request.body.recordObject.imageName,
+    ASIN: request.body.recordObject.ASIN,
+    textLinkShort: request.body.recordObject.textLinkShort,
+    textLinkFull: request.body.recordObject.textLinkFull,
+    imageLinkSmall: request.body.recordObject.imageLinkSmall,
+    imageLinkMedium: request.body.recordObject.imageLinkMedium,
+    imageLinkLarge: request.body.recordObject.imageLinkLarge,
+    textImageLink: request.body.recordObject.textImageLink,
+    active: request.body.recordObject.active
   };
 
   const where = { editionID: request.params.editionID };
@@ -591,7 +591,7 @@ router.put("/:editionID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { "editionID": request.params.editionID, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -634,7 +634,7 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { "editionID": editionID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

@@ -60,7 +60,7 @@ router.get("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -100,7 +100,7 @@ router.get("/broken", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /broken error", error);
 
-      addErrorLog(componentName, "get /broken", records, error);
+      addErrorLog(componentName, "get /broken", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -165,7 +165,7 @@ router.post("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });

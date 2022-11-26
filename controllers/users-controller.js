@@ -31,13 +31,13 @@ let records;
 router.post("/register", (request, response) => {
 
   const recordObject = {
-    firstName: request.body.user.firstName,
-    lastName: request.body.user.lastName,
-    email: request.body.user.email,
-    password: bcrypt.hashSync(request.body.user.password)
+    firstName: request.body.recordObject.firstName,
+    lastName: request.body.recordObject.lastName,
+    email: request.body.recordObject.email,
+    password: bcrypt.hashSync(request.body.recordObject.password)
   };
 
-  if (request.body.user.email.match(emailRegExp)) {
+  if (request.body.recordObject.email.match(emailRegExp)) {
 
     db(tableName)
       // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
@@ -100,7 +100,7 @@ router.post("/register", (request, response) => {
 
           };
 
-          addErrorLog(componentName, "post /register", records, error);
+          addErrorLog(componentName, "post /register", request.body.recordObject, error);
 
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, errorMessages: errorMessages, error: error });
 
@@ -108,7 +108,7 @@ router.post("/register", (request, response) => {
       .catch((error) => {
         console.error(componentName, getDateTime(), "post /register error", error);
 
-        addErrorLog(componentName, "post /register", records, error);
+        addErrorLog(componentName, "post /register", request.body.recordObject, error);
         response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: `Not successfully registered ${controllerName}.`, error: error });
 
       });
@@ -127,7 +127,7 @@ router.post("/register", (request, response) => {
 *********************************** */
 router.post("/login", (request, response) => {
 
-  const where = { email: request.body.user.email, active: true };
+  const where = { email: request.body.recordObject.email, active: true };
 
   db.select(select)
     .from(tableName)
@@ -139,7 +139,7 @@ router.post("/login", (request, response) => {
 
         if (isEmpty(records) === false) {
 
-          bcrypt.compare(request.body.user.password, records[0].password, (error, matches) => {
+          bcrypt.compare(request.body.recordObject.password, records[0].password, (error, matches) => {
 
             if (matches) {
 
@@ -168,7 +168,7 @@ router.post("/login", (request, response) => {
             } else {
               // console.log(componentName, getDateTime(), "post /login Login failed. 401");
 
-              addErrorLog(componentName, "post /login Login failed. 401", JSON.stringify({ user: request.body.user }), null);
+              addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
               response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
@@ -178,7 +178,7 @@ router.post("/login", (request, response) => {
         } else {
           // console.log(componentName, getDateTime(), "post /login Failed to authenticate. 401");
 
-          addErrorLog(componentName, "post /login Login failed. 401", JSON.stringify({ user: request.body.user }), null);
+          addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
           response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
@@ -187,7 +187,7 @@ router.post("/login", (request, response) => {
       error => {
         console.log(componentName, getDateTime(), "post /login Failed to process. 501 error", error);
 
-        addErrorLog(componentName, "post /login Login failed. 501", JSON.stringify({ user: request.body.user }), error);
+        addErrorLog(componentName, "post /login Login failed. 501", { user: request.body.recordObject }, error);
         response.status(501).send({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
@@ -195,7 +195,7 @@ router.post("/login", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post /login error", error);
 
-      addErrorLog(componentName, "post /login 500 error", records, error);
+      addErrorLog(componentName, "post /login 500 error", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: error });
 
     });
@@ -231,7 +231,7 @@ router.get("/admin", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /admin error", error);
 
-      addErrorLog(componentName, "get /admin", records, error);
+      addErrorLog(componentName, "get /admin", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -245,7 +245,7 @@ router.get("/admin", validateAdmin, (request, response) => {
 // * Returns User information for the logged in user -- 03/28/2021 MF
 router.get("/", validateSession, (request, response) => {
 
-  const where = { userID: request.user.userID };
+  const where = { userID: request.recordObject.userID };
 
   db.select(select)
     .from(tableName)
@@ -285,7 +285,7 @@ router.get("/", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -339,7 +339,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `get /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `get /:${controllerName}ID`, { "userID": userID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -355,23 +355,23 @@ router.get("/:userID", validateAdmin, (request, response) => {
 router.put("/:userID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    firstName: request.body.user.firstName,
-    lastName: request.body.user.lastName,
-    email: request.body.user.email,
-    updatedBy: request.user.userID,
-    active: request.body.user.active
+    firstName: request.body.recordObject.firstName,
+    lastName: request.body.recordObject.lastName,
+    email: request.body.recordObject.email,
+    updatedBy: request.recordObject.userID,
+    active: request.body.recordObject.active
   };
 
   // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.user.password) {
+  if (request.body.recordObject.password) {
 
-    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
   };
 
   const where = { userID: request.params.userID };
 
-  if (request.body.user.email.match(emailRegExp)) {
+  if (request.body.recordObject.email.match(emailRegExp)) {
 
     db(tableName)
       .where(where)
@@ -430,7 +430,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
         };
 
-        addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+        addErrorLog(componentName, `put /:${controllerName}ID`, { "userID": request.params.userID, "request.body.recordObject": request.body.recordObject }, error);
         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
       });
@@ -452,23 +452,23 @@ router.put("/:userID", validateAdmin, (request, response) => {
 router.put("/", validateSession, (request, response) => {
 
   const recordObject = {
-    firstName: request.body.user.firstName,
-    lastName: request.body.user.lastName,
-    email: request.body.user.email,
-    updatedBy: request.user.userID,
-    active: request.body.user.active
+    firstName: request.body.recordObject.firstName,
+    lastName: request.body.recordObject.lastName,
+    email: request.body.recordObject.email,
+    updatedBy: request.recordObject.userID,
+    active: request.body.recordObject.active
   };
 
   // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.user.password) {
+  if (request.body.recordObject.password) {
 
-    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.user.password) });
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
   };
 
-  const where = { userID: request.user.userID };
+  const where = { userID: request.recordObject.userID };
 
-  if (request.body.user.email.match(emailRegExp)) {
+  if (request.body.recordObject.email.match(emailRegExp)) {
 
     db(tableName)
       .where(where)
@@ -503,7 +503,7 @@ router.put("/", validateSession, (request, response) => {
 
           } else {
 
-            response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
+            response.status(200).json({ primaryKeyID: request.recordObject.userID, transactionSuccess: false, errorOccurred: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
 
           };
 
@@ -533,7 +533,7 @@ router.put("/", validateSession, (request, response) => {
 
           };
 
-          addErrorLog(componentName, `put /`, records, error);
+          addErrorLog(componentName, `put /`, request.body.recordObject, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
         }
@@ -548,7 +548,7 @@ router.put("/", validateSession, (request, response) => {
 
   } else {
 
-    response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
+    response.status(200).json({ primaryKeyID: request.recordObject.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
 
   };
 
@@ -588,7 +588,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { "userID": userID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

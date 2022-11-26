@@ -121,7 +121,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -162,7 +162,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /", records, error);
+//       addErrorLog(componentName, "get /", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -219,7 +219,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, `get /:${controllerName}ID`, records, error);
+//       addErrorLog(componentName, `get /:${controllerName}ID`, {"reviewID": reviewID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -249,7 +249,7 @@ router.get("/", (request, response) => {
 //         .catch((error) => {
 //             console.error(componentName, getDateTime(), "get /rating/:titleID error", error);
 
-//             addErrorLog(componentName, "get /rating/:titleID", records, error);
+//             addErrorLog(componentName, "get /rating/:titleID", {"titleID": titleID}, error);
 //             response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //         });
@@ -281,7 +281,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //         console.error(componentName, getDateTime(), "get /count/:titleID error", error);
 
-//         addErrorLog(componentName, "get /count/:titleID", records, error);
+//         addErrorLog(componentName, "get /count/:titleID", {"titleID": titleID}, error);
 //         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -321,7 +321,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //         console.error(componentName, getDateTime(), "get /sum/:titleID error", error);
 
-//         addErrorLog(componentName, "get /sum/:titleID", records, error);
+//         addErrorLog(componentName, "get /sum/:titleID", {"titleID": titleID}, error);
 //         response.status(500).json({transactionSuccess: false, errorOccurred: true, message: "Did not successfully retrieved user review sum.", error: err});
 
 //     });
@@ -392,7 +392,7 @@ router.get("/rating", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /rating error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /rating", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No user ratings found.", error: error });
 
     });
@@ -456,7 +456,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /rating/:titleID error", error);
 
-//       addErrorLog(componentName, "get /rating/:titleID", records, error);
+//       addErrorLog(componentName, "get /rating/:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No user ratings found.", error: error });
 
 //     });
@@ -504,7 +504,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /title/:titleID", records, error);
+//       addErrorLog(componentName, "get /title/:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -548,7 +548,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /user/:userID error", error);
 
-//       addErrorLog(componentName, "get /user/:userID", records, error);
+//       addErrorLog(componentName, "get /user/:userID", {"userID": userID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -596,7 +596,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /user/:userID/title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /user/:userID/title/:titleID", records, error);
+//       addErrorLog(componentName, "get /user/:userID/title/:titleID", { "userID": userID, "titleID": titleID }, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -613,15 +613,15 @@ router.post("/", validateSession, (request, response) => {
   const recordObject = {
     userID: request.user.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
     active: true
   };
 
@@ -651,7 +651,7 @@ router.post("/", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", { "request.user": request.user, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -668,16 +668,16 @@ router.put("/:reviewID", validateSession, (request, response) => {
   const recordObject = {
     userID: request.user.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
-    active: request.body.userReview.active
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
+    active: request.body.recordObject.active
   };
 
   const where = { reviewID: request.params.reviewID, userID: request.user.userID };
@@ -717,7 +717,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { "reviewID": request.params.reviewID, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -732,18 +732,18 @@ router.put("/:reviewID", validateSession, (request, response) => {
 router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    userID: request.body.userReview.userID,
+    userID: request.body.recordObject.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
-    active: request.body.userReview.active
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
+    active: request.body.recordObject.active
   };
 
   const where = { reviewID: request.params.reviewID };
@@ -783,7 +783,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { "reviewID": request.params.reviewID, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -826,7 +826,7 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { "reviewID": reviewID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

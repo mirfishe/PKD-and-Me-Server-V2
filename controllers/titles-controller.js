@@ -79,7 +79,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -140,7 +140,7 @@ router.get("/broken/:titleID", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID`, error);
 
-            addErrorLog(componentName, `get /broken/:${controllerName}ID`, records, error);
+            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { "titleID": titleID }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -158,7 +158,7 @@ router.get("/broken/:titleID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", records, error);
+      addErrorLog(componentName, "get /broken/:${controllerName}ID", { "titleID": titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -203,7 +203,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /", records, error);
+//       addErrorLog(componentName, "get /", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -265,7 +265,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, "get /:titleID", records, error);
+//       addErrorLog(componentName, "get /:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -305,7 +305,7 @@ router.get("/broken/:titleID", (request, response) => {
 //         .catch((error) => {
 //             console.error(`${ controllerName } - controller`, getDateTime(), "get /media/:mediaID error", error);
 
-//             addErrorLog(componentName, "get /media/:media", records, error);
+//             addErrorLog(componentName, "get /media/:media", {"mediaID": mediaID}, error);
 //             response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //         });
@@ -367,7 +367,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /category/:categoryID error", error);
 
-//       addErrorLog(componentName, "get /category/:categoryID", records, error);
+//       addErrorLog(componentName, "get /category/:categoryID", {"categoryID": categoryID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -434,7 +434,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /category/:categoryID error", error);
 
-//       addErrorLog(componentName, "get /admin/category/:categoryID", records, error);
+//       addErrorLog(componentName, "get /admin/category/:categoryID", {"categoryID": categoryID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -544,7 +544,7 @@ router.get("/checklist", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /checklist error", error);
 
-      addErrorLog(componentName, "get /checklist", records, error);
+      addErrorLog(componentName, "get /checklist", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -608,7 +608,7 @@ router.get("/checklist", validateSession, (request, response) => {
 //     .catch((error) => {
 //       console.error(`${ controllerName } - controller`, getDateTime(), "get /checklist/:categoryID error", error);
 
-//       addErrorLog(componentName, "get /checklist/:categoryID", records, error);
+//       addErrorLog(componentName, "get /checklist/:categoryID", {"categoryID": categoryID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -623,19 +623,19 @@ router.get("/checklist", validateSession, (request, response) => {
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleName: request.body.title.titleName,
-    titleSort: formatLowerCase(request.body.title.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
-    titleURL: request.body.title.titleURL,
-    authorFirstName: request.body.title.authorFirstName,
-    authorLastName: request.body.title.authorLastName,
-    manuscriptTitle: request.body.title.manuscriptTitle,
-    writtenDate: request.body.title.writtenDate,
-    submissionDate: request.body.title.submissionDate,
-    publicationDate: request.body.title.publicationDate,
-    imageName: request.body.title.imageName,
-    categoryID: request.body.title.categoryID,
-    shortDescription: request.body.title.shortDescription,
-    urlPKDWeb: request.body.title.urlPKDWeb,
+    titleName: request.body.recordObject.titleName,
+    titleSort: formatLowerCase(request.body.recordObject.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleURL: request.body.recordObject.titleURL,
+    authorFirstName: request.body.recordObject.authorFirstName,
+    authorLastName: request.body.recordObject.authorLastName,
+    manuscriptTitle: request.body.recordObject.manuscriptTitle,
+    writtenDate: request.body.recordObject.writtenDate,
+    submissionDate: request.body.recordObject.submissionDate,
+    publicationDate: request.body.recordObject.publicationDate,
+    imageName: request.body.recordObject.imageName,
+    categoryID: request.body.recordObject.categoryID,
+    shortDescription: request.body.recordObject.shortDescription,
+    urlPKDWeb: request.body.recordObject.urlPKDWeb,
     active: true
   };
 
@@ -665,7 +665,7 @@ router.post("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -680,20 +680,20 @@ router.post("/", validateAdmin, (request, response) => {
 router.put("/:titleID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    titleName: request.body.title.titleName,
-    titleSort: formatLowerCase(request.body.title.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
-    titleURL: request.body.title.titleURL,
-    authorFirstName: request.body.title.authorFirstName,
-    authorLastName: request.body.title.authorLastName,
-    manuscriptTitle: request.body.title.manuscriptTitle,
-    writtenDate: request.body.title.writtenDate,
-    submissionDate: request.body.title.submissionDate,
-    publicationDate: request.body.title.publicationDate,
-    imageName: request.body.title.imageName,
-    categoryID: request.body.title.categoryID,
-    shortDescription: request.body.title.shortDescription,
-    urlPKDWeb: request.body.title.urlPKDWeb,
-    active: request.body.title.active
+    titleName: request.body.recordObject.titleName,
+    titleSort: formatLowerCase(request.body.recordObject.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
+    titleURL: request.body.recordObject.titleURL,
+    authorFirstName: request.body.recordObject.authorFirstName,
+    authorLastName: request.body.recordObject.authorLastName,
+    manuscriptTitle: request.body.recordObject.manuscriptTitle,
+    writtenDate: request.body.recordObject.writtenDate,
+    submissionDate: request.body.recordObject.submissionDate,
+    publicationDate: request.body.recordObject.publicationDate,
+    imageName: request.body.recordObject.imageName,
+    categoryID: request.body.recordObject.categoryID,
+    shortDescription: request.body.recordObject.shortDescription,
+    urlPKDWeb: request.body.recordObject.urlPKDWeb,
+    active: request.body.recordObject.active
   };
 
   const where = { titleID: request.params.titleID };
@@ -725,7 +725,7 @@ router.put("/:titleID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /: ${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { "titleID": request.params.titleID, "request.body.recordObject": request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -768,7 +768,7 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { "titleID": titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });
