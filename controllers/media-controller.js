@@ -316,7 +316,7 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, { "mediaID": request.params.mediaID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { mediaID: request.params.mediaID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -359,7 +359,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, { "mediaID": mediaID }, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { mediaID: mediaID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

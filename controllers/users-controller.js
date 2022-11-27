@@ -339,7 +339,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `get /:${controllerName}ID`, { "userID": userID }, error);
+      addErrorLog(componentName, `get /:${controllerName}ID`, { userID: userID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -430,7 +430,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
         };
 
-        addErrorLog(componentName, `put /:${controllerName}ID`, { "userID": request.params.userID, "request.body.recordObject": request.body.recordObject }, error);
+        addErrorLog(componentName, `put /:${controllerName}ID`, { userID: request.params.userID, recordObject: request.body.recordObject }, error);
         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: `Not successfully updated${tableName}.`, errorMessages: errorMessages, error: error });
 
       });
@@ -588,7 +588,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, { "userID": userID }, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { userID: userID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

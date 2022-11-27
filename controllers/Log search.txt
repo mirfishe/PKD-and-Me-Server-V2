@@ -1,0 +1,278 @@
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\applicationSettings-controller.js
+  73,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  144,7:       addLog(response.locals.partner.databaseName, `${componentName} Get All Table Updates`, { databaseVersion: databaseVersion });
+  213,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  286,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  361,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  415,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\associatedData-controller.js
+  58,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  130,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  189,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  253,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  309,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\associatedDataCategories-controller.js
+  47,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  115,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  173,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  232,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  286,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\diagnosticTests-controller.js
+  49,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  117,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  207,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  295,9:         addLog(response.locals.partner.databaseName, `${componentName} Copy ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  390,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  446,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+  501,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  555,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\emergencyContacts-controller.js
+  49,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  117,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  180,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  268,9:         addLog(response.locals.partner.databaseName, `${componentName} Copy ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  329,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  385,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+  440,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  494,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\errorLogs-controller.js
+  55,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  125,10:       // addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\helpItems-controller.js
+  56,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, {});
+  109,11: //        addLog(response.locals.partner.databaseName, `${componentName} Get Help Item`, {});
+  160,7:       addLog(response.locals.partner.databaseName, `${componentName} Get Help Item Categories`, {});
+  211,7:       addLog(response.locals.partner.databaseName, `${componentName} Get Help Item Types`, {});
+  270,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  424,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  478,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, {});
+  532,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, {});
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\issues-controller.js
+  59,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  125,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\logs-controller.js
+  57,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  115,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  182,10:       // addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\medications-controller.js
+  50,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  119,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  187,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  263,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  335,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\nurses-controller.js
+  46,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  114,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  178,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  243,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  300,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\orders-controller.js
+  55,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  126,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  195,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  283,9:         addLog(response.locals.partner.databaseName, `${componentName} Copy ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  351,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  407,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Medication`, { parameters: request.params, databaseVersion: databaseVersion });
+  464,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+  519,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  573,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Medication`, { parameters: request.params, databaseVersion: databaseVersion });
+  628,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\partnerComputer-controller.js
+  55,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  139,10:       // addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\partners-controller.js
+  49,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, {});
+  101,7:       addLog(response.locals.partner.databaseName, `${componentName} Get Users`, {});
+  153,7:       addLog(response.locals.partner.databaseName, `${componentName} Get Partner`, {});
+  212,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  272,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  326,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, {});
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\patients-controller.js
+  52,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  121,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  191,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  262,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  341,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\providerNotes-controller.js
+  49,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  117,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  174,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  262,9:         addLog(response.locals.partner.databaseName, `${componentName} Copy ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  317,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  373,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+  428,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  482,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\providerOrders-controller.js
+  49,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  117,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  179,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  267,9:         addLog(response.locals.partner.databaseName, `${componentName} Copy ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  328,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  384,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+  439,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  493,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Scenario`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\ehr\scenarios-controller.js
+  50,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  118,7:       addLog(response.locals.partner.databaseName, `${componentName} Get ${tableName} Table Updates`, { databaseVersion: databaseVersion });
+  216,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  397,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+  453,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} Active Status`, { parameters: request.params, databaseVersion: databaseVersion });
+  509,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName} By Patient`, { parameters: request.params, databaseVersion: databaseVersion });
+  588,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params, databaseVersion: databaseVersion });
+  666,7:       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName} By Patient`, { parameters: request.params, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\learningObject\computerLogs-controller.js
+  48,7:       addLog(databaseName, `${componentName} Get ${tableName}`, {});
+  120,10:       // addLog( databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\learningObject\errorLogs-controller.js
+  56,7:       addLog(databaseName, `${componentName} Get ${tableName}`, {});
+  124,10:       // addLog( databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\learningObject\learningObjects-controller.js
+  48,7:       addLog(databaseName, `${componentName} Get Learning Object Data`, { learningObjectID: request.params.learningObjectID });
+  94,7:       addLog(databaseName, `${componentName} Get Learning Object Data By Team`, { team: request.params.team });
+  131,6: //   addLog( databaseName, `${componentName} Get Learning Object JSON File`, { learningObjectID: request.params.learningObjectID });
+  160,7:       addLog(databaseName, `${componentName} Get Executive Demonstration Learning Objects`, null);
+  223,7:       addLog(databaseName, `${componentName} Get Learning Object Data`, { learningObjectID: request.params.learningObjectID });
+  289,7:       addLog(databaseName, `${componentName} Get Learning Object Statistics`, { learningObjectID: learningObjectID });
+  335,7:       addLog(databaseName, `${componentName} Get Learning Object Rankings By Year`, { year: request.params.year });
+  390,7:       addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject });
+  458,7:       addLog(response.locals.partner.databaseName, `${componentName} update ${controllerName}`, { recordObject: request.body.recordObject });
+  514,10: //       addLog(response.locals.partner.databaseName, `${componentName} Delete ${controllerName}`, { parameters: request.params });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\learningObject\logs-controller.js
+  56,7:       addLog(databaseName, `${componentName} Get ${tableName}`, {});
+  123,10:       // addLog( databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, databaseVersion: databaseVersion });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\learningObject\playgrounds-controller.js
+  41,7:       addLog(databaseName, `${componentName} Get Playgrounds Data`, {});
+  103,7:       addLog(databaseName, `${componentName} Add Playground Project`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  167,7:       addLog(databaseName, `${componentName} update Playground Project`, { recordObject: request.body.recordObject, /* databaseVersion: databaseVersion */ });
+  211,7:       addLog(databaseName, `${componentName} Delete Playground Project`, {});
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\projects-controller.js
+  46,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get User Projects`, {});
+  96,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { accessToken: accessToken });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\projectsFunctions.js
+  35,9:         addLog(databaseName, `${componentName} readToken`, { directory: directory, tokenType: tokenType, data: data });
+  43,9:         addLog(databaseName, `${componentName} readToken The file doesn't exist.`, { directory: directory, tokenType: tokenType });
+  53,7:       addLog(databaseName, `${componentName} readToken The directory doesn't exist.`, { directory: directory, tokenType: tokenType });
+  85,7:       addLog(databaseName, `${componentName} writeToken The directory was created.`, { directory: directory, fileName: fileName, content: content });
+  93,5:     addLog(databaseName, `${componentName} writeToken The file was written.`, { directory: directory, fileName: fileName, content: content });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\tasks-controller.js
+  62,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get tasks`, { projectID: request.params.projectID });
+  112,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { projectID: request.params.projectID, accessToken: accessToken });
+  168,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get task subtasks`, { projectID: request.params.projectID, taskID: request.params.taskID });
+  218,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { projectID: request.params.projectID, taskID: request.params.taskID, accessToken: accessToken });
+  274,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get task comments`, { projectID: request.params.projectID, taskID: request.params.taskID });
+  324,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { projectID: request.params.projectID, taskID: request.params.taskID, accessToken: accessToken });
+  398,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Add ${controllerName}`, { projectID: request.params.projectID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+  448,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized. No accessToken found.`, { projectID: request.params.projectID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+  529,7:       addLog( /* response.locals.partner. */ databaseName, `${componentName} Add ${controllerName}`, { projectID: request.params.projectID, taskID: request.params.taskID, recordObject: request.body.recordObject, projectsConfig: projectsConfig /* , databaseVersion: databaseVersion */ });
+  580,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Add ${controllerName} subtask`, { projectID: request.params.projectID, taskID: request.params.taskID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+  630,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized. No accessToken found.`, { projectID: request.params.projectID, taskID: request.params.taskID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+  694,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Add ${controllerName} comment`, { projectID: request.params.projectID, taskID: request.params.taskID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+  744,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized. No accessToken found.`, { projectID: request.params.projectID, taskID: request.params.taskID, recordObject: request.body.recordObject, projectsConfig: projectsConfig });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\tickets-controller.js
+  47,9:         addLog(response.locals.partner.databaseName, `${componentName} Get Partner Sites`, {});
+  97,5:     addLog(response.locals.partner.databaseName, `${controllerName} Unauthorized.`, { helpdeskPartnerSite: response.locals.partner.helpdeskPartnerSite, accessToken: accessToken });
+  147,11:           addLog(response.locals.partner.databaseName, `${componentName} Add ${controllerName}`, { recordObject: request.body.recordObject, projectsConfig: projectsConfig, partner: response.locals.partner });
+  197,7:       addLog(response.locals.partner.databaseName, `The ${controllerName} submitted. Testing in development.`, { recordObject: request.body.recordObject, projectsConfig: projectsConfig, partner: response.locals.partner });
+  207,5:     addLog(response.locals.partner.databaseName, `${controllerName} Unauthorized. No accessToken found.`, { recordObject: request.body.recordObject, projectsConfig: projectsConfig, partner: response.locals.partner });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\timesheets-controller.js
+  57,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get User Timesheets`, { usersList: request.params.usersList, startDate: request.params.startDate });
+  107,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { usersList: request.params.usersList, startDate: request.params.startDate, accessToken: accessToken });
+  157,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get User Timesheets Custom Dates`, { usersList: request.params.usersList, startDate: request.params.startDate, endDate: request.params.endDate });
+  207,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { usersList: request.params.usersList, startDate: request.params.startDate, endDate: request.params.endDate, accessToken: accessToken });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\users-controller.js
+  49,9:         addLog( /* response.locals.partner. */ databaseName, `${componentName} Get Users`, {});
+  99,5:     addLog( /* response.locals.partner. */ databaseName, `${controllerName} Unauthorized.`, { accessToken: accessToken });
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\project\validate-token.js
+  64,18:               // addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken refreshToken Authorized.`, { refreshToken: refreshToken, accessToken: response.data.access_token });
+  80,15:               addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken refreshToken No token data or error data returned. Unauthorized.`, { refreshToken: refreshToken });
+  90,13:             addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken refreshToken response.data is empty. Unauthorized.`, { refreshToken: refreshToken });
+  159,20:                 // addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken grantToken Authorized.`, { grantToken: grantToken, accessToken: response.data.access_token, refreshToken: response.data.refresh_token });
+  175,17:                 addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken grantToken No token data or error data returned. Unauthorized.`, { grantToken: grantToken });
+  185,15:               addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken grantToken response.data is empty. Unauthorized.`, { grantToken: grantToken });
+  218,9:         addLog( /* response.locals.partner. */ databaseName, `${controllerName} getAccessToken Unauthorized.`, "No tokens found.");
+
+C:\Projects\OrbisEducation\lo_EHR_Server\controllers\test-controller.js
+  35,6:   // addLog(databaseName, `${componentName} succeeded.`, {});
+  82,10:       // addLog(databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  90,9:         addLog(databaseName, `${componentName} Get Health Check`, {});
+  102,12:         // addLog(databaseName, `${componentName}`, {});
+  146,7:       addLog(databaseName, `${componentName} Get Test Axios`, {});
+
+C:\Projects\OrbisEducation\lo_EHR_Server\middleware\validate-session.js
+  61,16:             // addLog(decodedJSON.databaseName, `${componentName} Authorized.`, { token: token, decodedString: decodedString, partner: request.partner });
+  69,13:             addLog(decodedJSON.databaseName, `${componentName} Unauthorized.`, { token: token, decodedString: decodedString });
+  93,7:       addLog("EHR", `${componentName} Unauthorized.`, { token: token, decodedString: decodedString });
+  103,5:     addLog("EHR", `${componentName} Unauthorized.`, "No token found.");
+
+C:\Projects\OrbisEducation\lo_EHR_Server\utilities\addErrorLog.js
+  108,10:   //     addLog(databaseName, `${componentName} Get Test Axios`, {});
+
+C:\Projects\OrbisEducation\lo_EHR_Server\utilities\sendErrorEmail.js
+  70,7:       addLog(databaseName, `${componentName} Message sent.`, JSON.stringify({ messageID: info.messageId, operation: operation, controllerName: controllerName, subject: subject, /* transactionData: transactionData, errorData: errorData, */ supportEmail: supportEmail }));
+  82,7:       addLog(databaseName, `${componentName} Message sent. Testing in development.`, JSON.stringify({ messageID: null, operation: operation, controllerName: controllerName, subject: subject, /* transactionData: transactionData, errorData: errorData, */ supportEmail: supportEmail }));
+
+C:\Projects\OrbisEducation\lo_EHR_Server\utilities\sendIssueEmail.js
+  70,7:       addLog(databaseName, `${componentName} Message sent.`, JSON.stringify({ messageID: info.messageId, subject: subject, summary: summary, /* issueDetails: issueDetails, */ supportEmail: supportEmail }));
+  82,7:       addLog(databaseName, `${componentName} Message sent. Testing in development.`, JSON.stringify({ messageID: null, subject: subject, summary: summary, /* issueDetails: issueDetails, */ supportEmail: supportEmail }));
+
+C:\Projects\Personal\PKD and Me\PKD-and-Me-Server-V2\controllers\amazon-controller.js
+  612,13:             addLog(componentName, "get / insert", {});
+  1027,15:               addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", {});
+  1093,9:         addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
+  1107,13:             addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", { page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data });
+  1205,7:       addLog(componentName, "get /update sqlQuery", {});
+  1213,7:       addLog(componentName, "get /update sqlQueryElectronicMedia", {});
+
+C:\Projects\Personal\PKD and Me\PKD-and-Me-Server-V2\controllers\fromthehomeopape-controller.js
+  630,14:           // addLog(componentName, `get /new ${url}`, { });
+  762,14:           // addLog(componentName, `get /new ${url}`, { });
+  894,14:           // addLog(componentName, `get /new ${url}`, { });
+  1026,14:           // addLog(componentName, `get /new ${url}`, { });
+  1158,14:           // addLog(componentName, `get /new ${url}`, { });
+  1187,3:   addLog(componentName, "get /new ", { transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` });
+  1212,7:       addLog(componentName, "get /insert", {});
+  1286,7:       addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", {});
+  1294,7:       addLog(componentName, "get /update sqlQueryAlwaysFiltered", {});
+  1302,7:       addLog(componentName, "get /update sqlQueryNeverDisplay", {});
+  1310,7:       addLog(componentName, "get /update sqlQueryHideStories", {});
+
+C:\Projects\Personal\PKD and Me\PKD-and-Me-Server-V2\controllers\test-controller.js
+  34,6:   // addLog(databaseName, `${componentName} succeeded.`, {});
+  81,10:       // addLog(databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
+  89,9:         addLog(databaseName, `${componentName} Get Health Check`, {});
+  101,12:         // addLog(databaseName, `${componentName}`, {});
+
+C:\Projects\Personal\PKD and Me\PKD-and-Me-Server-V2\middleware\validate-admin.js
+  49,16:             // addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });
+
+C:\Projects\Personal\PKD and Me\PKD-and-Me-Server-V2\middleware\validate-session.js
+  48,16:             // addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });

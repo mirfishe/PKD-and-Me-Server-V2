@@ -133,7 +133,7 @@ router.get("/broken/:editionID", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID`, error);
 
-            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { "editionID": editionID }, error);
+            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { editionID: editionID }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -151,7 +151,7 @@ router.get("/broken/:editionID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", { "editionID": editionID }, error);
+      addErrorLog(componentName, "get /broken/:${controllerName}ID", { editionID: editionID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -342,7 +342,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /ASIN/:ASIN", error);
 
-      addErrorLog(componentName, "get /ASIN/:ASIN", { "ASIN": ASIN }, error);
+      addErrorLog(componentName, "get /ASIN/:ASIN", { ASIN: ASIN }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -591,7 +591,7 @@ router.put("/:editionID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, { "editionID": request.params.editionID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { editionID: request.params.editionID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -634,7 +634,7 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, { "editionID": editionID }, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { editionID: editionID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

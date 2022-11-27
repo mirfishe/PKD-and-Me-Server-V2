@@ -123,7 +123,7 @@ router.get("/:termID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /:termID error", error);
 
-      addErrorLog(componentName, "get /:termID", { "termID": termID }, error);
+      addErrorLog(componentName, "get /:termID", { termID: termID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });

@@ -626,7 +626,7 @@ router.get("/item/:arrayNumber", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), "get /item/:arrayNumber error", error);
 
-            addErrorLog(componentName, "get /item/:arrayNumber", { "arrayNumber": arrayNumber }, error);
+            addErrorLog(componentName, "get /item/:arrayNumber", { arrayNumber: arrayNumber }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -1024,7 +1024,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
               // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
               // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-              addLog(componentName, "gget /:searchItem/:searchIndex/:sort/:merchant", {});
+              addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", {});
 
               // if (isEmpty(records) === false) {
               //   // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
@@ -1041,7 +1041,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             .catch((error) => {
               console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant error", error);
 
-              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { "searchItem": request.params.searchItem, "searchIndex": request.params.searchIndex, "sort": request.params.sort, "merchant": request.params.merchant }, error);
+              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant }, error);
               // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
             });
@@ -1267,7 +1267,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /active/:ASIN error`, error);
 
-      addErrorLog(componentName, "put /active/:ASIN", { "ASIN": request.params.ASIN, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /active/:ASIN", { ASIN: request.params.ASIN, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1316,7 +1316,7 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /viewed/:ASIN error`, error);
 
-      addErrorLog(componentName, "put /viewed/:ASIN", { "ASIN": request.params.ASIN, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /viewed/:ASIN", { ASIN: request.params.ASIN, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });

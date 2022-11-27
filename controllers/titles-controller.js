@@ -140,7 +140,7 @@ router.get("/broken/:titleID", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID`, error);
 
-            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { "titleID": titleID }, error);
+            addErrorLog(componentName, `get /broken/:${controllerName}ID`, { titleID: titleID }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -158,7 +158,7 @@ router.get("/broken/:titleID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", { "titleID": titleID }, error);
+      addErrorLog(componentName, "get /broken/:${controllerName}ID", { titleID: titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -725,7 +725,7 @@ router.put("/:titleID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /: ${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, { "titleID": request.params.titleID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { titleID: request.params.titleID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -768,7 +768,7 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, { "titleID": titleID }, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { titleID: titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

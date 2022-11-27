@@ -596,7 +596,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /user/:userID/title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /user/:userID/title/:titleID", { "userID": userID, "titleID": titleID }, error);
+//       addErrorLog(componentName, "get /user/:userID/title/:titleID", { userID: userID, titleID: titleID }, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -651,7 +651,7 @@ router.post("/", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", { "request.user": request.user, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "post /", { requestUser: request.user, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -717,7 +717,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, { "reviewID": request.params.reviewID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { reviewID: request.params.reviewID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -783,7 +783,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, { "reviewID": request.params.reviewID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { reviewID: request.params.reviewID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -826,7 +826,7 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, { "reviewID": reviewID }, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { reviewID: reviewID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

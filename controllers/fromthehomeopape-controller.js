@@ -432,7 +432,7 @@ router.get("/top/:topNumber", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
-      addErrorLog(componentName, "get /top/:topNumber", { "topNumber": topNumber }, error);
+      addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -498,7 +498,7 @@ router.get("/posted/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
-      addErrorLog(componentName, "get /top/:topNumber", { "topNumber": topNumber }, error);
+      addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -1552,7 +1552,7 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /display/:itemID error`, error);
 
-      addErrorLog(componentName, "put /display/:itemID", { "itemID": request.params.itemID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /display/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1606,7 +1606,7 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /posted/:itemID error`, error);
 
-      addErrorLog(componentName, "put /posted/:itemID", { "itemID": request.params.itemID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /posted/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1660,7 +1660,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /alwaysFilter/:itemID error`, error);
 
-      addErrorLog(componentName, "put /alwaysFilter/:itemID", { "itemID": request.params.itemID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /alwaysFilter/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1714,7 +1714,7 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /viewed/:itemID error`, error);
 
-      addErrorLog(componentName, "put /viewed/:itemID", { "itemID": request.params.itemID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /viewed/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1768,7 +1768,7 @@ router.put("/filter/:filterID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /filter/:filterID error`, error);
 
-      addErrorLog(componentName, "put /filter/:filterID", { "filterID": request.params.filterID, "request.body.recordObject": request.body.recordObject }, error);
+      addErrorLog(componentName, "put /filter/:filterID", { filterID: request.params.filterID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
