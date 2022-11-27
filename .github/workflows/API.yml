@@ -60,7 +60,7 @@ jobs:
       with:
         host: ${{ secrets.SSHSERVERNAME }}
         username: ${{ secrets.SSHUSERNAME }}
-        key: ${{ secrets.KEY }}
+        key: ${{ secrets.SSHKEY }}
         port: 22
         script: |
           cd /var/www/html/apiTEST/
