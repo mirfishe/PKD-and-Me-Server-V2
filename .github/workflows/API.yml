@@ -7,6 +7,8 @@
 name: Deploy API
 
 on:
+  push:
+    branches: [ "develop" ]
   pull_request:
     types:
       - closed
@@ -50,8 +52,8 @@ jobs:
         remote-user: ${{ secrets.SSHUSERNAME }}
         private-ssh-key: ${{ secrets.SSHKEY }}
         source-path: ./
-        destination-path: /var/www/html/api/
-        rsync-options: --archive --verbose --compress --human-readable --progress --delete-after --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore --stats --itemize-changes --exclude=images --exclude=sitemap.xml --exclude=amazon/ --exclude=resources/ --exclude=sql/ --exclude=.env --exclude=amazon.js --exclude=database.js --exclude=ecosystem.config.js --exclude=jwtSecret.js
+        destination-path: /var/www/html/apiTEST/
+        rsync-options: --archive --verbose --compress --human-readable --progress --delete-after --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore --stats --itemize-changes --exclude=amazon/ --exclude=resources/ --exclude=sql/ --exclude=.env --exclude=amazon.js --exclude=database.js --exclude=ecosystem.config.js --exclude=jwtSecret.js
 
     - name: Update npm Packages On Server
       uses: appleboy/ssh-action@master
@@ -61,8 +63,6 @@ jobs:
         key: ${{ secrets.SSHKEY }}
         port: 22
         script: |
-          cd /var/www/html/api/
-          mkdir -pv logs
-          npm install &> logs/install.log
-          npm audit fix &> logs/audit.log
+          cd /var/www/html/apiTEST/
+          installfix
 
