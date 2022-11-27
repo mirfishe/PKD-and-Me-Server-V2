@@ -609,7 +609,7 @@ router.get("/item/:arrayNumber", (request, response) => {
             // console.log(componentName, getDateTime(), ""get /item/:arrayNumber records", records);
             // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-            addLog(componentName, "get / insert", {});
+            addLog(componentName, "get / insert", { arrayNumber: arrayNumber });
 
             // if (isEmpty(records) === false) {
             //   // console.log(componentName, getDateTime(), "get /item/:arrayNumber"records", records);
@@ -1024,7 +1024,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
               // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
               // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-              addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", {});
+              addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
               // if (isEmpty(records) === false) {
               //   // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
@@ -1041,7 +1041,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             .catch((error) => {
               console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant error", error);
 
-              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant }, error);
+              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, error);
               // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
             });
@@ -1057,7 +1057,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
       // console.error("Errors:");
       console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
-      addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", { searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, searchItemsResponse["Errors"]);
+      addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, searchItemsResponse["Errors"]);
 
       // console.error("Printing 1st Error:");
       // let error_0 = searchItemsResponse["Errors"][0];
@@ -1090,7 +1090,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         };
 
-        addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
+        addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
         api.searchItems(searchItemsRequest).then(
 
@@ -1104,14 +1104,14 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
             onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
-            addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", { page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data });
+            addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data });
 
           },
           function (error) {
 
             console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
-            addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant error", { page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, error);
+            addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant error", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, error);
 
           }
 

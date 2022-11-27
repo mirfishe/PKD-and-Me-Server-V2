@@ -45,7 +45,7 @@ const validateSession = (request, response, next) => {
 
           } else {
 
-            // addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });
+            addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });
 
             // ? Need to return all the properties of the user? -- 03/28/2021 MF
             // request.user = records[0];
