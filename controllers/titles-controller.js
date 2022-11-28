@@ -97,7 +97,21 @@ router.get("/broken/:titleID", (request, response) => {
 
   // response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully logged broken image link. titleID ${request.params.titleID}` });
 
-  const where = { "titles.titleID": request.params.titleID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let titleID = request.params.titleID;
+
+  if (isNaN(formatTrim(titleID)) === true) {
+
+    titleID = 0;
+
+  } else {
+
+    titleID = parseInt(titleID);
+
+  };
+
+  const where = { "titles.titleID": titleID };
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -217,7 +231,21 @@ router.get("/broken/:titleID", (request, response) => {
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/:titleID", (request, response) => {
 
-//   const where = { "titles.titleID": request.params.titleID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// const where = { "titles.titleID": titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -282,6 +310,20 @@ router.get("/broken/:titleID", (request, response) => {
 // ? ADD OVERALL RATING TO GET TITLE? -- 03/28/2021 MF
 // router.get("/media/:mediaID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let mediaID = request.params.mediaID;
+
+// if (isNaN(formatTrim(mediaID)) === true) {
+
+//   mediaID = 0;
+
+// } else {
+
+//   mediaID = parseInt(mediaID);
+
+// };
+
 //     // const attributes = {
 //     //     attributes: [
 //     //     "reviewID", "userID", "updatedBy", "titleID", "read", "dateRead:   userReviews.dateRead", "rating", "shortReview", "longReview", "active", 
@@ -292,7 +334,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 //     const query = {where: {
 //         [Op.and]: [
-//             {mediaID: {[Op.eq]: request.params.mediaID}},
+//             {mediaID: {[Op.eq]: mediaID}},
 //             {active: {[Op.eq]: true}}
 //             ]
 //     }, order: [["titleSort", "DESC"]]};
@@ -333,7 +375,21 @@ router.get("/broken/:titleID", (request, response) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": request.params.categoryID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let categoryID = request.params.categoryID;
+
+// if (isNaN(formatTrim(categoryID)) === true) {
+
+//   categoryID = 0;
+
+// } else {
+
+//   categoryID = parseInt(categoryID);
+
+// };
+
+// const where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -395,7 +451,21 @@ router.get("/broken/:titleID", (request, response) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": request.params.categoryID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let categoryID = request.params.categoryID;
+
+// if (isNaN(formatTrim(categoryID)) === true) {
+
+//   categoryID = 0;
+
+// } else {
+
+//   categoryID = parseInt(categoryID);
+
+// };
+
+// const where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -571,7 +641,21 @@ router.get("/checklist", validateSession, (request, response) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-//   const where = { "titles.categoryID": request.params.categoryID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let categoryID = request.params.categoryID;
+
+// if (isNaN(formatTrim(categoryID)) === true) {
+
+//   categoryID = 0;
+
+// } else {
+
+//   categoryID = parseInt(categoryID);
+
+// };
+
+// const where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -696,7 +780,21 @@ router.put("/:titleID", validateAdmin, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { titleID: request.params.titleID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let titleID = request.params.titleID;
+
+  if (isNaN(formatTrim(titleID)) === true) {
+
+    titleID = 0;
+
+  } else {
+
+    titleID = parseInt(titleID);
+
+  };
+
+  const where = { titleID: titleID };
 
   db(tableName)
     .where(where)
@@ -739,7 +837,21 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 // * Allows an admin to hard delete a title -- 03/28/2021 MF
 router.delete("/:titleID", validateAdmin, (request, response) => {
 
-  const where = { titleID: request.params.titleID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let titleID = request.params.titleID;
+
+  if (isNaN(formatTrim(titleID)) === true) {
+
+    titleID = 0;
+
+  } else {
+
+    titleID = parseInt(titleID);
+
+  };
+
+  const where = { titleID: titleID };
 
   db(tableName)
     .where(where)

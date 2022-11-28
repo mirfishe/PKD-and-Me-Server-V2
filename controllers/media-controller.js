@@ -152,7 +152,21 @@ router.get("/", (request, response) => {
 ***************************************/
 // router.get("/:mediaID", (request, response) => {
 
-//   const where = { mediaID: request.params.mediaID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let mediaID = request.params.mediaID;
+
+// if (isNaN(formatTrim(mediaID)) === true) {
+
+//   mediaID = 0;
+
+// } else {
+
+//   mediaID = parseInt(mediaID);
+
+// };
+
+// const where = { mediaID: mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -281,7 +295,21 @@ router.post("/", validateAdmin, (request, response) => {
 // * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
 router.put("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: request.params.mediaID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let mediaID = request.params.mediaID;
+
+  if (isNaN(formatTrim(mediaID)) === true) {
+
+    mediaID = 0;
+
+  } else {
+
+    mediaID = parseInt(mediaID);
+
+  };
+
+  const where = { mediaID: mediaID };
 
   const recordObject = {
     media: request.body.recordObject.media,
@@ -330,7 +358,21 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 // * Allows an admin to hard delete the media -- 03/28/2021 MF
 router.delete("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: request.params.mediaID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let mediaID = request.params.mediaID;
+
+  if (isNaN(formatTrim(mediaID)) === true) {
+
+    mediaID = 0;
+
+  } else {
+
+    mediaID = parseInt(mediaID);
+
+  };
+
+  const where = { mediaID: mediaID };
 
   db(tableName)
     .where(where)

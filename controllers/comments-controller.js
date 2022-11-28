@@ -58,7 +58,21 @@ router.get("/", validateAdmin, (request, response) => {
 ***************************************/
 // router.get("/:commentID", validateAdmin, (request, response) => {
 
-//   const where = { commentID: request.params.commentID };
+//   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+//   let commentID = request.params.commentID;
+
+//   if (isNaN(formatTrim(commentID)) === true) {
+
+//     commentID = 0;
+
+//   } else {
+
+//     commentID = parseInt(commentID);
+
+//   };
+
+//   const where = { commentID: commentID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -81,7 +95,7 @@ router.get("/", validateAdmin, (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /:commentID error", error);
 
-//       addErrorLog(componentName, "get /:commentID", {"commentID": commentID}, error);
+//       addErrorLog(componentName, "get /:commentID", { "commentID": commentID }, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });

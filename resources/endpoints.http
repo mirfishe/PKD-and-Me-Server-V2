@@ -3,7 +3,7 @@
 
 @baseURL = https://api.philipdick.com/
 
-@baseURL = http://localhost:4000/
+# @baseURL = http://localhost:4000/
 
 ###
 

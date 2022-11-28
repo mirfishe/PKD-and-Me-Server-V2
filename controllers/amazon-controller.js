@@ -1236,7 +1236,17 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { ASIN: request.params.ASIN };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let ASIN = "";
+
+  if (isEmpty(request.params.ASIN) === false) {
+
+    ASIN = request.params.ASIN;
+
+  };
+
+  const where = { ASIN: ASIN };
 
   // console.log(componentName, getDateTime(), `put /active/:ASIN ASIN`, ASIN);
 
@@ -1285,7 +1295,17 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     viewed: request.body.recordObject.viewed
   };
 
-  const where = { ASIN: request.params.ASIN };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let ASIN = "";
+
+  if (isEmpty(request.params.ASIN) === false) {
+
+    ASIN = request.params.ASIN;
+
+  };
+
+  const where = { ASIN: ASIN };
 
   // console.log(componentName, getDateTime(), `put /viewed/:ASIN ASIN`, ASIN);
 

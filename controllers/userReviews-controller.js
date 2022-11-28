@@ -175,7 +175,21 @@ router.get("/", (request, response) => {
 ***************************************/
 // router.get("/:reviewID", (request, response) => {
 
-//   const where = { "userReviews.reviewID": request.params.reviewID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let reviewID = request.params.reviewID;
+
+// if (isNaN(formatTrim(reviewID)) === true) {
+
+//   reviewID = 0;
+
+// } else {
+
+//   reviewID = parseInt(reviewID);
+
+// };
+
+// const where = { "userReviews.reviewID": reviewID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -233,9 +247,23 @@ router.get("/", (request, response) => {
 // * Gets the overall rating for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -264,9 +292,23 @@ router.get("/", (request, response) => {
 // * Don't need because the count comes back with the get user reviews by titleID -- 03/28/2021 MF
 // router.get("/count/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -296,9 +338,23 @@ router.get("/", (request, response) => {
 // * Don't need since the rating endpoint is working -- 03/28/2021 MF
 // router.get("/sum/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -406,11 +462,25 @@ router.get("/rating", (request, response) => {
 // * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //   // let sqlQuery = db.select("titleID")
 //   //   .from(tableName)
 //   //   .count("rating", { as: "userReviewCount" })
 //   //   .sum({ userReviewSum: "rating" })
-//   //   .where({ titleID: request.params.titleID })
+//   //   .where({ titleID: titleID })
 //   //   .where({ active: true })
 //   //   .whereNotNull("rating")
 //   //   .whereNot({ rating: 0 })
@@ -425,7 +495,21 @@ router.get("/rating", (request, response) => {
 
 //   // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
-//   const where = { "userReviews.titleID": request.params.titleID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// const where = { "userReviews.titleID": titleID };
 
 //   db.select("titleID")
 //     .from(tableName)
@@ -471,7 +555,21 @@ router.get("/rating", (request, response) => {
 // TODO: Would like to add the overall rating for the title -- 03/28/2021 MF
 // router.get("/title/:titleID", (request, response) => {
 
-//   const where = { "userReviews.titleID": request.params.titleID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// const where = { "userReviews.titleID": titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -517,7 +615,21 @@ router.get("/rating", (request, response) => {
 ***************************************/
 // router.get("/user/:userID", (request, response) => {
 
-//   const where = { "userReviews.userID": request.params.userID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let userID = request.params.userID;
+
+// if (isNaN(formatTrim(userID)) === true) {
+
+//   userID = 0;
+
+// } else {
+
+//   userID = parseInt(userID);
+
+// };
+
+// const where = { "userReviews.userID": userID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -562,7 +674,33 @@ router.get("/rating", (request, response) => {
 // * Don't need because the front end restricts user reviews to one per title -- 03/28/2021 MF
 // router.get("/user/:userID/title/:titleID", (request, response) => {
 
-//   const where = { "userReviews.titleID": request.params.titleID, "userReviews.userID": request.params.userID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// let userID = request.params.userID;
+
+// if (isNaN(formatTrim(userID)) === true) {
+
+//   userID = 0;
+
+// } else {
+
+//   userID = parseInt(userID);
+
+// };
+
+//   const where = { "userReviews.titleID": titleID, "userReviews.userID": userID };
 
 //   // ! Function doesn't work because it needs to wait on the results of the query -- 05/24/2021 MF
 //   // console.log("hasReviewedTitle", hasReviewedTitle(request.params.userID, request.params.titleID));
@@ -680,7 +818,33 @@ router.put("/:reviewID", validateSession, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { reviewID: request.params.reviewID, userID: request.user.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  let userID = request.user.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { reviewID: reviewID, userID: userID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -746,7 +910,21 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { reviewID: request.params.reviewID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  const where = { reviewID: reviewID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -797,7 +975,21 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 // * Allows an admin to hard delete a review -- 03/28/2021 MF
 router.delete("/:reviewID", validateAdmin, (request, response) => {
 
-  const where = { reviewID: request.params.reviewID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  const where = { reviewID: reviewID };
 
   db(tableName)
     .where(where)

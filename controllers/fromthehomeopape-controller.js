@@ -1518,9 +1518,6 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /display/:itemID itemID`, itemID);
@@ -1572,9 +1569,6 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /posted/:itemID itemID`, itemID);
@@ -1626,9 +1620,6 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID itemID`, itemID);
@@ -1680,9 +1671,6 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /viewed/:itemID itemID`, itemID);
@@ -1737,7 +1725,21 @@ router.put("/filter/:filterID", (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { filterID: request.params.filterID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let filterID = request.params.filterID;
+
+  if (isNaN(formatTrim(filterID)) === true) {
+
+    filterID = 0;
+
+  } else {
+
+    filterID = parseInt(filterID);
+
+  };
+
+  const where = { filterID: filterID };
 
   // console.log(componentName, getDateTime(), `put /filter/:filterID filterID`, filterID);
 

@@ -127,7 +127,22 @@ router.post("/register", (request, response) => {
 *********************************** */
 router.post("/login", (request, response) => {
 
-  const where = { email: request.body.recordObject.email, active: true };
+  let email = "";
+  let password = "";
+
+  if (isEmpty(request.body.recordObject.email) === false) {
+
+    email = request.body.recordObject.email;
+
+  };
+
+  if (isEmpty(request.body.recordObject.password) === false) {
+
+    password = request.body.recordObject.password;
+
+  };
+
+  const where = { email: email, active: true };
 
   db.select(select)
     .from(tableName)
@@ -139,7 +154,7 @@ router.post("/login", (request, response) => {
 
         if (isEmpty(records) === false) {
 
-          bcrypt.compare(request.body.recordObject.password, records[0].password, (error, matches) => {
+          bcrypt.compare(password, records[0].password, (error, matches) => {
 
             if (matches) {
 
@@ -245,7 +260,21 @@ router.get("/admin", validateAdmin, (request, response) => {
 // * Returns User information for the logged in user -- 03/28/2021 MF
 router.get("/", validateSession, (request, response) => {
 
-  const where = { userID: request.recordObject.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = request.recordObject.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { userID: userID };
 
   db.select(select)
     .from(tableName)
@@ -299,7 +328,21 @@ router.get("/", validateSession, (request, response) => {
 // Returns User information for the admin -- 03/28/2021 MF
 router.get("/:userID", validateAdmin, (request, response) => {
 
-  const where = { userID: request.params.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = request.params.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { userID: userID };
 
   db.select(select)
     .from(tableName)
@@ -369,7 +412,21 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { userID: request.params.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = request.params.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { userID: userID };
 
   if (request.body.recordObject.email.match(emailRegExp)) {
 
@@ -466,7 +523,21 @@ router.put("/", validateSession, (request, response) => {
 
   };
 
-  const where = { userID: request.recordObject.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = request.recordObject.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { userID: userID };
 
   if (request.body.recordObject.email.match(emailRegExp)) {
 
@@ -561,7 +632,21 @@ router.put("/", validateSession, (request, response) => {
 // * Allows an admin to hard delete a user -- 03/28/2021 MF
 router.delete("/:userID", validateAdmin, (request, response) => {
 
-  const where = { userID: request.params.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = request.params.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { userID: userID };
 
   db(tableName)
     .where(where)

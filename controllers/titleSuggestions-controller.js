@@ -58,7 +58,21 @@ router.get("/", validateAdmin, (request, response) => {
 ***************************************/
 // router.get("/:titleSuggestionID", validateAdmin, (request, response) => {
 
-//   const where = { titleSuggestionID: request.params.titleSuggestionID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleSuggestionID = request.params.titleSuggestionID;
+
+// if (isNaN(formatTrim(titleSuggestionID)) === true) {
+
+//   titleSuggestionID = 0;
+
+// } else {
+
+//   titleSuggestionID = parseInt(titleSuggestionID);
+
+// };
+
+// const where = { titleSuggestionID: titleSuggestionID };
 
 //   db.select(select)
 //     .from(tableName)
