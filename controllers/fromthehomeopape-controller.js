@@ -81,7 +81,7 @@ const formatItemLink = (itemLink) => {
   newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=");
   // let newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "=");
 
-  // if (/*newURL.includes("\%3F") === true || newURL.includes("\%3f") === true ||*/ newURL.includes("www.heavymetal.com")) {
+  // if ( /*newURL.includes("\%3F") === true || newURL.includes("\%3f") === true ||*/ newURL.includes("www.heavymetal.com")) {
 
   //   console.log(componentName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\")", itemLink.replaceAll("\%3F", "?"));
   //   console.log(componentName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\").replaceAll(\"\%3f\", \"?\").replaceAll(\"\%26\", \"&\").replaceAll(\"\%3D\", \"=\").replaceAll(\"\%3d\", \"=\")", itemLink.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "="));
@@ -317,7 +317,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -366,7 +366,7 @@ router.get("/review", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /review error", error);
 
-      addErrorLog(componentName, "get /review", records, error);
+      addErrorLog(componentName, "get /review", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -432,7 +432,7 @@ router.get("/top/:topNumber", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
-      addErrorLog(componentName, "get /top/:topNumber", records, error);
+      addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -498,7 +498,7 @@ router.get("/posted/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
-      addErrorLog(componentName, "get /top/:topNumber", records, error);
+      addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -627,7 +627,7 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          // addLog(componentName, `get /new ${url}`, JSON.stringify({ records: records }));
+          // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
           //   // console.log(componentName, getDateTime(), "get /new records", records);
@@ -645,7 +645,7 @@ router.get("/new", (request, response) => {
         .catch((error) => {
           console.error(componentName, getDateTime(), "get /new error", error);
 
-          addErrorLog(componentName, "get /new", records, error);
+          addErrorLog(componentName, "get /new", {}, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
@@ -759,7 +759,7 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          // addLog(componentName, `get /new ${url}`, JSON.stringify({ records: records }));
+          // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
           //   // console.log(componentName, getDateTime(), "get /new records", records);
@@ -777,7 +777,7 @@ router.get("/new", (request, response) => {
         .catch((error) => {
           console.error(componentName, getDateTime(), "get /new error", error);
 
-          addErrorLog(componentName, "get /new", records, error);
+          addErrorLog(componentName, "get /new", {}, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
@@ -891,7 +891,7 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          // addLog(componentName, `get /new ${url}`, JSON.stringify({ records: records }));
+          // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
           //   // console.log(componentName, getDateTime(), "get /new records", records);
@@ -909,7 +909,7 @@ router.get("/new", (request, response) => {
         .catch((error) => {
           console.error(componentName, getDateTime(), "get /new error", error);
 
-          addErrorLog(componentName, "get /new", records, error);
+          addErrorLog(componentName, "get /new", {}, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
@@ -1023,7 +1023,7 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          // addLog(componentName, `get /new ${url}`, JSON.stringify({ records: records }));
+          // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
           //   // console.log(componentName, getDateTime(), "get /new records", records);
@@ -1041,7 +1041,7 @@ router.get("/new", (request, response) => {
         .catch((error) => {
           console.error(componentName, getDateTime(), "get /new error", error);
 
-          addErrorLog(componentName, "get /new", records, error);
+          addErrorLog(componentName, "get /new", {}, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
@@ -1155,7 +1155,7 @@ router.get("/new", (request, response) => {
 
           // records = convertBitTrueFalse(records);
 
-          // addLog(componentName, `get /new ${url}`, JSON.stringify({ records: records }));
+          // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
           //   // console.log(componentName, getDateTime(), "get /new records", records);
@@ -1173,7 +1173,7 @@ router.get("/new", (request, response) => {
         .catch((error) => {
           console.error(componentName, getDateTime(), "get /new error", error);
 
-          addErrorLog(componentName, "get /new", records, error);
+          addErrorLog(componentName, "get /new", {}, error);
           response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
         });
@@ -1184,7 +1184,7 @@ router.get("/new", (request, response) => {
 
   })();
 
-  addLog(componentName, "get /new ", JSON.stringify({ transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` }));
+  addLog(componentName, "get /new ", { transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` });
 
   response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully created ${tableName}.` });
 
@@ -1209,7 +1209,7 @@ router.get("/insert", (request, response) => {
       // console.log(componentName, getDateTime(), "get /insert records", records);
       // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-      addLog(componentName, "get /insert", JSON.stringify({ records: records }));
+      addLog(componentName, "get /insert", {});
 
       // records = convertBitTrueFalse(records);
 
@@ -1229,7 +1229,7 @@ router.get("/insert", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /insert error", error);
 
-      addErrorLog(componentName, "get /insert", records, error);
+      addErrorLog(componentName, "get /insert", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -1283,7 +1283,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", {});
 
       return db.raw(sqlQueryAlwaysFiltered);
 
@@ -1291,7 +1291,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQueryAlwaysFiltered", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryAlwaysFiltered", {});
 
       return db.raw(sqlQueryNeverDisplay);
 
@@ -1299,7 +1299,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQueryNeverDisplay", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryNeverDisplay", {});
 
       return db.raw(sqlQueryHideStories);
 
@@ -1307,7 +1307,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQueryHideStories", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryHideStories", {});
 
       response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
@@ -1315,7 +1315,7 @@ router.get("/update", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /update error", error);
 
-      addErrorLog(componentName, "get /update", records, error);
+      addErrorLog(componentName, "get /update", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1356,7 +1356,7 @@ router.get("/markviewed", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `get /markviewed error`, error);
 
-      addErrorLog(componentName, "get /markviewed", records, error);
+      addErrorLog(componentName, "get /markviewed", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1392,7 +1392,7 @@ router.get("/filter", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /filter error", error);
 
-      addErrorLog(componentName, "get /filter", records, error);
+      addErrorLog(componentName, "get /filter", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -1451,7 +1451,7 @@ router.post("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -1498,7 +1498,7 @@ router.post("/filter", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post /filter error", error);
 
-      addErrorLog(componentName, "post /filter", records, error);
+      addErrorLog(componentName, "post /filter", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -1518,9 +1518,6 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /display/:itemID itemID`, itemID);
@@ -1552,7 +1549,7 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /display/:itemID error`, error);
 
-      addErrorLog(componentName, "put /display/:itemID", records, error);
+      addErrorLog(componentName, "put /display/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1572,9 +1569,6 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /posted/:itemID itemID`, itemID);
@@ -1606,7 +1600,7 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /posted/:itemID error`, error);
 
-      addErrorLog(componentName, "put /posted/:itemID", records, error);
+      addErrorLog(componentName, "put /posted/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1626,9 +1620,6 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID itemID`, itemID);
@@ -1660,7 +1651,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /alwaysFilter/:itemID error`, error);
 
-      addErrorLog(componentName, "put /alwaysFilter/:itemID", records, error);
+      addErrorLog(componentName, "put /alwaysFilter/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1680,9 +1671,6 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  // itemID.replace("tag:google.com,2013:googlealerts/feed:", "");
-
-  // const where = { itemID: request.params.itemID };
   const where = { itemID: itemID };
 
   // console.log(componentName, getDateTime(), `put /viewed/:itemID itemID`, itemID);
@@ -1714,7 +1702,7 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /viewed/:itemID error`, error);
 
-      addErrorLog(componentName, "put /viewed/:itemID", records, error);
+      addErrorLog(componentName, "put /viewed/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1737,7 +1725,21 @@ router.put("/filter/:filterID", (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { filterID: request.params.filterID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let filterID = request.params.filterID;
+
+  if (isNaN(formatTrim(filterID)) === true) {
+
+    filterID = 0;
+
+  } else {
+
+    filterID = parseInt(filterID);
+
+  };
+
+  const where = { filterID: filterID };
 
   // console.log(componentName, getDateTime(), `put /filter/:filterID filterID`, filterID);
 
@@ -1768,7 +1770,7 @@ router.put("/filter/:filterID", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /filter/:filterID error`, error);
 
-      addErrorLog(componentName, "put /filter/:filterID", records, error);
+      addErrorLog(componentName, "put /filter/:filterID", { filterID: request.params.filterID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });

@@ -1,0 +1,68 @@
+# * This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node.
+# * For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# * FTP Deploy from: https://github.com/SamKirkland/FTP-Deploy-Action -- 10/04/2022 MF
+# * About the CI environment variable: https://stackoverflow.com/questions/62663451/treating-warnings-as-errors-because-process-env-ci-true-failed-to-compile -- 10/04/2022 MF
+# * Adding the .env property doesn't seem to work so that warnings aren't treated as errors. -- 10/10/2022 MF
+
+name: Deploy API
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ "master" ]
+
+# env:
+#   CI: false
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    # - name: Cache dependencies
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: |
+    #       **/node_modules
+    #     key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    # - name: Install dependencies
+    #   run: npm install
+
+    - name: Sync Files
+      uses: SamKirkland/web-deploy@v1
+      with:
+        target-server: ${{ secrets.SSHSERVERNAME }}
+        remote-user: ${{ secrets.SSHUSERNAME }}
+        private-ssh-key: ${{ secrets.SSHKEY }}
+        source-path: ./
+        destination-path: /var/www/html/api/
+        rsync-options: --archive --verbose --compress --human-readable --progress --delete-after --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore --stats --itemize-changes --exclude=amazon/ --exclude=resources/ --exclude=sql/ --exclude=.env --exclude=amazon.js --exclude=database.js --exclude=ecosystem.config.js --exclude=jwtSecret.js
+
+    - name: Update npm Packages On Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSHSERVERNAME }}
+        username: ${{ secrets.SSHUSERNAME }}
+        key: ${{ secrets.SSHKEY }}
+        port: 22
+        script: |
+          cd /var/www/html/api/
+          mkdir -pv logs
+          npm install &> logs/install.log
+          npm audit fix &> logs/audit.log
+

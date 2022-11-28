@@ -40,13 +40,13 @@ const validateAdmin = (request, response, next) => {
           // if (isEmpty(records) === true) throw {isAdmin: false, message: "Unauthorized."} // "Unauthorized."; // "error";
           if (isEmpty(records) === true) {
 
-            addErrorLog(componentName, "Unauthorized.", JSON.stringify({ decoded: decoded, token: token }), null);
+            addErrorLog(componentName, "Unauthorized.", { decoded: decoded, token: token }, null);
 
             return response.status(401).json({ transactionSuccess: false, errorOccurred: false, isAdmin: false, message: "Unauthorized." });
 
           } else {
 
-            addLog(componentName, "Successful.", JSON.stringify({ records: records, decoded: decoded, token: token }));
+            addLog(componentName, "Successful.", { records: records, decoded: decoded, token: token });
 
             // ? Need to return all the properties of the user? -- 03/28/2021 MF
             // request.user = records[0];
@@ -63,7 +63,7 @@ const validateAdmin = (request, response, next) => {
 
       request.errors = error;
 
-      addErrorLog(componentName, "Unauthorized.", JSON.stringify({ decoded: decoded, token: token }), null);
+      addErrorLog(componentName, "Unauthorized.", { decoded: decoded, token: token }, null);
 
       return response.status(401).json({ transactionSuccess: false, errorOccurred: true, isAdmin: false, message: "Unauthorized." });
 

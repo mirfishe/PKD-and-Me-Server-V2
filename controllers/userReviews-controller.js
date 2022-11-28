@@ -121,7 +121,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -162,7 +162,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /", records, error);
+//       addErrorLog(componentName, "get /", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -175,7 +175,21 @@ router.get("/", (request, response) => {
 ***************************************/
 // router.get("/:reviewID", (request, response) => {
 
-//   const where = { "userReviews.reviewID": request.params.reviewID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let reviewID = request.params.reviewID;
+
+// if (isNaN(formatTrim(reviewID)) === true) {
+
+//   reviewID = 0;
+
+// } else {
+
+//   reviewID = parseInt(reviewID);
+
+// };
+
+// const where = { "userReviews.reviewID": reviewID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -219,7 +233,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, `get /:${controllerName}ID`, records, error);
+//       addErrorLog(componentName, `get /:${controllerName}ID`, {"reviewID": reviewID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -233,9 +247,23 @@ router.get("/", (request, response) => {
 // * Gets the overall rating for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -249,7 +277,7 @@ router.get("/", (request, response) => {
 //         .catch((error) => {
 //             console.error(componentName, getDateTime(), "get /rating/:titleID error", error);
 
-//             addErrorLog(componentName, "get /rating/:titleID", records, error);
+//             addErrorLog(componentName, "get /rating/:titleID", {"titleID": titleID}, error);
 //             response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //         });
@@ -264,9 +292,23 @@ router.get("/", (request, response) => {
 // * Don't need because the count comes back with the get user reviews by titleID -- 03/28/2021 MF
 // router.get("/count/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -281,7 +323,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //         console.error(componentName, getDateTime(), "get /count/:titleID error", error);
 
-//         addErrorLog(componentName, "get /count/:titleID", records, error);
+//         addErrorLog(componentName, "get /count/:titleID", {"titleID": titleID}, error);
 //         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -296,9 +338,23 @@ router.get("/", (request, response) => {
 // * Don't need since the rating endpoint is working -- 03/28/2021 MF
 // router.get("/sum/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //     const query = {where: {
 //         [Op.and]: [
-//         {titleID: {[Op.eq]: request.params.titleID}},
+//         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
 //         ]
 //     }};
@@ -321,7 +377,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //         console.error(componentName, getDateTime(), "get /sum/:titleID error", error);
 
-//         addErrorLog(componentName, "get /sum/:titleID", records, error);
+//         addErrorLog(componentName, "get /sum/:titleID", {"titleID": titleID}, error);
 //         response.status(500).json({transactionSuccess: false, errorOccurred: true, message: "Did not successfully retrieved user review sum.", error: err});
 
 //     });
@@ -392,7 +448,7 @@ router.get("/rating", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /rating error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /rating", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No user ratings found.", error: error });
 
     });
@@ -406,11 +462,25 @@ router.get("/rating", (request, response) => {
 // * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
 //   // let sqlQuery = db.select("titleID")
 //   //   .from(tableName)
 //   //   .count("rating", { as: "userReviewCount" })
 //   //   .sum({ userReviewSum: "rating" })
-//   //   .where({ titleID: request.params.titleID })
+//   //   .where({ titleID: titleID })
 //   //   .where({ active: true })
 //   //   .whereNotNull("rating")
 //   //   .whereNot({ rating: 0 })
@@ -425,7 +495,21 @@ router.get("/rating", (request, response) => {
 
 //   // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
 
-//   const where = { "userReviews.titleID": request.params.titleID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// const where = { "userReviews.titleID": titleID };
 
 //   db.select("titleID")
 //     .from(tableName)
@@ -456,7 +540,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /rating/:titleID error", error);
 
-//       addErrorLog(componentName, "get /rating/:titleID", records, error);
+//       addErrorLog(componentName, "get /rating/:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No user ratings found.", error: error });
 
 //     });
@@ -471,7 +555,21 @@ router.get("/rating", (request, response) => {
 // TODO: Would like to add the overall rating for the title -- 03/28/2021 MF
 // router.get("/title/:titleID", (request, response) => {
 
-//   const where = { "userReviews.titleID": request.params.titleID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// const where = { "userReviews.titleID": titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -504,7 +602,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /title/:titleID", records, error);
+//       addErrorLog(componentName, "get /title/:titleID", {"titleID": titleID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -517,7 +615,21 @@ router.get("/rating", (request, response) => {
 ***************************************/
 // router.get("/user/:userID", (request, response) => {
 
-//   const where = { "userReviews.userID": request.params.userID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let userID = request.params.userID;
+
+// if (isNaN(formatTrim(userID)) === true) {
+
+//   userID = 0;
+
+// } else {
+
+//   userID = parseInt(userID);
+
+// };
+
+// const where = { "userReviews.userID": userID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -548,7 +660,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /user/:userID error", error);
 
-//       addErrorLog(componentName, "get /user/:userID", records, error);
+//       addErrorLog(componentName, "get /user/:userID", {"userID": userID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -562,7 +674,33 @@ router.get("/rating", (request, response) => {
 // * Don't need because the front end restricts user reviews to one per title -- 03/28/2021 MF
 // router.get("/user/:userID/title/:titleID", (request, response) => {
 
-//   const where = { "userReviews.titleID": request.params.titleID, "userReviews.userID": request.params.userID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleID = request.params.titleID;
+
+// if (isNaN(formatTrim(titleID)) === true) {
+
+//   titleID = 0;
+
+// } else {
+
+//   titleID = parseInt(titleID);
+
+// };
+
+// let userID = request.params.userID;
+
+// if (isNaN(formatTrim(userID)) === true) {
+
+//   userID = 0;
+
+// } else {
+
+//   userID = parseInt(userID);
+
+// };
+
+//   const where = { "userReviews.titleID": titleID, "userReviews.userID": userID };
 
 //   // ! Function doesn't work because it needs to wait on the results of the query -- 05/24/2021 MF
 //   // console.log("hasReviewedTitle", hasReviewedTitle(request.params.userID, request.params.titleID));
@@ -596,7 +734,7 @@ router.get("/rating", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /user/:userID/title/:titleID error", error);
 
-//       addErrorLog(componentName, "get /user/:userID/title/:titleID", records, error);
+//       addErrorLog(componentName, "get /user/:userID/title/:titleID", { userID: userID, titleID: titleID }, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -613,15 +751,15 @@ router.post("/", validateSession, (request, response) => {
   const recordObject = {
     userID: request.user.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
     active: true
   };
 
@@ -651,7 +789,7 @@ router.post("/", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", { requestUser: request.user, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -668,19 +806,45 @@ router.put("/:reviewID", validateSession, (request, response) => {
   const recordObject = {
     userID: request.user.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
-    active: request.body.userReview.active
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
+    active: request.body.recordObject.active
   };
 
-  const where = { reviewID: request.params.reviewID, userID: request.user.userID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  let userID = request.user.userID;
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+  const where = { reviewID: reviewID, userID: userID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -717,7 +881,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { reviewID: request.params.reviewID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -732,21 +896,35 @@ router.put("/:reviewID", validateSession, (request, response) => {
 router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   const recordObject = {
-    userID: request.body.userReview.userID,
+    userID: request.body.recordObject.userID,
     updatedBy: request.user.userID,
-    titleID: request.body.userReview.titleID,
-    read: request.body.userReview.read,
-    dateRead: request.body.userReview.dateRead,
-    rating: request.body.userReview.rating,
-    ranking: request.body.userReview.ranking,
-    shortReview: request.body.userReview.shortReview,
-    longReview: request.body.userReview.longReview,
-    owned: request.body.userReview.owned,
-    datePurchased: request.body.userReview.datePurchased,
-    active: request.body.userReview.active
+    titleID: request.body.recordObject.titleID,
+    read: request.body.recordObject.read,
+    dateRead: request.body.recordObject.dateRead,
+    rating: request.body.recordObject.rating,
+    ranking: request.body.recordObject.ranking,
+    shortReview: request.body.recordObject.shortReview,
+    longReview: request.body.recordObject.longReview,
+    owned: request.body.recordObject.owned,
+    datePurchased: request.body.recordObject.datePurchased,
+    active: request.body.recordObject.active
   };
 
-  const where = { reviewID: request.params.reviewID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  const where = { reviewID: reviewID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -783,7 +961,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { reviewID: request.params.reviewID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -797,7 +975,21 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 // * Allows an admin to hard delete a review -- 03/28/2021 MF
 router.delete("/:reviewID", validateAdmin, (request, response) => {
 
-  const where = { reviewID: request.params.reviewID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let reviewID = request.params.reviewID;
+
+  if (isNaN(formatTrim(reviewID)) === true) {
+
+    reviewID = 0;
+
+  } else {
+
+    reviewID = parseInt(reviewID);
+
+  };
+
+  const where = { reviewID: reviewID };
 
   db(tableName)
     .where(where)
@@ -826,7 +1018,7 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { reviewID: reviewID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

@@ -45,7 +45,7 @@ router.get("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -58,7 +58,21 @@ router.get("/", validateAdmin, (request, response) => {
 ***************************************/
 // router.get("/:commentID", validateAdmin, (request, response) => {
 
-//   const where = { commentID: request.params.commentID };
+//   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+//   let commentID = request.params.commentID;
+
+//   if (isNaN(formatTrim(commentID)) === true) {
+
+//     commentID = 0;
+
+//   } else {
+
+//     commentID = parseInt(commentID);
+
+//   };
+
+//   const where = { commentID: commentID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -81,7 +95,7 @@ router.get("/", validateAdmin, (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /:commentID error", error);
 
-//       addErrorLog(componentName, "get /:commentID", records, error);
+//       addErrorLog(componentName, "get /:commentID", { "commentID": commentID }, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -96,9 +110,9 @@ router.post("/", /* validateSession, */(request, response) => {
 
   const recordObject = {
     // userID: request.user.userID,
-    userID: request.body.comment.userID,
-    email: request.body.comment.email,
-    comment: request.body.comment.comment
+    userID: request.body.recordObject.userID,
+    email: request.body.recordObject.email,
+    comment: request.body.recordObject.comment
     // dateEntered: request.body.recordObject.dateEntered
   };
 
@@ -126,7 +140,7 @@ router.post("/", /* validateSession, */(request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });

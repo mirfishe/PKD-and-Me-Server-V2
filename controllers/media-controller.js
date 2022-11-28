@@ -63,7 +63,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -102,7 +102,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get / error", error);
 
-//       addErrorLog(componentName, "get /:mediaID", records, error);
+//       addErrorLog(componentName, "get /:mediaID", {"mediaID": mediaID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -139,7 +139,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /admin error", error);
 
-//       addErrorLog(componentName, "get /admin", records, error);
+//       addErrorLog(componentName, "get /admin", {}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -152,7 +152,21 @@ router.get("/", (request, response) => {
 ***************************************/
 // router.get("/:mediaID", (request, response) => {
 
-//   const where = { mediaID: request.params.mediaID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let mediaID = request.params.mediaID;
+
+// if (isNaN(formatTrim(mediaID)) === true) {
+
+//   mediaID = 0;
+
+// } else {
+
+//   mediaID = parseInt(mediaID);
+
+// };
+
+// const where = { mediaID: mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -187,7 +201,7 @@ router.get("/", (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
-//       addErrorLog(componentName, "get /:media", records, error);
+//       addErrorLog(componentName, "get /:media", {"mediaID": mediaID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -206,7 +220,7 @@ router.post("/", validateAdmin, (request, response) => {
 
   // * Moved this inside the function for scoping issues with newSortID -- 03/28/2021 MF
   // const createMedia = {
-  //     media:      request.body.media.media,
+  //     media:      request.body.recordObject.media,
   //     sortID:     newSortID
   //   };
 
@@ -234,8 +248,8 @@ router.post("/", validateAdmin, (request, response) => {
       // console.log(componentName, getDateTime(), "newSortID", newSortID);
 
       const recordObject = {
-        media: request.body.media.media,
-        electronic: request.body.media.electronic,
+        media: request.body.recordObject.media,
+        electronic: request.body.recordObject.electronic,
         sortID: newSortID
       };
 
@@ -267,7 +281,7 @@ router.post("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });
@@ -281,12 +295,26 @@ router.post("/", validateAdmin, (request, response) => {
 // * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
 router.put("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: request.params.mediaID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let mediaID = request.params.mediaID;
+
+  if (isNaN(formatTrim(mediaID)) === true) {
+
+    mediaID = 0;
+
+  } else {
+
+    mediaID = parseInt(mediaID);
+
+  };
+
+  const where = { mediaID: mediaID };
 
   const recordObject = {
-    media: request.body.media.media,
-    sortID: request.body.media.sortID,
-    active: request.body.media.active
+    media: request.body.recordObject.media,
+    sortID: request.body.recordObject.sortID,
+    active: request.body.recordObject.active
   };
 
   db(tableName)
@@ -316,7 +344,7 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `put /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `put /:${controllerName}ID`, { mediaID: request.params.mediaID, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -330,7 +358,21 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 // * Allows an admin to hard delete the media -- 03/28/2021 MF
 router.delete("/:mediaID", validateAdmin, (request, response) => {
 
-  const where = { mediaID: request.params.mediaID };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let mediaID = request.params.mediaID;
+
+  if (isNaN(formatTrim(mediaID)) === true) {
+
+    mediaID = 0;
+
+  } else {
+
+    mediaID = parseInt(mediaID);
+
+  };
+
+  const where = { mediaID: mediaID };
 
   db(tableName)
     .where(where)
@@ -359,7 +401,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, `delete /:${controllerName}ID`, records, error);
+      addErrorLog(componentName, `delete /:${controllerName}ID`, { mediaID: mediaID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully deleted." });
 
     });

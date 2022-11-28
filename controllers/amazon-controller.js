@@ -75,7 +75,7 @@ router.get("/", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -122,7 +122,7 @@ router.get("/all", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /all error", error);
 
-      addErrorLog(componentName, "get /all", records, error);
+      addErrorLog(componentName, "get /all", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -609,7 +609,7 @@ router.get("/item/:arrayNumber", (request, response) => {
             // console.log(componentName, getDateTime(), ""get /item/:arrayNumber records", records);
             // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-            addLog(componentName, "get / insert", JSON.stringify({ records: records }));
+            addLog(componentName, "get / insert", { arrayNumber: arrayNumber });
 
             // if (isEmpty(records) === false) {
             //   // console.log(componentName, getDateTime(), "get /item/:arrayNumber"records", records);
@@ -626,7 +626,7 @@ router.get("/item/:arrayNumber", (request, response) => {
           .catch((error) => {
             console.error(componentName, getDateTime(), "get /item/:arrayNumber error", error);
 
-            addErrorLog(componentName, "get /item/:arrayNumber", records, error);
+            addErrorLog(componentName, "get /item/:arrayNumber", { arrayNumber: arrayNumber }, error);
             // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
           });
@@ -640,7 +640,7 @@ router.get("/item/:arrayNumber", (request, response) => {
       // console.error("Errors:");
       console.error(componentName, getDateTime(), "get /item/:arrayNumber", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), "Complete Error Response: " + JSON.stringify(getItemsResponse["Errors"], null, 1));
 
-      addErrorLog(componentName, "get /item/:arrayNumber getItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }), JSON.stringify(getItemsResponse["Errors"], null, 1));
+      addErrorLog(componentName, "get /item/:arrayNumber getItemsResponse[\"Errors\"]", { searchCategory: "Get Item", searchIndex: "Get Item", sortBy: "Get Item" }, getItemsResponse["Errors"]);
 
       // console.error("Printing 1st Error:");
       // let error_0 = getItemsResponse["Errors"][0];
@@ -1024,7 +1024,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
               // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
               // * Returns the ID value of the added record. -- 08/13/2021 MF
 
-              addLog(componentName, "gget /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ records: records }));
+              addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
               // if (isEmpty(records) === false) {
               //   // console.log(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant records", records);
@@ -1041,7 +1041,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             .catch((error) => {
               console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant error", error);
 
-              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", records, error);
+              addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, error);
               // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
             });
@@ -1057,7 +1057,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
       // console.error("Errors:");
       console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Complete Error Response: " + JSON.stringify(searchItemsResponse["Errors"], null, 1));
 
-      addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", JSON.stringify({ searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(searchItemsResponse["Errors"], null, 1));
+      addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant searchItemsResponse[\"Errors\"]", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, searchItemsResponse["Errors"]);
 
       // console.error("Printing 1st Error:");
       // let error_0 = searchItemsResponse["Errors"][0];
@@ -1090,7 +1090,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
         };
 
-        addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }));
+        addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
         api.searchItems(searchItemsRequest).then(
 
@@ -1104,14 +1104,14 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
             onSuccess(data, i, searchCategory, searchIndex, sortBy);
 
-            addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data }));
+            addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant data", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy, data: data });
 
           },
           function (error) {
 
             console.error(componentName, getDateTime(), "get /:searchItem/:searchIndex/:sort/:merchant", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), "Printing Full Error Object:\n" + JSON.stringify(error, null, 1));
 
-            addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant error", JSON.stringify({ page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }), JSON.stringify(error, null, 1));
+            addErrorLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant error", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, page: i, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy }, error);
 
           }
 
@@ -1173,7 +1173,7 @@ router.get("/insert", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /insert error", error);
 
-      addErrorLog(componentName, "get /insert", records, error);
+      addErrorLog(componentName, "get /insert", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -1202,7 +1202,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQuery", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQuery", {});
 
       return db.raw(sqlQueryElectronicMedia);
 
@@ -1210,7 +1210,7 @@ router.get("/update", (request, response) => {
     .then((records) => {
       // console.log(componentName, getDateTime(), "get /update records", records);
 
-      addLog(componentName, "get /update sqlQueryElectronicMedia", JSON.stringify({ records: records }));
+      addLog(componentName, "get /update sqlQueryElectronicMedia", {});
 
       response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
@@ -1218,7 +1218,7 @@ router.get("/update", (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get /update error", error);
 
-      addErrorLog(componentName, "get /update", records, error);
+      addErrorLog(componentName, "get /update", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1236,7 +1236,17 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  const where = { ASIN: request.params.ASIN };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let ASIN = "";
+
+  if (isEmpty(request.params.ASIN) === false) {
+
+    ASIN = request.params.ASIN;
+
+  };
+
+  const where = { ASIN: ASIN };
 
   // console.log(componentName, getDateTime(), `put /active/:ASIN ASIN`, ASIN);
 
@@ -1267,7 +1277,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /active/:ASIN error`, error);
 
-      addErrorLog(componentName, "put /active/:ASIN", records, error);
+      addErrorLog(componentName, "put /active/:ASIN", { ASIN: request.params.ASIN, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });
@@ -1285,7 +1295,17 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     viewed: request.body.recordObject.viewed
   };
 
-  const where = { ASIN: request.params.ASIN };
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let ASIN = "";
+
+  if (isEmpty(request.params.ASIN) === false) {
+
+    ASIN = request.params.ASIN;
+
+  };
+
+  const where = { ASIN: ASIN };
 
   // console.log(componentName, getDateTime(), `put /viewed/:ASIN ASIN`, ASIN);
 
@@ -1316,7 +1336,7 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), `put /viewed/:ASIN error`, error);
 
-      addErrorLog(componentName, "put /viewed/:ASIN", records, error);
+      addErrorLog(componentName, "put /viewed/:ASIN", { ASIN: request.params.ASIN, recordObject: request.body.recordObject }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
 
     });

@@ -45,7 +45,7 @@ router.get("/", validateAdmin, (request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "get / error", error);
 
-      addErrorLog(componentName, "get /", records, error);
+      addErrorLog(componentName, "get /", {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -58,7 +58,21 @@ router.get("/", validateAdmin, (request, response) => {
 ***************************************/
 // router.get("/:titleSuggestionID", validateAdmin, (request, response) => {
 
-//   const where = { titleSuggestionID: request.params.titleSuggestionID };
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let titleSuggestionID = request.params.titleSuggestionID;
+
+// if (isNaN(formatTrim(titleSuggestionID)) === true) {
+
+//   titleSuggestionID = 0;
+
+// } else {
+
+//   titleSuggestionID = parseInt(titleSuggestionID);
+
+// };
+
+// const where = { titleSuggestionID: titleSuggestionID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -81,7 +95,7 @@ router.get("/", validateAdmin, (request, response) => {
 //     .catch((error) => {
 //       console.error(componentName, getDateTime(), "get /:titleSuggestionID error", error);
 
-//       addErrorLog(componentName, "get /:titleSuggestionID", records, error);
+//       addErrorLog(componentName, "get /:titleSuggestionID", {"titleSuggestionID": titleSuggestionID}, error);
 //       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
 //     });
@@ -96,14 +110,14 @@ router.post("/", /* validateSession, */(request, response) => {
 
   const recordObject = {
     // userID: request.user.userID,
-    userID: request.body.titleSuggestion.userID,
-    email: request.body.titleSuggestion.email,
-    titleName: request.body.titleSuggestion.titleName,
-    authorFirstName: request.body.titleSuggestion.authorFirstName,
-    authorLastName: request.body.titleSuggestion.authorLastName,
-    publicationDate: request.body.titleSuggestion.publicationDate,
-    shortDescription: request.body.titleSuggestion.shortDescription,
-    titleURL: request.body.titleSuggestion.titleURL
+    userID: request.body.recordObject.userID,
+    email: request.body.recordObject.email,
+    titleName: request.body.recordObject.titleName,
+    authorFirstName: request.body.recordObject.authorFirstName,
+    authorLastName: request.body.recordObject.authorLastName,
+    publicationDate: request.body.recordObject.publicationDate,
+    shortDescription: request.body.recordObject.shortDescription,
+    titleURL: request.body.recordObject.titleURL
     // dateEntered: request.body.recordObject.dateEntered
   };
 
@@ -130,7 +144,7 @@ router.post("/", /* validateSession, */(request, response) => {
     .catch((error) => {
       console.error(componentName, getDateTime(), "post / error", error);
 
-      addErrorLog(componentName, "post /", records, error);
+      addErrorLog(componentName, "post /", request.body.recordObject, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });
 
     });

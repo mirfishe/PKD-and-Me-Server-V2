@@ -20,7 +20,7 @@ const addLog = (controllerName, operation, transactionData) => {
     .insert({
       operation: operation,
       componentName: controllerName,
-      transactionData: transactionData,
+      transactionData: JSON.stringify(transactionData),
       createDate: getDateTime()
     })
     .then((results) => {

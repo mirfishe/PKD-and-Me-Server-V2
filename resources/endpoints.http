@@ -5,6 +5,20 @@
 
 # @baseURL = http://localhost:4000/
 
+###
+
+GET {{baseURL}}test/
+
+###
+
+GET {{baseURL}}test/addline
+
+###
+
+GET {{baseURL}}test/health
+
+###
+
 GET {{baseURL}}categories
 
 ###
@@ -218,15 +232,6 @@ GET {{baseURL}}amazon/keywordsBladeRunner/Books/PriceLowToHigh/Amazon
 GET {{baseURL}}amazon/keywordsBladeRunner/Books/Relevance/Amazon
 
 ###
-
-GET {{baseURL}}test/
-
-###
-
-GET {{baseURL}}test/addline
-
-###
-
 
 https://www.google.com/alerts/feeds/17849810695950872924/15842463258895766468
 
