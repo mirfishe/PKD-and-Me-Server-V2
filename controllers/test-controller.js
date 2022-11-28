@@ -71,12 +71,11 @@ router.get("/health", (request, response) => {
 
   db.select(select)
     .from(tableName)
-    // .where(testWhere)
-    .withSchema(`${databaseName}.dbo`)
-    .then((results) => {
-      // console.log(`${componentName}`, getDateTime(), "/health results", results);
+    // .orderBy(orderBy)
+    .then((records) => {
+      // console.log(`${componentName}`, getDateTime(), "/health records", records);
 
-      records = results;
+      records = records;
 
       // addLog(databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
 
