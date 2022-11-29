@@ -90,6 +90,7 @@ const tryParseJSON = (jsonString) => {
       return jsonData;
 
     };
+
   }
   catch (error) {
     // ! Don't display this error in the console. This function is already returning false is the JSON file is not in the correct format. -- 06/24/2021 MF
@@ -103,11 +104,11 @@ const tryParseJSON = (jsonString) => {
 
 const formatLowerCase = (value) => {
 
-  let lowerCaseValue = value;
+  let lowerCaseValue = "";
 
   if (isEmpty(value) === false) {
 
-    lowerCaseValue = value.toString().toLowerCase();
+    lowerCaseValue = formatToString(value).toLowerCase();
 
   };
 
@@ -118,11 +119,11 @@ const formatLowerCase = (value) => {
 
 const formatUpperCase = (value) => {
 
-  let upperCaseValue = value;
+  let upperCaseValue = "";
 
   if (isEmpty(value) === false) {
 
-    upperCaseValue = value.toString().toUpperCase();
+    upperCaseValue = formatToString(value).toUpperCase();
 
   };
 
@@ -133,11 +134,11 @@ const formatUpperCase = (value) => {
 
 const formatTrim = (value) => {
 
-  let trimValue = value;
+  let trimValue = "";
 
   if (isEmpty(value) === false) {
 
-    trimValue = value.toString().trim();
+    trimValue = formatToString(value).trim();
 
   };
 
@@ -148,7 +149,7 @@ const formatTrim = (value) => {
 
 const formatToString = (value) => {
 
-  let toStringValue = value;
+  let toStringValue = "";
 
   if (isEmpty(value) === false) {
 
@@ -161,9 +162,39 @@ const formatToString = (value) => {
 };
 
 
+const formatInt = (value) => {
+
+  let formatedInt = "";
+
+  if (isEmpty(value) === false) {
+
+    formatedInt = parseInt(formatTrim(value.replaceAll(",", ""))).toLocaleString();
+
+  };
+
+  return formatedInt;
+
+};
+
+
+const formatFloat = (value) => {
+
+  let formatedFloat = "";
+
+  if (isEmpty(value) === false) {
+
+    formatedFloat = parseFloat(formatTrim(value.replaceAll(",", ""))).toLocaleString();
+
+  };
+
+  return formatedFloat;
+
+};
+
+
 const formatSearchInput = (value) => {
 
-  let formatedSearchInput = value;
+  let formatedSearchInput = "";
 
   if (isEmpty(value) === false) {
 
@@ -193,6 +224,26 @@ const removeNonAlphanumericCharacters = (text) => {
 };
 
 
+// ! This is duplicated code shared-functions, convertJSONToSQL.js, convertJSONToSQLNewTemplate.js, convertJSONToSQLNewTemplate.js -- 06/14/2022 MF
+const replaceSmartCharacters = (jsonData) => {
+
+  let newJSON = jsonData;
+
+  newJSON = newJSON.replaceAll("’", "'");
+
+  // newJSON = newJSON.replaceAll("–", "--");
+  newJSON = newJSON.replaceAll("–", "-");
+
+  newJSON = newJSON.replaceAll(" ", " ");
+
+  newJSON = newJSON.replaceAll("“", "\"");
+  newJSON = newJSON.replaceAll("”", "\"");
+
+  return newJSON;
+
+};
+
+
 exports.isEmpty = isEmpty;
 exports.isNonEmptyArray = isNonEmptyArray;
 exports.getDateTime = getDateTime;
@@ -201,5 +252,8 @@ exports.formatLowerCase = formatLowerCase;
 exports.formatUpperCase = formatUpperCase;
 exports.formatTrim = formatTrim;
 exports.formatToString = formatToString;
+exports.formatInt = formatInt;
+exports.formatFloat = formatFloat;
 exports.formatSearchInput = formatSearchInput;
 exports.removeNonAlphanumericCharacters = removeNonAlphanumericCharacters;
+exports.replaceSmartCharacters = replaceSmartCharacters;
