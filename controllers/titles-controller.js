@@ -99,13 +99,7 @@ router.get("/broken/:titleID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = "";
-
-  if (isEmpty(request.params.titleID) === false) {
-
-    titleID = request.params.titleID;
-
-  };
+  let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
   if (isNaN(formatTrim(titleID)) === true) {
 
@@ -239,13 +233,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -324,13 +312,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let mediaID = "";
-
-// if (isEmpty(request.params.mediaID) === false) {
-
-//   mediaID = request.params.mediaID;
-
-// };
+// let mediaID = isEmpty(request.params.mediaID) === false ? request.params.mediaID : "";
 
 // if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -395,13 +377,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = "";
-
-// if (isEmpty(request.params.categoryID) === false) {
-
-//   categoryID = request.params.categoryID;
-
-// };
+// let categoryID = isEmpty(request.params.categoryID) === false ? request.params.categoryID : "";
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -477,13 +453,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = "";
-
-// if (isEmpty(request.params.categoryID) === false) {
-
-//   categoryID = request.params.categoryID;
-
-// };
+// let categoryID = isEmpty(request.params.categoryID) === false ? request.params.categoryID : "";
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -550,13 +520,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -679,13 +643,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let userID = "";
-
-// if (isEmpty(request.user.userID) === false) {
-
-//   userID = request.user.userID;
-
-// };
+// let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -711,13 +669,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-// let categoryID = "";
-
-// if (isEmpty(request.params.categoryID) === false) {
-
-//   categoryID = request.params.categoryID;
-
-// };
+// let categoryID = isEmpty(request.params.categoryID) === false ? request.params.categoryID : "";
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -856,13 +808,7 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = "";
-
-  if (isEmpty(request.params.titleID) === false) {
-
-    titleID = request.params.titleID;
-
-  };
+  let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
   if (isNaN(formatTrim(titleID)) === true) {
 
@@ -919,13 +865,7 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = "";
-
-  if (isEmpty(request.params.titleID) === false) {
-
-    titleID = request.params.titleID;
-
-  };
+  let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
   if (isNaN(formatTrim(titleID)) === true) {
 

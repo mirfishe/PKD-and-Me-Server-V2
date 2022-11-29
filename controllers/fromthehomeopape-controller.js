@@ -379,13 +379,7 @@ router.get("/review", (request, response) => {
  ******************************/
 router.get("/top/:topNumber", (request, response) => {
 
-  let topNumber = "";
-
-  if (isEmpty(request.params.topNumber) === false) {
-
-    topNumber = request.params.topNumber;
-
-  };
+  let topNumber = isEmpty(request.params.topNumber) === false ? request.params.topNumber : "";
 
   if (isNaN(formatTrim(topNumber)) === true) {
 
@@ -451,13 +445,7 @@ router.get("/top/:topNumber", (request, response) => {
  ******************************/
 router.get("/posted/", (request, response) => {
 
-  // let topNumberID = "";
-
-  // if (isEmpty(request.params.topNumberID) === false) {
-
-  //   topNumberID = request.params.topNumberID;
-
-  // };
+  // let topNumber = isEmpty(request.params.topNumber) === false ? request.params.topNumber : "";
 
   // if (isNaN(formatTrim(topNumber)) === true) {
 
@@ -1739,13 +1727,7 @@ router.put("/filter/:filterID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let filterID = "";
-
-  if (isEmpty(request.params.filterID) === false) {
-
-    filterID = request.params.filterID;
-
-  };
+  let filterID = isEmpty(request.params.filterID) === false ? request.params.filterID : "";
 
   if (isNaN(formatTrim(filterID)) === true) {
 

@@ -177,13 +177,7 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let reviewID = "";
-
-// if (isEmpty(request.params.reviewID) === false) {
-
-//   reviewID = request.params.reviewID;
-
-// };
+let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
 
 // if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -255,13 +249,7 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -306,13 +294,7 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -358,13 +340,7 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -488,13 +464,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -527,13 +497,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -593,13 +557,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -659,13 +617,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let userID = "";
-
-// if (isEmpty(request.params.userID) === false) {
-
-//   userID = request.params.userID;
-
-// };
+// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -724,13 +676,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -742,13 +688,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// let userID = "";
-
-// if (isEmpty(request.params.userID) === false) {
-
-//   userID = request.params.userID;
-
-// };
+// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -810,13 +750,7 @@ router.post("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -885,13 +819,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -919,13 +847,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  let reviewID = "";
-
-  if (isEmpty(request.params.reviewID) === false) {
-
-    reviewID = request.params.reviewID;
-
-  };
+  let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
 
   if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -990,13 +912,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -1025,13 +941,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let reviewID = "";
-
-  if (isEmpty(request.params.reviewID) === false) {
-
-    reviewID = request.params.reviewID;
-
-  };
+  let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
 
   if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -1096,13 +1006,7 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let reviewID = "";
-
-  if (isEmpty(request.params.reviewID) === false) {
-
-    reviewID = request.params.reviewID;
-
-  };
+  let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
 
   if (isNaN(formatTrim(reviewID)) === true) {
 

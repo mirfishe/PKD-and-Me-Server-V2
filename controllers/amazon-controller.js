@@ -136,13 +136,7 @@ router.get("/all", (request, response) => {
 // * Returns Amazon listings -- 12/31/2021 MF
 router.get("/item/:arrayNumber", (request, response) => {
 
-  let arrayNumberID = "";
-
-  if (isEmpty(request.params.arrayNumberID) === false) {
-
-    arrayNumberID = request.params.arrayNumberID;
-
-  };
+  let arrayNumber = isEmpty(request.params.arrayNumber) === false ? request.params.arrayNumber : "";
 
   if (isEmpty(arrayNumber) === true) {
 
@@ -699,37 +693,13 @@ router.get("/item/:arrayNumber", (request, response) => {
 // * Returns Amazon listings -- 12/31/2021 MF
 router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
-  let searchItem = "";
+  let searchItem = isEmpty(request.params.searchItem) === false ? request.params.searchItem : "";
 
-  if (isEmpty(request.params.searchItem) === false) {
+  let searchIndex = isEmpty(request.params.searchIndex) === false ? request.params.searchIndex : "";
 
-    searchItem = request.params.searchItem;
+  let sort = isEmpty(request.params.sort) === false ? request.params.sort : "";
 
-  };
-
-  let searchIndex = "";
-
-  if (isEmpty(request.params.searchIndex) === false) {
-
-    searchIndex = request.params.searchIndex;
-
-  };
-
-  let sort = "";
-
-  if (isEmpty(request.params.sort) === false) {
-
-    sort = request.params.sort;
-
-  };
-
-  let merchant = "";
-
-  if (isEmpty(request.params.merchant) === false) {
-
-    merchant = request.params.merchant;
-
-  };
+  let merchant = isEmpty(request.params.merchant) === false ? request.params.merchant : "";
 
   let searchCategory = "";
   let searchAuthor = "";
@@ -1272,13 +1242,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let ASIN = "";
-
-  if (isEmpty(request.params.ASIN) === false) {
-
-    ASIN = request.params.ASIN;
-
-  };
+  let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
   const where = { ASIN: ASIN };
 
@@ -1331,13 +1295,7 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let ASIN = "";
-
-  if (isEmpty(request.params.ASIN) === false) {
-
-    ASIN = request.params.ASIN;
-
-  };
+  let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
   const where = { ASIN: ASIN };
 

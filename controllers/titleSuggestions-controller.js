@@ -60,13 +60,7 @@ router.get("/", validateAdmin, (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleSuggestionID = "";
-
-// if (isEmpty(request.params.titleSuggestionID) === false) {
-
-//   titleSuggestionID = request.params.titleSuggestionID;
-
-// };
+// let titleSuggestionID = isEmpty(request.params.titleSuggestionID) === false ? request.params.titleSuggestionID : "";
 
 // if (isNaN(formatTrim(titleSuggestionID)) === true) {
 
@@ -116,13 +110,7 @@ router.post("/", /* validateSession, */(request, response) => {
 
   // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  // let userID = "";
-
-  // if (isEmpty(request.user.userID) === false) {
-
-  //   userID = request.user.userID;
-
-  // };
+  // let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   // if (isNaN(formatTrim(userID)) === true) {
 

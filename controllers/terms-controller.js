@@ -69,13 +69,7 @@ router.get("/:termID", (request, response) => {
 
   // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  // let userID = "";
-
-  // if (isEmpty(request.user.userID) === false) {
-
-  //   userID = request.user.userID;
-
-  // };
+  // let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   // if (isNaN(formatTrim(userID)) === true) {
 
@@ -87,13 +81,7 @@ router.get("/:termID", (request, response) => {
 
   // };
 
-  let termID = "";
-
-  if (isEmpty(request.params.termID) === false) {
-
-    termID = request.params.termID;
-
-  };
+  let termID = isEmpty(request.params.termID) === false ? request.params.termID : "";
 
   if (isNaN(formatTrim(termID)) === true) {
 
