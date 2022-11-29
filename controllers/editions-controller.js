@@ -96,13 +96,7 @@ router.get("/broken/:editionID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = "";
-
-  if (isEmpty(request.params.editionID) === false) {
-
-    editionID = request.params.editionID;
-
-  };
+  let editionID = isEmpty(request.params.editionID) === false ? request.params.editionID : "";
 
   if (isNaN(formatTrim(editionID)) === true) {
 
@@ -242,13 +236,7 @@ router.get("/broken/:editionID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let editionID = "";
-
-// if (isEmpty(request.params.editionID) === false) {
-
-//   editionID = request.params.editionID;
-
-// };
+// let editionID = isEmpty(request.params.editionID) === false ? request.params.editionID : "";
 
 // if (isNaN(formatTrim(editionID)) === true) {
 
@@ -338,13 +326,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let ASIN = "";
-
-  if (isEmpty(request.params.ASIN) === false) {
-
-    ASIN = request.params.ASIN;
-
-  };
+  let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
   const where = { ASIN: ASIN };
 
@@ -407,13 +389,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = "";
-
-// if (isEmpty(request.params.titleID) === false) {
-
-//   titleID = request.params.titleID;
-
-// };
+// let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -469,13 +445,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let mediaID = "";
-
-// if (isEmpty(request.params.mediaID) === false) {
-
-//   mediaID = request.params.mediaID;
-
-// };
+// let mediaID = isEmpty(request.params.mediaID) === false ? request.params.mediaID : "";
 
 // if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -534,13 +504,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = "";
-
-// if (isEmpty(request.params.categoryID) === false) {
-
-//   categoryID = request.params.categoryID;
-
-// };
+// let categoryID = isEmpty(request.params.categoryID) === false ? request.params.categoryID : "";
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -674,13 +638,7 @@ router.put("/:editionID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = "";
-
-  if (isEmpty(request.params.editionID) === false) {
-
-    editionID = request.params.editionID;
-
-  };
+  let editionID = isEmpty(request.params.editionID) === false ? request.params.editionID : "";
 
   if (isNaN(formatTrim(editionID)) === true) {
 
@@ -737,13 +695,7 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = "";
-
-  if (isEmpty(request.params.editionID) === false) {
-
-    editionID = request.params.editionID;
-
-  };
+  let editionID = isEmpty(request.params.editionID) === false ? request.params.editionID : "";
 
   if (isNaN(formatTrim(editionID)) === true) {
 

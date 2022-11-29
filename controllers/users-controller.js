@@ -262,13 +262,7 @@ router.get("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -336,13 +330,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.params.userID) === false) {
-
-    userID = request.params.userID;
-
-  };
+  let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -411,13 +399,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.params.userID) === false) {
-
-    userID = request.params.userID;
-
-  };
+  let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -528,13 +510,7 @@ router.put("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.user.userID) === false) {
-
-    userID = request.user.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -658,13 +634,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = "";
-
-  if (isEmpty(request.params.userID) === false) {
-
-    userID = request.params.userID;
-
-  };
+  let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
 
