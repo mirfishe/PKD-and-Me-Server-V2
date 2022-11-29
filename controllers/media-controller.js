@@ -154,7 +154,13 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let mediaID = request.params.mediaID;
+// let mediaID = "";
+
+// if (isEmpty(request.params.mediaID) === false) {
+
+//   mediaID = request.params.mediaID;
+
+// };
 
 // if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -297,7 +303,13 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let mediaID = request.params.mediaID;
+  let mediaID = "";
+
+  if (isEmpty(request.params.mediaID) === false) {
+
+    mediaID = request.params.mediaID;
+
+  };
 
   if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -360,7 +372,13 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let mediaID = request.params.mediaID;
+  let mediaID = "";
+
+  if (isEmpty(request.params.mediaID) === false) {
+
+    mediaID = request.params.mediaID;
+
+  };
 
   if (isNaN(formatTrim(mediaID)) === true) {
 

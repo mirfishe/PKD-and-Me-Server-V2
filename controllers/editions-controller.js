@@ -96,7 +96,13 @@ router.get("/broken/:editionID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = request.params.editionID;
+  let editionID = "";
+
+  if (isEmpty(request.params.editionID) === false) {
+
+    editionID = request.params.editionID;
+
+  };
 
   if (isNaN(formatTrim(editionID)) === true) {
 
@@ -236,7 +242,13 @@ router.get("/broken/:editionID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let editionID = request.params.editionID;
+// let editionID = "";
+
+// if (isEmpty(request.params.editionID) === false) {
+
+//   editionID = request.params.editionID;
+
+// };
 
 // if (isNaN(formatTrim(editionID)) === true) {
 
@@ -395,7 +407,13 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -451,7 +469,13 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let mediaID = request.params.mediaID;
+// let mediaID = "";
+
+// if (isEmpty(request.params.mediaID) === false) {
+
+//   mediaID = request.params.mediaID;
+
+// };
 
 // if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -510,7 +534,13 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = request.params.categoryID;
+// let categoryID = "";
+
+// if (isEmpty(request.params.categoryID) === false) {
+
+//   categoryID = request.params.categoryID;
+
+// };
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -644,7 +674,13 @@ router.put("/:editionID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = request.params.editionID;
+  let editionID = "";
+
+  if (isEmpty(request.params.editionID) === false) {
+
+    editionID = request.params.editionID;
+
+  };
 
   if (isNaN(formatTrim(editionID)) === true) {
 
@@ -701,7 +737,13 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let editionID = request.params.editionID;
+  let editionID = "";
+
+  if (isEmpty(request.params.editionID) === false) {
+
+    editionID = request.params.editionID;
+
+  };
 
   if (isNaN(formatTrim(editionID)) === true) {
 

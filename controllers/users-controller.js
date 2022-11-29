@@ -1,4 +1,4 @@
-// * Uncommenting "use strict"; causes an error in this controller. -- 11/14/2021 MF
+// * Unusering "use strict"; causes an error in this controller. -- 11/14/2021 MF
 // "use strict";
 
 const router = require("express").Router();
@@ -262,7 +262,13 @@ router.get("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.user.userID;
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -330,7 +336,13 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.params.userID;
+  let userID = "";
+
+  if (isEmpty(request.params.userID) === false) {
+
+    userID = request.params.userID;
+
+  };
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -399,7 +411,13 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.params.userID;
+  let userID = "";
+
+  if (isEmpty(request.params.userID) === false) {
+
+    userID = request.params.userID;
+
+  };
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -510,7 +528,13 @@ router.put("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.user.userID;
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -634,7 +658,13 @@ router.delete("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.params.userID;
+  let userID = "";
+
+  if (isEmpty(request.params.userID) === false) {
+
+    userID = request.params.userID;
+
+  };
 
   if (isNaN(formatTrim(userID)) === true) {
 
