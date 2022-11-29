@@ -262,7 +262,7 @@ router.get("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.recordObject.userID;
+  let userID = request.user.userID;
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -397,21 +397,6 @@ router.get("/:userID", validateAdmin, (request, response) => {
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/:userID", validateAdmin, (request, response) => {
 
-  const recordObject = {
-    firstName: request.body.recordObject.firstName,
-    lastName: request.body.recordObject.lastName,
-    email: request.body.recordObject.email,
-    updatedBy: request.recordObject.userID,
-    active: request.body.recordObject.active
-  };
-
-  // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.recordObject.password) {
-
-    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
-
-  };
-
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
   let userID = request.params.userID;
@@ -423,6 +408,21 @@ router.put("/:userID", validateAdmin, (request, response) => {
   } else {
 
     userID = parseInt(userID);
+
+  };
+
+  const recordObject = {
+    firstName: request.body.recordObject.firstName,
+    lastName: request.body.recordObject.lastName,
+    email: request.body.recordObject.email,
+    updatedBy: userID,
+    active: request.body.recordObject.active
+  };
+
+  // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
+  if (request.body.recordObject.password) {
+
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
   };
 
@@ -508,24 +508,9 @@ router.put("/:userID", validateAdmin, (request, response) => {
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/", validateSession, (request, response) => {
 
-  const recordObject = {
-    firstName: request.body.recordObject.firstName,
-    lastName: request.body.recordObject.lastName,
-    email: request.body.recordObject.email,
-    updatedBy: request.recordObject.userID,
-    active: request.body.recordObject.active
-  };
-
-  // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.recordObject.password) {
-
-    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
-
-  };
-
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let userID = request.recordObject.userID;
+  let userID = request.user.userID;
 
   if (isNaN(formatTrim(userID)) === true) {
 
@@ -534,6 +519,21 @@ router.put("/", validateSession, (request, response) => {
   } else {
 
     userID = parseInt(userID);
+
+  };
+
+  const recordObject = {
+    firstName: request.body.recordObject.firstName,
+    lastName: request.body.recordObject.lastName,
+    email: request.body.recordObject.email,
+    updatedBy: userID,
+    active: request.body.recordObject.active
+  };
+
+  // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
+  if (request.body.recordObject.password) {
+
+    Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
   };
 
@@ -574,7 +574,7 @@ router.put("/", validateSession, (request, response) => {
 
           } else {
 
-            response.status(200).json({ primaryKeyID: request.recordObject.userID, transactionSuccess: false, errorOccurred: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
+            response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, isLoggedIn: true, message: `Successfully updated ${tableName}.` });
 
           };
 
@@ -619,7 +619,7 @@ router.put("/", validateSession, (request, response) => {
 
   } else {
 
-    response.status(200).json({ primaryKeyID: request.recordObject.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
+    response.status(200).json({ primaryKeyID: request.user.userID, transactionSuccess: false, errorOccurred: false, message: "Please provide a valid email address." });
 
   };
 
