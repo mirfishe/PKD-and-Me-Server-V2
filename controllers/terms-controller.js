@@ -67,7 +67,33 @@ router.get("/", (request, response) => {
 ***************************************/
 router.get("/:termID", (request, response) => {
 
-  let termID = request.params.termID;
+  // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  // let userID = "";
+
+  // if (isEmpty(request.user.userID) === false) {
+
+  //   userID = request.user.userID;
+
+  // };
+
+  // if (isNaN(formatTrim(userID)) === true) {
+
+  //   userID = 0;
+
+  // } else {
+
+  //   userID = parseInt(userID);
+
+  // };
+
+  let termID = "";
+
+  if (isEmpty(request.params.termID) === false) {
+
+    termID = request.params.termID;
+
+  };
 
   if (isNaN(formatTrim(termID)) === true) {
 
@@ -91,10 +117,10 @@ router.get("/:termID", (request, response) => {
   //   .leftOuterJoin("categories", "categories.categoryID", "terms.categoryID")
   //   // .leftOuterJoin("editions", "editions.termID", "terms.termID")
   //   // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-  //   // .where("users.userID", request.user.userID)
-  //   // .where("userReviews.userID", request.user.userID)
-  //   .where(function () { this.where("userReviews.userID", request.user.userID).orWhereNull("userReviews.userID"); })
-  //   // .where("userID", request.user.userID)
+  //   // .where("users.userID", userID)
+  //   // .where("userReviews.userID", userID)
+  //   .where(function () { this.where("userReviews.userID", userID).orWhereNull("userReviews.userID"); })
+  //   // .where("userID", userID)
   //   // .where(activeChecklist)
   //   .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
   //   .where({ "terms.active": true, "categories.active": true })

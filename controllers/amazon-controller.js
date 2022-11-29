@@ -136,7 +136,13 @@ router.get("/all", (request, response) => {
 // * Returns Amazon listings -- 12/31/2021 MF
 router.get("/item/:arrayNumber", (request, response) => {
 
-  let arrayNumber = request.params.arrayNumber;
+  let arrayNumberID = "";
+
+  if (isEmpty(request.params.arrayNumberID) === false) {
+
+    arrayNumberID = request.params.arrayNumberID;
+
+  };
 
   if (isEmpty(arrayNumber) === true) {
 
@@ -693,10 +699,38 @@ router.get("/item/:arrayNumber", (request, response) => {
 // * Returns Amazon listings -- 12/31/2021 MF
 router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
-  let searchItem = request.params.searchItem;
-  let searchIndex = request.params.searchIndex;
-  let sort = request.params.sort;
-  let merchant = request.params.merchant;
+  let searchItem = "";
+
+  if (isEmpty(request.params.searchItem) === false) {
+
+    searchItem = request.params.searchItem;
+
+  };
+
+  let searchIndex = "";
+
+  if (isEmpty(request.params.searchIndex) === false) {
+
+    searchIndex = request.params.searchIndex;
+
+  };
+
+  let sort = "";
+
+  if (isEmpty(request.params.sort) === false) {
+
+    sort = request.params.sort;
+
+  };
+
+  let merchant = "";
+
+  if (isEmpty(request.params.merchant) === false) {
+
+    merchant = request.params.merchant;
+
+  };
+
   let searchCategory = "";
   let searchAuthor = "";
   let searchKeywords = "";

@@ -99,7 +99,13 @@ router.get("/broken/:titleID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = request.params.titleID;
+  let titleID = "";
+
+  if (isEmpty(request.params.titleID) === false) {
+
+    titleID = request.params.titleID;
+
+  };
 
   if (isNaN(formatTrim(titleID)) === true) {
 
@@ -233,7 +239,13 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -312,7 +324,13 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let mediaID = request.params.mediaID;
+// let mediaID = "";
+
+// if (isEmpty(request.params.mediaID) === false) {
+
+//   mediaID = request.params.mediaID;
+
+// };
 
 // if (isNaN(formatTrim(mediaID)) === true) {
 
@@ -377,7 +395,13 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = request.params.categoryID;
+// let categoryID = "";
+
+// if (isEmpty(request.params.categoryID) === false) {
+
+//   categoryID = request.params.categoryID;
+
+// };
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -453,7 +477,13 @@ router.get("/broken/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let categoryID = request.params.categoryID;
+// let categoryID = "";
+
+// if (isEmpty(request.params.categoryID) === false) {
+
+//   categoryID = request.params.categoryID;
+
+// };
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -518,6 +548,26 @@ router.get("/broken/:titleID", (request, response) => {
 // router.get("/checklist/list", validateSession, (request, response) => {
 router.get("/checklist", validateSession, (request, response) => {
 
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
   // SELECT * FROM titles LEFT OUTER JOIN userReviews on titles.titleID = userReviews.titleID
   // LEFT OUTER JOIN categories on categories.categoryID = titles.categoryID
   // WHERE titles.active = 1 AND categories.active = 1 AND (userReviews.active = 1 OR userReviews.active is null)
@@ -571,7 +621,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
   // ORDER BY titleSort ASC
 
-  let sqlQuery = `SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${request.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1 UNION ALL SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE titles.titleID NOT IN (SELECT titles.titleID FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${request.user.userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1) AND titles.active = 1 AND categories.active = 1 ORDER BY ${orderByDynamic}`;
+  let sqlQuery = `SELECT titles.*, categories.*, userReviews.*, userReviews.updatedBy AS userReviewUpdatedBy, userReviews.active AS userReviewActive, userReviews.createDate AS userReviewCreateDate, userReviews.updateDate AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1 UNION ALL SELECT titles.*, categories.*, null AS reviewID, null AS userID, null AS updatedB, null AS titleID, null AS 'read', null AS dateRead, null AS rating, null AS ranking, null AS shortReview, null AS longReview, null AS owned, null AS datePurchASed, null AS active, null AS createDate, null AS updateDate, null AS userReviewUpdatedBy, null AS userReviewActive, null AS userReviewCreateDate, null AS userReviewUpdatedDate, titles.titleID, titles.publicationDate AS titlePublicationDate, titles.imageName AS titleImageName, titles.active AS titleActive, titles.createDate AS titleCreateDate, titles.updateDate AS titleUpdatedDate, categories.sortID AS categorySortID, categories.active AS categoryActive, categories.createDate AS categoryCreateDate, categories.updateDate AS categoryUpdatedDate FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE titles.titleID NOT IN (SELECT titles.titleID FROM titles LEFT OUTER JOIN userReviews ON userReviews.titleID = titles.titleID LEFT OUTER JOIN categories ON categories.categoryID = titles.categoryID WHERE (userReviews.userID = ${userID} OR userReviews.active IS null) AND (userReviews.active = 1 OR userReviews.active IS null) AND titles.active = 1 AND categories.active = 1) AND titles.active = 1 AND categories.active = 1 ORDER BY ${orderByDynamic}`;
 
   // console.log(`${ controllerName } - controller`, getDateTime(), "get / sqlQuery", sqlQuery);
 
@@ -582,10 +632,10 @@ router.get("/checklist", validateSession, (request, response) => {
   //   .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
   //   // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
   //   // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
-  //   // .where("users.userID", request.user.userID)
-  //   // .where("userReviews.userID", request.user.userID)
-  //   .where(function () { this.where("userReviews.userID", request.user.userID).orWhereNull("userReviews.userID"); })
-  //   // .where("userID", request.user.userID)
+  //   // .where("users.userID", userID)
+  //   // .where("userReviews.userID", userID)
+  //   .where(function () { this.where("userReviews.userID", userID).orWhereNull("userReviews.userID"); })
+  //   // .where("userID", userID)
   //   // .where(activeChecklist)
   //   .where(function () { this.where("userReviews.active", 1).orWhereNull("userReviews.active"); })
   //   .where({ "titles.active": true, "categories.active": true })
@@ -627,6 +677,26 @@ router.get("/checklist", validateSession, (request, response) => {
 ***************************************/
 // router.get("/checklist/:categoryID/:sort?", validateSession, (request, response) => {
 
+// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+// let userID = "";
+
+// if (isEmpty(request.user.userID) === false) {
+
+//   userID = request.user.userID;
+
+// };
+
+// if (isNaN(formatTrim(userID)) === true) {
+
+//   userID = 0;
+
+// } else {
+
+//   userID = parseInt(userID);
+
+// };
+
 //   let orderByColumn = "titleSort";
 
 //   if (request.params.sort == "publicationDate") {
@@ -641,9 +711,13 @@ router.get("/checklist", validateSession, (request, response) => {
 
 //   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
-// // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+// let categoryID = "";
 
-// let categoryID = request.params.categoryID;
+// if (isEmpty(request.params.categoryID) === false) {
+
+//   categoryID = request.params.categoryID;
+
+// };
 
 // if (isNaN(formatTrim(categoryID)) === true) {
 
@@ -667,7 +741,7 @@ router.get("/checklist", validateSession, (request, response) => {
 //     // .leftOuterJoin("editions", "editions.titleID", "titles.titleID")
 //     // .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
 //     .where(where)
-//     .where("users.userID", request.user.userID)
+//     .where("users.userID", userID)
 //     .where(activeChecklist)
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
@@ -782,7 +856,13 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = request.params.titleID;
+  let titleID = "";
+
+  if (isEmpty(request.params.titleID) === false) {
+
+    titleID = request.params.titleID;
+
+  };
 
   if (isNaN(formatTrim(titleID)) === true) {
 
@@ -839,7 +919,13 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let titleID = request.params.titleID;
+  let titleID = "";
+
+  if (isEmpty(request.params.titleID) === false) {
+
+    titleID = request.params.titleID;
+
+  };
 
   if (isNaN(formatTrim(titleID)) === true) {
 

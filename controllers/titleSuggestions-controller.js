@@ -60,7 +60,13 @@ router.get("/", validateAdmin, (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleSuggestionID = request.params.titleSuggestionID;
+// let titleSuggestionID = "";
+
+// if (isEmpty(request.params.titleSuggestionID) === false) {
+
+//   titleSuggestionID = request.params.titleSuggestionID;
+
+// };
 
 // if (isNaN(formatTrim(titleSuggestionID)) === true) {
 
@@ -107,6 +113,26 @@ router.get("/", validateAdmin, (request, response) => {
  *** Add Title Suggestion ***************
 *********************************/
 router.post("/", /* validateSession, */(request, response) => {
+
+  // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  // let userID = "";
+
+  // if (isEmpty(request.user.userID) === false) {
+
+  //   userID = request.user.userID;
+
+  // };
+
+  // if (isNaN(formatTrim(userID)) === true) {
+
+  //   userID = 0;
+
+  // } else {
+
+  //   userID = parseInt(userID);
+
+  // };
 
   const recordObject = {
     // userID: request.user.userID,

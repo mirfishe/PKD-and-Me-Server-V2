@@ -177,7 +177,13 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let reviewID = request.params.reviewID;
+// let reviewID = "";
+
+// if (isEmpty(request.params.reviewID) === false) {
+
+//   reviewID = request.params.reviewID;
+
+// };
 
 // if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -249,7 +255,13 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -294,7 +306,13 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -340,7 +358,13 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -464,7 +488,13 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -497,7 +527,13 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -557,7 +593,13 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -617,7 +659,13 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let userID = request.params.userID;
+// let userID = "";
+
+// if (isEmpty(request.params.userID) === false) {
+
+//   userID = request.params.userID;
+
+// };
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -676,7 +724,13 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let titleID = request.params.titleID;
+// let titleID = "";
+
+// if (isEmpty(request.params.titleID) === false) {
+
+//   titleID = request.params.titleID;
+
+// };
 
 // if (isNaN(formatTrim(titleID)) === true) {
 
@@ -688,7 +742,13 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// let userID = request.params.userID;
+// let userID = "";
+
+// if (isEmpty(request.params.userID) === false) {
+
+//   userID = request.params.userID;
+
+// };
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -748,9 +808,29 @@ router.get("/rating", (request, response) => {
 // * Allows a user to add a new user review -- 03/28/2021 MF
 router.post("/", validateSession, (request, response) => {
 
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
   const recordObject = {
-    userID: request.user.userID,
-    updatedBy: request.user.userID,
+    userID: userID,
+    updatedBy: userID,
     titleID: request.body.recordObject.titleID,
     read: request.body.recordObject.read,
     dateRead: request.body.recordObject.dateRead,
@@ -803,9 +883,30 @@ router.post("/", validateSession, (request, response) => {
 // * Allows the user to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/:reviewID", validateSession, (request, response) => {
 
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
+
   const recordObject = {
-    userID: request.user.userID,
-    updatedBy: request.user.userID,
+    userID: userID,
+    updatedBy: userID,
     titleID: request.body.recordObject.titleID,
     read: request.body.recordObject.read,
     dateRead: request.body.recordObject.dateRead,
@@ -818,9 +919,13 @@ router.put("/:reviewID", validateSession, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+  let reviewID = "";
 
-  let reviewID = request.params.reviewID;
+  if (isEmpty(request.params.reviewID) === false) {
+
+    reviewID = request.params.reviewID;
+
+  };
 
   if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -829,18 +934,6 @@ router.put("/:reviewID", validateSession, (request, response) => {
   } else {
 
     reviewID = parseInt(reviewID);
-
-  };
-
-  let userID = request.user.userID;
-
-  if (isNaN(formatTrim(userID)) === true) {
-
-    userID = 0;
-
-  } else {
-
-    userID = parseInt(userID);
 
   };
 
@@ -895,9 +988,29 @@ router.put("/:reviewID", validateSession, (request, response) => {
 // * Allows the admin to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let userID = "";
+
+  if (isEmpty(request.user.userID) === false) {
+
+    userID = request.user.userID;
+
+  };
+
+  if (isNaN(formatTrim(userID)) === true) {
+
+    userID = 0;
+
+  } else {
+
+    userID = parseInt(userID);
+
+  };
+
   const recordObject = {
     userID: request.body.recordObject.userID,
-    updatedBy: request.user.userID,
+    updatedBy: userID,
     titleID: request.body.recordObject.titleID,
     read: request.body.recordObject.read,
     dateRead: request.body.recordObject.dateRead,
@@ -912,7 +1025,13 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let reviewID = request.params.reviewID;
+  let reviewID = "";
+
+  if (isEmpty(request.params.reviewID) === false) {
+
+    reviewID = request.params.reviewID;
+
+  };
 
   if (isNaN(formatTrim(reviewID)) === true) {
 
@@ -977,7 +1096,13 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-  let reviewID = request.params.reviewID;
+  let reviewID = "";
+
+  if (isEmpty(request.params.reviewID) === false) {
+
+    reviewID = request.params.reviewID;
+
+  };
 
   if (isNaN(formatTrim(reviewID)) === true) {
 
