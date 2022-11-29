@@ -224,26 +224,6 @@ const removeNonAlphanumericCharacters = (text) => {
 };
 
 
-// ! This is duplicated code shared-functions, convertJSONToSQL.js, convertJSONToSQLNewTemplate.js, convertJSONToSQLNewTemplate.js -- 06/14/2022 MF
-const replaceSmartCharacters = (jsonData) => {
-
-  let newJSON = jsonData;
-
-  newJSON = newJSON.replaceAll("’", "'");
-
-  // newJSON = newJSON.replaceAll("–", "--");
-  newJSON = newJSON.replaceAll("–", "-");
-
-  newJSON = newJSON.replaceAll(" ", " ");
-
-  newJSON = newJSON.replaceAll("“", "\"");
-  newJSON = newJSON.replaceAll("”", "\"");
-
-  return newJSON;
-
-};
-
-
 exports.isEmpty = isEmpty;
 exports.isNonEmptyArray = isNonEmptyArray;
 exports.getDateTime = getDateTime;
@@ -256,4 +236,3 @@ exports.formatInt = formatInt;
 exports.formatFloat = formatFloat;
 exports.formatSearchInput = formatSearchInput;
 exports.removeNonAlphanumericCharacters = removeNonAlphanumericCharacters;
-exports.replaceSmartCharacters = replaceSmartCharacters;
