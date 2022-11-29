@@ -1,4 +1,4 @@
-// * Unusering "use strict"; causes an error in this controller. -- 11/14/2021 MF
+// * Uncommenting "use strict"; causes an error in this controller. -- 11/14/2021 MF
 // "use strict";
 
 const router = require("express").Router();
