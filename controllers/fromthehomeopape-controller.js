@@ -379,13 +379,13 @@ router.get("/review", (request, response) => {
  ******************************/
 router.get("/top/:topNumber", (request, response) => {
 
-  // let topNumberID = "";
+  let topNumber = "";
 
-  // if (isEmpty(request.params.topNumberID) === false) {
+  if (isEmpty(request.params.topNumber) === false) {
 
-  //   topNumberID = request.params.topNumberID;
+    topNumber = request.params.topNumber;
 
-  // };
+  };
 
   if (isNaN(formatTrim(topNumber)) === true) {
 
