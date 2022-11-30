@@ -177,7 +177,7 @@ router.get("/", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
+// let reviewID = isEmpty(request.params.reviewID) === false ? request.params.reviewID : "";
 
 // if (isNaN(formatTrim(reviewID)) === true) {
 
