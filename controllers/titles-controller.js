@@ -114,7 +114,7 @@ router.get("/text/:titleID", (request, response) => {
   db.select("*")
     .from("titlesText")
     .where(where)
-    .orderBy({ column: "sortID", order: "asc" })
+    .orderBy([{ column: "sortID", order: "asc" }])
     .then((records) => {
 
       records = convertBitTrueFalse(records);
