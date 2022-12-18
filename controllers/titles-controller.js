@@ -109,7 +109,7 @@ router.get("/text/:titleID", (request, response) => {
 
   };
 
-  const where = { "titles.titleID": titleID };
+  const where = { "titleID": titleID };
 
   db.select("*")
     .from("titlesText")
