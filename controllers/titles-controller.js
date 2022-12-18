@@ -111,7 +111,7 @@ router.get("/text/:titleID", (request, response) => {
 
   const where = { "titles.titleID": titleID };
 
-  db.select(columnsList)
+  db.select("*")
     .from("titlesText")
     .where(where)
     .orderBy({ column: "sortID", order: "asc" })
