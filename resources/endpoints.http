@@ -31,6 +31,10 @@ GET {{baseURL}}titles
 
 ###
 
+GET {{baseURL}}titles/text/38
+
+###
+
 GET {{baseURL}}titles/broken/1
 
 ###

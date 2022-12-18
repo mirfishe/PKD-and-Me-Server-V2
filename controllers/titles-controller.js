@@ -88,6 +88,62 @@ router.get("/", (request, response) => {
 
 
 /******************************
+ ***** Get Title Text *********
+ ******************************/
+// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
+router.get("/text/:titleID", (request, response) => {
+
+  // console.log(componentName, getDateTime(), get /text/:${controllerName}ID ${tableName}, request.params.titleID);
+
+  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
+
+  let titleID = isEmpty(request.params.titleID) === false ? request.params.titleID : "";
+
+  if (isNaN(formatTrim(titleID)) === true) {
+
+    titleID = 0;
+
+  } else {
+
+    titleID = parseInt(titleID);
+
+  };
+
+  const where = { "titles.titleID": titleID };
+
+  db.select(columnsList)
+    .from("titlesText")
+    .where(where)
+    .orderBy({ column: "sortID", order: "asc" })
+    .then((records) => {
+
+      records = convertBitTrueFalse(records);
+
+      if (isEmpty(records) === false) {
+        // console.log(componentName, getDateTime(), `get /text/:${controllerName}ID titlesText`, records);
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
+
+      } else {
+        // console.log(componentName, getDateTime(), "get /text/:${controllerName}ID No Results");
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
+    })
+    .catch((error) => {
+      console.error(componentName, getDateTime(), "get /text/:${controllerName}ID error", error);
+
+      addErrorLog(componentName, "get /text/:${controllerName}ID", {}, error);
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
+
+
+/******************************
  ***** Log Image Links *********
  ******************************/
 // * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
