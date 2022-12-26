@@ -46,7 +46,6 @@ router.post("/register", (request, response) => {
       .then(
 
         createSuccess = (records) => {
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
@@ -77,16 +76,12 @@ router.post("/register", (request, response) => {
         },
 
         createError = (error) => {
-          // console.log(componentName, getDateTime(), "post /register createError error", error);
-          // console.log(componentName, getDateTime(), "post /register createError error.name", error.name);
-          // console.log(componentName, getDateTime(), "post /register createError error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           if (isNonEmptyArray(error.errors) === true) {
 
             for (let i = 0; i < error.errors.length; i++) {
-              //console.log(componentName, getDateTime(), "post /register createError error.errors[i].message", error.errors[i].message);
 
               if (i > 1) {
 
@@ -106,6 +101,7 @@ router.post("/register", (request, response) => {
 
         })
       .catch((error) => {
+
         console.error(componentName, getDateTime(), "post /register error", error);
 
         addErrorLog(componentName, "post /register", request.body.recordObject, error);
@@ -181,7 +177,6 @@ router.post("/login", (request, response) => {
               });
 
             } else {
-              // console.log(componentName, getDateTime(), "post /login Login failed. 401");
 
               addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
               response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
@@ -191,7 +186,6 @@ router.post("/login", (request, response) => {
           });
 
         } else {
-          // console.log(componentName, getDateTime(), "post /login Failed to authenticate. 401");
 
           addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
           response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
@@ -200,6 +194,7 @@ router.post("/login", (request, response) => {
 
       },
       error => {
+
         console.log(componentName, getDateTime(), "post /login Failed to process. 501 error", error);
 
         addErrorLog(componentName, "post /login Login failed. 501", { user: request.body.recordObject }, error);
@@ -208,6 +203,7 @@ router.post("/login", (request, response) => {
       }
     )
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post /login error", error);
 
       addErrorLog(componentName, "post /login 500 error", request.body.recordObject, error);
@@ -231,12 +227,10 @@ router.get("/admin", validateAdmin, (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "get /admin records", records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /admin No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -244,6 +238,7 @@ router.get("/admin", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /admin error", error);
 
       addErrorLog(componentName, "get /admin", {}, error);
@@ -285,7 +280,6 @@ router.get("/", validateSession, (request, response) => {
 
       // if (isEmpty(records) === false) {
       if (records != null) {
-        // console.log(componentName, getDateTime(), "get / records", records[0]);
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
         response.status(200).json({
@@ -304,7 +298,6 @@ router.get("/", validateSession, (request, response) => {
         });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -312,6 +305,7 @@ router.get("/", validateSession, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -353,7 +347,6 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
       // if (isEmpty(records) === false) {
       if (records != null) {
-        // console.log(componentName, getDateTime(), `get /:${controllerName}ID records`, records[0]);
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
         response.status(200).json({
@@ -372,7 +365,6 @@ router.get("/:userID", validateAdmin, (request, response) => {
         });
 
       } else {
-        // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -380,6 +372,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
       addErrorLog(componentName, `get /:${controllerName}ID`, { userID: userID }, error);
@@ -437,7 +430,6 @@ router.put("/:userID", validateAdmin, (request, response) => {
       .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated. -- 03/28/2021 MF
       .then((records) => {
-        // * Returns the number of updated records. -- 08/13/2021 MF
 
         if (isEmpty(records) === false) {
 
@@ -464,16 +456,14 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
       })
       .catch((error) => {
+
         console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
-        // console.log(componentName, getDateTime(), `put /:${controllerName}ID error.name`, error.name);
-        // console.log(componentName, getDateTime(), `put /:${controllerName}ID error.errors[0].message`, error.errors[0].message);
 
         let errorMessages = "";
 
         if (isNonEmptyArray(error.errors) === true) {
 
           for (let i = 0; i < error.errors.length; i++) {
-            //console.log(componentName, getDateTime(), `put /:${controllerName}ID error.errors[i].message`, error.errors[i].message);
 
             if (i > 1) {
 
@@ -549,7 +539,6 @@ router.put("/", validateSession, (request, response) => {
       .then(
 
         updateSuccess = (records) => {
-          // * Returns the number of updated records. -- 08/13/2021 MF
 
           if (isEmpty(records) === false) {
 
@@ -581,16 +570,14 @@ router.put("/", validateSession, (request, response) => {
         },
 
         updateError = (error) => {
+
           console.log(componentName, getDateTime(), "put / error", error);
-          // console.log(componentName, getDateTime(), "put / error.name", error.name);
-          // console.log(componentName, getDateTime(), "put / error.errors[0].message", error.errors[0].message);
 
           let errorMessages = "";
 
           if (isNonEmptyArray(error.errors) === true) {
 
             for (let i = 0; i < error.errors.length; i++) {
-              //console.log(componentName, getDateTime(), "put / error.errors[i].message", error.errors[i].message);
 
               if (i > 1) {
 
@@ -611,6 +598,7 @@ router.put("/", validateSession, (request, response) => {
 
       )
       .catch((error) => {
+
         console.error(componentName, getDateTime(), "put / error", error);
 
         response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully updated." });
@@ -654,16 +642,12 @@ router.delete("/:userID", validateAdmin, (request, response) => {
     // .returning(select)
     .del()
     .then((records) => {
-      // console.log(componentName, getDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: true, errorOccurred: false, message: "Successfully deleted.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.userID, transactionSuccess: false, errorOccurred: false, message: "Nothing to delete." });
 
@@ -671,6 +655,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(componentName, `delete /:${controllerName}ID`, { userID: userID }, error);

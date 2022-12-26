@@ -48,12 +48,10 @@ router.get("/", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -61,6 +59,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -87,12 +86,10 @@ router.get("/", (request, response) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (isEmpty(records) === false) {
-//         // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(componentName, getDateTime(), "get / No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -100,6 +97,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
+
 //       console.error(componentName, getDateTime(), "get / error", error);
 
 //       addErrorLog(componentName, "get /:mediaID", {"mediaID": mediaID}, error);
@@ -124,12 +122,10 @@ router.get("/", (request, response) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (isEmpty(records) === false) {
-//         // console.log(componentName, getDateTime(), `get /admin ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(componentName, getDateTime(), "get /admin No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -137,6 +133,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
+
 //       console.error(componentName, getDateTime(), "get /admin error", error);
 
 //       addErrorLog(componentName, "get /admin", {}, error);
@@ -173,14 +170,12 @@ router.get("/", (request, response) => {
 //     .where(where)
 //     .orderBy(orderBy)
 //     .then((records) => {
-//       // console.log(componentName, getDateTime(), `get /:${controllerName}ID records`, records);
 
 //       records = convertBitTrueFalse(records);
 
 //       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne. -- 05/24/2021 MF
 //       // if (records === null) {
 //       if (isEmpty(records) === false) {
-//         // console.log(componentName, getDateTime(), `get /:${controllerName}ID records`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -191,7 +186,6 @@ router.get("/", (request, response) => {
 //         //     });
 
 //       } else {
-//         // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName} No Results`);
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -199,6 +193,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
+
 //       console.error(componentName, getDateTime(), `get /:${controllerName}ID error`, error);
 
 //       addErrorLog(componentName, "get /:media", {"mediaID": mediaID}, error);
@@ -229,7 +224,6 @@ router.post("/", validateAdmin, (request, response) => {
     .max("sortID")
     .first() // * Add this to get an object. -- 05/06/2021 MF
     .then((maxSortID) => {
-      // console.log(componentName, getDateTime(), "maxSortID", maxSortID);
 
       if (isNaN(maxSortID)) {
 
@@ -245,7 +239,6 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .then((newSortID) => {
-      // console.log(componentName, getDateTime(), "newSortID", newSortID);
 
       const recordObject = {
         media: request.body.recordObject.media,
@@ -260,18 +253,14 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .then((records) => {
-      // console.log(componentName, getDateTime(), "post / records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "post / records", records);
 
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "post / No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -279,6 +268,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post / error", error);
 
       addErrorLog(componentName, "post /", request.body.recordObject, error);
@@ -323,18 +313,14 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /:${controllerName}ID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -342,6 +328,7 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /:${controllerName}ID error`, error);
 
       addErrorLog(componentName, `put /:${controllerName}ID`, { mediaID: request.params.mediaID, recordObject: request.body.recordObject }, error);
@@ -380,18 +367,14 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     // .returning(select)
     .del()
     .then((records) => {
-      // console.log(componentName, getDateTime(), `delete /:${controllerName}ID records`, records);
-      // * Returns the number of deleted records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: true, errorOccurred: false, message: "Successfully deleted.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `delete /:${controllerName}ID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.mediaID, transactionSuccess: false, errorOccurred: false, message: "Nothing to delete." });
 
@@ -399,6 +382,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `delete /:${controllerName}ID error`, error);
 
       addErrorLog(componentName, `delete /:${controllerName}ID`, { mediaID: mediaID }, error);

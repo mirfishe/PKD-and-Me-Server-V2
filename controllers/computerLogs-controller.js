@@ -30,27 +30,20 @@ router.get("/", validateAdmin, (request, response) => {
 
   // // db.raw(sqlQuery).toSQL();
 
-  // // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
-
   // db.raw(sqlQuery)
   db.select(select)
     .from(tableName)
     .limit(limit)
     .orderBy(orderBy)
     .then((results) => {
-      // console.log(componentName, getDateTime(), "get / results", results);
 
       records = results;
 
-      // console.log(componentName, getDateTime(), "get / records", records);
-
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -58,6 +51,7 @@ router.get("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -78,19 +72,14 @@ router.get("/broken", validateAdmin, (request, response) => {
     .limit(limit)
     .orderBy(orderBy)
     .then((results) => {
-      // console.log(componentName, getDateTime(), "get /broken results", results);
 
       records = results;
 
-      // console.log(componentName, getDateTime(), "get /broken records", records);
-
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -98,6 +87,7 @@ router.get("/broken", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /broken error", error);
 
       addErrorLog(componentName, "get /broken", {}, error);
@@ -143,26 +133,22 @@ router.post("/", (request, response) => {
 
     })
     .then((results) => {
-      // console.log(componentName, getDateTime(), "post / results", results);
 
       records = results;
 
-      // console.log(componentName, getDateTime(), "post / records", records);
-
       if (isEmpty(records) === false) {
 
-        // console.log(componentName, getDateTime(), "post / records", records);
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
 
-        // console.log(componentName, getDateTime(), "post / No Results");
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
       };
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post / error", error);
 
       addErrorLog(componentName, "post /", request.body.recordObject, error);

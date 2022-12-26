@@ -34,12 +34,10 @@ router.get("/", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -47,6 +45,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -75,12 +74,10 @@ router.get("/", (request, response) => {
 //       records = convertBitTrueFalse(records);
 
 //       if (isEmpty(records) === false) {
-//         console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(componentName, getDateTime(), "get / No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -88,6 +85,7 @@ router.get("/", (request, response) => {
 
 //     })
 //     .catch((error) => {
+
 //       console.error(componentName, getDateTime(), "get / error", error);
 
 //       addErrorLog(componentName, "get /", {}, error);

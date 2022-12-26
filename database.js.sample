@@ -31,9 +31,6 @@ const getDateTime = require("./utilities/getDateTime");
 
 let databaseConfig;
 
-// console.log("database.js", getDateTime(), "process.env.NODE_ENV", process.env.NODE_ENV);
-// console.log("database.js", getDateTime(), "isDev", isDev);
-
 if (process.env.NODE_ENV === "development" && process.env.FORCE_PRODUCTION_DATABASE !== "True") {
   // if (isDev === true || process.env.NODE_ENV === "development") {
 

@@ -73,7 +73,6 @@ router.get("/health", (request, response) => {
     .from(tableName)
     // .orderBy(orderBy)
     .then((records) => {
-      // console.log(`${componentName}`, getDateTime(), "/health records", records);
 
       records = records;
 
@@ -90,7 +89,6 @@ router.get("/health", (request, response) => {
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(`${componentName}`, getDateTime(), "/health No Results");
 
         healthcheck.databaseRecords = 0;
         healthcheck.message = "Internal Server Error";
@@ -106,6 +104,7 @@ router.get("/health", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(`${componentName}`, getDateTime(), "/health error", error);
 
       healthcheck.databaseRecords = 0;
