@@ -24,7 +24,6 @@ const addLog = (controllerName, operation, transactionData) => {
       createDate: getDateTime()
     })
     .then((results) => {
-      // console.log(componentName, getDateTime(), "results", results);
 
       // if (isEmpty(records) === false) {
 
@@ -38,6 +37,7 @@ const addLog = (controllerName, operation, transactionData) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "error", error);
 
       // * Removed because was causing an error because of circular dependency. -- 12/23/2021 MF

@@ -91,8 +91,7 @@ async function load() {
           "Content-Type": "application/json"
         }
       })
-      .then(results => {
-        // console.log(getDateTime(), "results", results);
+      .then((results) => {
 
         if (environmentMode === 'development' || process.env.NODE_ENV === "development") {
 
@@ -100,14 +99,9 @@ async function load() {
 
         };
 
-        // console.log(getDateTime(), "results.data", results.data);
-        // console.log(getDateTime(), "results.status", results.status);
-        // console.log(getDateTime(), "results.statusText", results.statusText);
-        // console.log(getDateTime(), "results.headers", results.headers);
-        // console.log(getDateTime(), "results.config", results.config);
-
       })
       .catch((error) => {
+
         console.error(getDateTime(), "error", error);
 
         // if (IsEmpty(error.request) === false) {

@@ -31,7 +31,6 @@ app.use(express.json());
 
 // * Configured the server to handle the CORS requests instead of the code because just having this here wasn't working. -- 08/13/2021 MF
 // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-// console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 // * This will work in development and won't affect production even though pm2 doesn't see this .env variable, because it would be equal to undefined in production. -- 08/13/2021 MF
 if (process.env.NODE_ENV === "development") {
 

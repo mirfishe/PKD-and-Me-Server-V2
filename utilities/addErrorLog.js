@@ -23,15 +23,12 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
       createDate: getDateTime()
     })
     .then((records) => {
-      // console.log(componentName, getDateTime(), "post / records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // if (isEmpty(records) === false) {
-      //   // console.log(componentName, getDateTime(), "post / records", records);
+
       //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       // } else {
-      //   // console.log(componentName, getDateTime(), "post / No Results");
 
       //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -39,6 +36,7 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post / error", error);
 
       // response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "Not successfully added." });

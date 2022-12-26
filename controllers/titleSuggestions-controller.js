@@ -30,12 +30,10 @@ router.get("/", validateAdmin, (request, response) => {
     .then((records) => {
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -43,6 +41,7 @@ router.get("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -80,12 +79,10 @@ router.get("/", validateAdmin, (request, response) => {
 //     .then((records) => {
 
 //       if (isEmpty(records) === false) {
-//         // console.log(componentName, getDateTime(), `get /:titleSuggestionID ${tableName}`, records);
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
 //       } else {
-//         // console.log(componentName, getDateTime(), "get /:titleSuggestionID No Results");
 
 //         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -93,6 +90,7 @@ router.get("/", validateAdmin, (request, response) => {
 
 //     })
 //     .catch((error) => {
+
 //       console.error(componentName, getDateTime(), "get /:titleSuggestionID error", error);
 
 //       addErrorLog(componentName, "get /:titleSuggestionID", {"titleSuggestionID": titleSuggestionID}, error);
@@ -140,15 +138,12 @@ router.post("/", /* validateSession, */(request, response) => {
     // .returning("*")
     .insert(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), "post / records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "post / records", records);
+
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "post / No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -156,6 +151,7 @@ router.post("/", /* validateSession, */(request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post / error", error);
 
       addErrorLog(componentName, "post /", request.body.recordObject, error);

@@ -27,7 +27,6 @@ let records;
 
 
 const formatItemLink = (itemLink) => {
-  // console.log(componentName, getDateTime(), "formatItemLink itemLink", itemLink);
 
   // SELECT itemLink, 
   // REPLACE(itemLink, 'https://www.google.com/url?rct=j&sa=t&url=', '') AS itemLinkFormatted
@@ -81,15 +80,6 @@ const formatItemLink = (itemLink) => {
   newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=");
   // let newURL = newURL.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "=");
 
-  // if ( /*newURL.includes("\%3F") === true || newURL.includes("\%3f") === true ||*/ newURL.includes("www.heavymetal.com")) {
-
-  //   console.log(componentName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\")", itemLink.replaceAll("\%3F", "?"));
-  //   console.log(componentName, getDateTime(), "formatPost itemLink.replaceAll(\"\%3F\", \"?\").replaceAll(\"\%3f\", \"?\").replaceAll(\"\%26\", \"&\").replaceAll(\"\%3D\", \"=\").replaceAll(\"\%3d\", \"=\")", itemLink.replaceAll("\%3F", "?").replaceAll("\%3f", "?").replaceAll("\%26", "&").replaceAll("\%3D", "=").replaceAll("\%3d", "="));
-  //   console.log(componentName, getDateTime(), "formatPost newURL", newURL);
-  //   console.log(componentName, getDateTime(), "formatPost decodeURI(itemLink)", decodeURI(itemLink));
-  //   console.log(componentName, getDateTime(), "formatPost decodeURI(newURL)", decodeURI(newURL));
-  // };
-
   // * Remove fbclid= -- 06/26/2021 MF
   // * FaceBook analytics and tracking -- 06/26/2021 MF
   // * Removes everything after the fbclid= -- 06/26/2021 MF
@@ -97,7 +87,6 @@ const formatItemLink = (itemLink) => {
   param = "fbclid";
   regExp = new RegExp("[?&]" + param + "=.*$");
   newURL = newURL.replace(regExp, "");
-  // console.log(componentName, getDateTime(), "formatPost newURL", newURL);
 
   // * Remove utm_medium= -- 06/26/2021 MF
   // * Google Analytics and tracking -- 06/26/2021 MF
@@ -105,7 +94,6 @@ const formatItemLink = (itemLink) => {
   param = "utm_medium";
   regExp = new RegExp("[?&]" + param + "=.*$");
   newURL = newURL.replace(regExp, "");
-  // console.log(componentName, getDateTime(), "formatPost newURL", newURL);
 
   // * Remove utm_campaign= -- 06/26/2021 MF
   // * Google Analytics and tracking -- 06/26/2021 MF
@@ -113,7 +101,6 @@ const formatItemLink = (itemLink) => {
   param = "utm_campaign";
   regExp = new RegExp("[?&]" + param + "=.*$");
   newURL = newURL.replace(regExp, "");
-  // console.log(componentName, getDateTime(), "formatPost newURL", newURL);
 
   // * Remove utm_source= -- 06/26/2021 MF
   // * Google Analytics and tracking -- 06/26/2021 MF
@@ -121,9 +108,6 @@ const formatItemLink = (itemLink) => {
   param = "utm_source";
   regExp = new RegExp("[?&]" + param + "=.*$");
   newURL = newURL.replace(regExp, "");
-  // console.log(componentName, getDateTime(), "formatPost newURL", newURL);
-
-  // console.log(componentName, getDateTime(), "formatItemLink newURL", newURL);
 
   return newURL;
 
@@ -288,8 +272,6 @@ router.get("/", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(componentName, getDateTime(), `get /:${controllerName}ID ${tableName}`, sqlQuery);
-
   db.distinct(select)
     .from(tableName)
     .where(displayWhere)
@@ -297,17 +279,14 @@ router.get("/", (request, response) => {
     .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `get /${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -315,6 +294,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -337,8 +317,6 @@ router.get("/review", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(componentName, getDateTime(), `get /review ${tableName}`, sqlQuery);
-
   db.distinct(select)
     .from(tableName)
     .where(viewedWhere)
@@ -346,17 +324,14 @@ router.get("/review", (request, response) => {
     .orderBy(orderBy)
     // db.raw(sqlQuery)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `get /review ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /review ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /review No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -364,6 +339,7 @@ router.get("/review", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /review error", error);
 
       addErrorLog(componentName, "get /review", {}, error);
@@ -398,8 +374,6 @@ router.get("/top/:topNumber", (request, response) => {
 
   // // db.raw(sqlQuery).toSQL();
 
-  // // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
-
   // // db.distinct(select)
   // //   .from(tableName)
   // //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
@@ -412,17 +386,14 @@ router.get("/top/:topNumber", (request, response) => {
     .where(displayWhere)
     .orderBy(orderBy)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /top/:topNumber No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -430,6 +401,7 @@ router.get("/top/:topNumber", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
       addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
@@ -464,8 +436,6 @@ router.get("/posted/", (request, response) => {
 
   // // db.raw(sqlQuery).toSQL();
 
-  // // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, sqlQuery);
-
   // // db.distinct(select)
   // //   .from(tableName)
   // //   // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
@@ -478,17 +448,14 @@ router.get("/posted/", (request, response) => {
     .where(postedWhere)
     .orderBy(orderBy)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /top/:topNumber ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /top/:topNumber No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -496,6 +463,7 @@ router.get("/posted/", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /top/:topNumber error", error);
 
       addErrorLog(componentName, "get /top/:topNumber", { topNumber: topNumber }, error);
@@ -557,17 +525,6 @@ router.get("/new", (request, response) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(componentName, getDateTime(), "get /new feed", feed);
-    // console.log(componentName, getDateTime(), "get /new feed.id", feed.id);
-    // console.log(componentName, getDateTime(), "get /new feed.title", feed.title);
-    // console.log(componentName, getDateTime(), "get /new feed.link", feed.link);
-    // console.log(componentName, getDateTime(), "get /new feed.updated", feed.updated);
-    // console.log(componentName, getDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
-
-    // console.log(componentName, getDateTime(), "get /new feed.feedUrl", feed.feedUrl);
-
-    // console.log(componentName, getDateTime(), "get /new feed.items", feed.items);
-
     // let itemsArray = [];
 
     feed.items.forEach(item => {
@@ -602,40 +559,21 @@ router.get("/new", (request, response) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(componentName, getDateTime(), "get /new item.id", item.id);
-      // console.log(componentName, getDateTime(), "get /new item.title", item.title);
-      // console.log(componentName, getDateTime(), "get /new item.link", item.link);
-      // console.log(componentName, getDateTime(), "get /new item.pubDate", item.pubDate);
-      // console.log(componentName, getDateTime(), "get /new item.updated", item.updated);
-      // console.log(componentName, getDateTime(), "get /new item.content", item.content);
-      // console.log(componentName, getDateTime(), "get /new item.contentSnippet", item.contentSnippet);
-      // console.log(componentName, getDateTime(), "get /new item.isoDate", item.isoDate);
-      // console.log(componentName, getDateTime(), "get /new item.creator", item.creator);
-      // console.log(componentName, getDateTime(), "get /new item.author", item.author);
-      // // console.log(componentName, getDateTime(), "get /new item.author.name", item.author.name);
-      // // console.log(componentName, getDateTime(), "get /new item.name", item.name);
-
-      // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
-
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(componentName, getDateTime(), "get /new records", records);
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
-          //   // console.log(componentName, getDateTime(), "get /new records", records);
 
           //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
-          //   // console.log(componentName, getDateTime(), "get /new No Results");
 
           //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -643,6 +581,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
+
           console.error(componentName, getDateTime(), "get /new error", error);
 
           addErrorLog(componentName, "get /new", {}, error);
@@ -651,8 +590,6 @@ router.get("/new", (request, response) => {
         });
 
     });
-
-    // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -687,17 +624,6 @@ router.get("/new", (request, response) => {
     // * Both dc:date and pubDate will be available in ISO 8601 format as isoDate -- 06/05/2021
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
-
-    // console.log(componentName, getDateTime(), "get /new feed", feed);
-    // console.log(componentName, getDateTime(), "get /new feed.id", feed.id);
-    // console.log(componentName, getDateTime(), "get /new feed.title", feed.title);
-    // console.log(componentName, getDateTime(), "get /new feed.link", feed.link);
-    // console.log(componentName, getDateTime(), "get /new feed.updated", feed.updated);
-    // console.log(componentName, getDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
-
-    // console.log(componentName, getDateTime(), "get /new feed.feedUrl", feed.feedUrl);
-
-    // console.log(componentName, getDateTime(), "get /new feed.items", feed.items);
 
     // let itemsArray = [];
 
@@ -734,40 +660,21 @@ router.get("/new", (request, response) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(componentName, getDateTime(), "get /new item.id", item.id);
-      // console.log(componentName, getDateTime(), "get /new item.title", item.title);
-      // console.log(componentName, getDateTime(), "get /new item.link", item.link);
-      // console.log(componentName, getDateTime(), "get /new item.pubDate", item.pubDate);
-      // console.log(componentName, getDateTime(), "get /new item.updated", item.updated);
-      // console.log(componentName, getDateTime(), "get /new item.content", item.content);
-      // console.log(componentName, getDateTime(), "get /new item.contentSnippet", item.contentSnippet);
-      // console.log(componentName, getDateTime(), "get /new item.isoDate", item.isoDate);
-      // console.log(componentName, getDateTime(), "get /new item.creator", item.creator);
-      // console.log(componentName, getDateTime(), "get /new item.author", item.author);
-      // // console.log(componentName, getDateTime(), "get /new item.author.name", item.author.name);
-      // // console.log(componentName, getDateTime(), "get /new item.name", item.name);
-
-      // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
-
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(componentName, getDateTime(), "get /new records", records);
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
-          //   // console.log(componentName, getDateTime(), "get /new records", records);
 
           //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
-          //   // console.log(componentName, getDateTime(), "get /new No Results");
 
           //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -775,6 +682,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
+
           console.error(componentName, getDateTime(), "get /new error", error);
 
           addErrorLog(componentName, "get /new", {}, error);
@@ -783,8 +691,6 @@ router.get("/new", (request, response) => {
         });
 
     });
-
-    // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -821,17 +727,6 @@ router.get("/new", (request, response) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(componentName, getDateTime(), "get /new feed", feed);
-    // console.log(componentName, getDateTime(), "get /new feed.id", feed.id);
-    // console.log(componentName, getDateTime(), "get /new feed.title", feed.title);
-    // console.log(componentName, getDateTime(), "get /new feed.link", feed.link);
-    // console.log(componentName, getDateTime(), "get /new feed.updated", feed.updated);
-    // console.log(componentName, getDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
-
-    // console.log(componentName, getDateTime(), "get /new feed.feedUrl", feed.feedUrl);
-
-    // console.log(componentName, getDateTime(), "get /new feed.items", feed.items);
-
     // let itemsArray = [];
 
     feed.items.forEach(item => {
@@ -866,40 +761,21 @@ router.get("/new", (request, response) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(componentName, getDateTime(), "get /new item.id", item.id);
-      // console.log(componentName, getDateTime(), "get /new item.title", item.title);
-      // console.log(componentName, getDateTime(), "get /new item.link", item.link);
-      // console.log(componentName, getDateTime(), "get /new item.pubDate", item.pubDate);
-      // console.log(componentName, getDateTime(), "get /new item.updated", item.updated);
-      // console.log(componentName, getDateTime(), "get /new item.content", item.content);
-      // console.log(componentName, getDateTime(), "get /new item.contentSnippet", item.contentSnippet);
-      // console.log(componentName, getDateTime(), "get /new item.isoDate", item.isoDate);
-      // console.log(componentName, getDateTime(), "get /new item.creator", item.creator);
-      // console.log(componentName, getDateTime(), "get /new item.author", item.author);
-      // // console.log(componentName, getDateTime(), "get /new item.author.name", item.author.name);
-      // // console.log(componentName, getDateTime(), "get /new item.name", item.name);
-
-      // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
-
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(componentName, getDateTime(), "get /new records", records);
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
-          //   // console.log(componentName, getDateTime(), "get /new records", records);
 
           //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
-          //   // console.log(componentName, getDateTime(), "get /new No Results");
 
           //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -907,6 +783,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
+
           console.error(componentName, getDateTime(), "get /new error", error);
 
           addErrorLog(componentName, "get /new", {}, error);
@@ -915,8 +792,6 @@ router.get("/new", (request, response) => {
         });
 
     });
-
-    // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -953,17 +828,6 @@ router.get("/new", (request, response) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(componentName, getDateTime(), "get /new feed", feed);
-    // console.log(componentName, getDateTime(), "get /new feed.id", feed.id);
-    // console.log(componentName, getDateTime(), "get /new feed.title", feed.title);
-    // console.log(componentName, getDateTime(), "get /new feed.link", feed.link);
-    // console.log(componentName, getDateTime(), "get /new feed.updated", feed.updated);
-    // console.log(componentName, getDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
-
-    // console.log(componentName, getDateTime(), "get /new feed.feedUrl", feed.feedUrl);
-
-    // console.log(componentName, getDateTime(), "get /new feed.items", feed.items);
-
     // let itemsArray = [];
 
     feed.items.forEach(item => {
@@ -998,40 +862,21 @@ router.get("/new", (request, response) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(componentName, getDateTime(), "get /new item.id", item.id);
-      // console.log(componentName, getDateTime(), "get /new item.title", item.title);
-      // console.log(componentName, getDateTime(), "get /new item.link", item.link);
-      // console.log(componentName, getDateTime(), "get /new item.pubDate", item.pubDate);
-      // console.log(componentName, getDateTime(), "get /new item.updated", item.updated);
-      // console.log(componentName, getDateTime(), "get /new item.content", item.content);
-      // console.log(componentName, getDateTime(), "get /new item.contentSnippet", item.contentSnippet);
-      // console.log(componentName, getDateTime(), "get /new item.isoDate", item.isoDate);
-      // console.log(componentName, getDateTime(), "get /new item.creator", item.creator);
-      // console.log(componentName, getDateTime(), "get /new item.author", item.author);
-      // // console.log(componentName, getDateTime(), "get /new item.author.name", item.author.name);
-      // // console.log(componentName, getDateTime(), "get /new item.name", item.name);
-
-      // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
-
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(componentName, getDateTime(), "get /new records", records);
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
-          //   // console.log(componentName, getDateTime(), "get /new records", records);
 
           //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
-          //   // console.log(componentName, getDateTime(), "get /new No Results");
 
           //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1039,6 +884,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
+
           console.error(componentName, getDateTime(), "get /new error", error);
 
           addErrorLog(componentName, "get /new", {}, error);
@@ -1047,8 +893,6 @@ router.get("/new", (request, response) => {
         });
 
     });
-
-    // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -1085,17 +929,6 @@ router.get("/new", (request, response) => {
     // * If author is specified, but not dc:creator, creator will be set to author (see article) -- 06/05/2021
     // * Atom's updated becomes lastBuildDate for consistency -- 06/05/2021
 
-    // console.log(componentName, getDateTime(), "get /new feed", feed);
-    // console.log(componentName, getDateTime(), "get /new feed.id", feed.id);
-    // console.log(componentName, getDateTime(), "get /new feed.title", feed.title);
-    // console.log(componentName, getDateTime(), "get /new feed.link", feed.link);
-    // console.log(componentName, getDateTime(), "get /new feed.updated", feed.updated);
-    // console.log(componentName, getDateTime(), "get /new feed.lastBuildDate", feed.lastBuildDate);
-
-    // console.log(componentName, getDateTime(), "get /new feed.feedUrl", feed.feedUrl);
-
-    // console.log(componentName, getDateTime(), "get /new feed.items", feed.items);
-
     // let itemsArray = [];
 
     feed.items.forEach(item => {
@@ -1130,40 +963,21 @@ router.get("/new", (request, response) => {
 
       // itemsArray.push(feedObject);
 
-      // console.log(componentName, getDateTime(), "get /new item.id", item.id);
-      // console.log(componentName, getDateTime(), "get /new item.title", item.title);
-      // console.log(componentName, getDateTime(), "get /new item.link", item.link);
-      // console.log(componentName, getDateTime(), "get /new item.pubDate", item.pubDate);
-      // console.log(componentName, getDateTime(), "get /new item.updated", item.updated);
-      // console.log(componentName, getDateTime(), "get /new item.content", item.content);
-      // console.log(componentName, getDateTime(), "get /new item.contentSnippet", item.contentSnippet);
-      // console.log(componentName, getDateTime(), "get /new item.isoDate", item.isoDate);
-      // console.log(componentName, getDateTime(), "get /new item.creator", item.creator);
-      // console.log(componentName, getDateTime(), "get /new item.author", item.author);
-      // // console.log(componentName, getDateTime(), "get /new item.author.name", item.author.name);
-      // // console.log(componentName, getDateTime(), "get /new item.name", item.name);
-
-      // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
-
       db("homeopapeRSSImport")
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
         .then((records) => {
-          // console.log(componentName, getDateTime(), "get /new records", records);
-          // * Returns the ID value of the added record. -- 08/13/2021 MF
 
           // records = convertBitTrueFalse(records);
 
           // addLog(componentName, `get /new ${url}`, { });
 
           // if (isEmpty(records) === false) {
-          //   // console.log(componentName, getDateTime(), "get /new records", records);
 
           //   response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
           // } else {
-          //   // console.log(componentName, getDateTime(), "get /new No Results");
 
           //   response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1171,6 +985,7 @@ router.get("/new", (request, response) => {
 
         })
         .catch((error) => {
+
           console.error(componentName, getDateTime(), "get /new error", error);
 
           addErrorLog(componentName, "get /new", {}, error);
@@ -1179,8 +994,6 @@ router.get("/new", (request, response) => {
         });
 
     });
-
-    // console.log(componentName, getDateTime(), "get /new itemsArray", itemsArray);
 
   })();
 
@@ -1202,24 +1015,18 @@ router.get("/insert", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(componentName, getDateTime(), "get /insert", sqlQuery);
-
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(componentName, getDateTime(), "get /insert records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       addLog(componentName, "get /insert", {});
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "get /insert records", records);
 
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /insert No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1227,6 +1034,7 @@ router.get("/insert", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /insert error", error);
 
       addErrorLog(componentName, "get /insert", {}, error);
@@ -1257,8 +1065,6 @@ router.get("/update", (request, response) => {
 
   // db.raw(sqlQueryAlwaysFiltered).toSQL();
 
-  // console.log(componentName, getDateTime(), "get /update", sqlQueryAlwaysFiltered);
-
   // UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%' OR itemLink LIKE '%.overdrive.%') AS neverDisplay)
 
   // let sqlQueryNeverDisplay = "UPDATE homeopapeRSS SET viewed = 1, display = 0, alwaysFilter = 1 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE itemLink LIKE '%.ebay.%' OR itemLink LIKE '%.reddit.%' OR itemLink LIKE '%.craigslist.%' OR itemLink LIKE '%.amazon.%' OR itemLink LIKE '%.audible.%' OR itemLink LIKE '%.pinterest.%' OR itemLink LIKE '%.twitter.%' OR itemLink LIKE '%.facebook.%' OR itemLink LIKE '%.tiktok.%' OR itemLink LIKE '%sites.google.%' OR itemLink LIKE '%books.google.%' OR itemLink LIKE '%elasticsearch.columbian.com%' OR itemLink LIKE '%news.ycombinator.com%' OR itemLink LIKE '%.overdrive.%') AS neverDisplay)";
@@ -1269,19 +1075,14 @@ router.get("/update", (request, response) => {
 
   // db.raw(sqlQueryNeverDisplay).toSQL();
 
-  // console.log(componentName, getDateTime(), "get /update", sqlQueryNeverDisplay);
-
   // UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)
   // // let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE LOWER(itemTitle) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' OR LOWER(itemContentSnippet) LIKE '%\"road out of winter,\" winner of the 2021 philip k. dick award.%' or lower(itemTitle) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemContentSnippet) LIKE '%blade runner: skinjobs, voxels, and future noir%' OR LOWER(itemTitle) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemContentSnippet) LIKE '%why blade runner 2049 is one of the best sequels of all time%' OR LOWER(itemTitle) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemContentSnippet) LIKE '%split image of rick deckard in blade runner, et in et, and kirk in%' OR LOWER(itemTitle) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemContentSnippet) LIKE '%philip k. dick & hollywood: the essential movie adaptations%' OR LOWER(itemTitle) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemContentSnippet) LIKE '%phillip k. dick · space junk · the black knight satellite%' OR LOWER(itemTitle) LIKE '%pistorius%' OR LOWER(itemContentSnippet) LIKE '%pistorius%' OR LOWER(itemTitle) LIKE '%runner blade%' OR LOWER(itemContentSnippet) LIKE '%runner blade%' OR LOWER(itemTitle) LIKE '%running blade%' OR LOWER(itemContentSnippet) LIKE '%running blade%' OR LOWER(itemTitle) LIKE '%major dp singh%' OR LOWER(itemContentSnippet) LIKE '%major dp singh%' OR LOWER(itemTitle) LIKE '%india''s first blade runner%' OR LOWER(itemContentSnippet) LIKE '%india''s first blade runner%' OR(LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR(LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR(LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
   let sqlQueryHideStories = "UPDATE homeopapeRSS SET viewed = 1, display = 0 WHERE viewed = 0 AND homeopapeID IN (SELECT * FROM (SELECT homeopapeID FROM homeopapeRSS WHERE (LOWER(itemTitle) LIKE '%singh%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%singh%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%sahu%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%sahu%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%hunt-broersma%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%hunt-broersma%' AND LOWER(itemContentSnippet) LIKE '%blade runner%') OR (LOWER(itemTitle) LIKE '%jerome%' AND LOWER(itemTitle) LIKE '%singleton%' AND LOWER(itemTitle) LIKE '%blade runner%') OR (LOWER(itemContentSnippet) LIKE '%jerome%' AND LOWER(itemContentSnippet) LIKE '%singleton%' AND LOWER(itemContentSnippet) LIKE '%blade runner%')) AS neverDisplay)";
 
   // db.raw(sqlQueryHideStories).toSQL();
 
-  // console.log(componentName, getDateTime(), "get /update", sqlQueryHideStories);
-
   db.raw(sqlQueryUpdateItemLinkDomain)
     .then((records) => {
-      // console.log(componentName, getDateTime(), "get /update records", records);
 
       addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", {});
 
@@ -1289,7 +1090,6 @@ router.get("/update", (request, response) => {
 
     })
     .then((records) => {
-      // console.log(componentName, getDateTime(), "get /update records", records);
 
       addLog(componentName, "get /update sqlQueryAlwaysFiltered", {});
 
@@ -1297,7 +1097,6 @@ router.get("/update", (request, response) => {
 
     })
     .then((records) => {
-      // console.log(componentName, getDateTime(), "get /update records", records);
 
       addLog(componentName, "get /update sqlQueryNeverDisplay", {});
 
@@ -1305,7 +1104,6 @@ router.get("/update", (request, response) => {
 
     })
     .then((records) => {
-      // console.log(componentName, getDateTime(), "get /update records", records);
 
       addLog(componentName, "get /update sqlQueryHideStories", {});
 
@@ -1313,6 +1111,7 @@ router.get("/update", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /update error", error);
 
       addErrorLog(componentName, "get /update", {}, error);
@@ -1332,21 +1131,16 @@ router.get("/markviewed", (request, response) => {
 
   // db.raw(sqlQuery).toSQL();
 
-  // console.log(componentName, getDateTime(), `get /markviewed`, sqlQuery);
-
   db.raw(sqlQuery)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `get /markviewed`, records);
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /markviewed`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully updated ${tableName}.`, records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `get /markviewed No Results`);
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1354,6 +1148,7 @@ router.get("/markviewed", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `get /markviewed error`, error);
 
       addErrorLog(componentName, "get /markviewed", {}, error);
@@ -1377,12 +1172,10 @@ router.get("/filter", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get /filter`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get /filter No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -1390,6 +1183,7 @@ router.get("/filter", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /filter error", error);
 
       addErrorLog(componentName, "get /filter", {}, error);
@@ -1430,18 +1224,14 @@ router.post("/", validateAdmin, (request, response) => {
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), "post / records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "post / records", records);
 
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "post / No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1449,6 +1239,7 @@ router.post("/", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post / error", error);
 
       addErrorLog(componentName, "post /", request.body.recordObject, error);
@@ -1477,18 +1268,14 @@ router.post("/filter", (request, response) => {
     // .returning(select)
     .insert(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), "post /filter records", records);
-      // * Returns the ID value of the added record. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), "post /filter records", records);
 
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "post /filter No Results");
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -1496,6 +1283,7 @@ router.post("/filter", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "post /filter error", error);
 
       addErrorLog(componentName, "post /filter", {}, error);
@@ -1520,26 +1308,20 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   const where = { itemID: itemID };
 
-  // console.log(componentName, getDateTime(), `put /display/:itemID itemID`, itemID);
-
   db(tableName)
     .where(where)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /display/:itemID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /display/:itemID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /display/:itemID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1547,6 +1329,7 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /display/:itemID error`, error);
 
       addErrorLog(componentName, "put /display/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
@@ -1571,26 +1354,20 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   const where = { itemID: itemID };
 
-  // console.log(componentName, getDateTime(), `put /posted/:itemID itemID`, itemID);
-
   db(tableName)
     .where(where)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /posted/:itemID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /posted/:itemID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /posted/:itemID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1598,6 +1375,7 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /posted/:itemID error`, error);
 
       addErrorLog(componentName, "put /posted/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
@@ -1622,7 +1400,6 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   const where = { itemID: itemID };
 
-  // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID itemID`, itemID);
 
   db(tableName)
     .where(where)
@@ -1630,18 +1407,14 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /alwaysFilter/:itemID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1649,6 +1422,7 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /alwaysFilter/:itemID error`, error);
 
       addErrorLog(componentName, "put /alwaysFilter/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
@@ -1673,26 +1447,20 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
   const where = { itemID: itemID };
 
-  // console.log(componentName, getDateTime(), `put /viewed/:itemID itemID`, itemID);
-
   db(tableName)
     .where(where)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /viewed/:itemID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /viewed/:itemID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /viewed/:itemID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.itemID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1700,6 +1468,7 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /viewed/:itemID error`, error);
 
       addErrorLog(componentName, "put /viewed/:itemID", { itemID: request.params.itemID, recordObject: request.body.recordObject }, error);
@@ -1741,26 +1510,20 @@ router.put("/filter/:filterID", (request, response) => {
 
   const where = { filterID: filterID };
 
-  // console.log(componentName, getDateTime(), `put /filter/:filterID filterID`, filterID);
-
   db("homeopapeFilter")
     .where(where)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-      // console.log(componentName, getDateTime(), `put /filter/:filterID records`, records);
-      // * Returns the number of updated records. -- 08/13/2021 MF
 
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `put /filter/:filterID records`, records);
 
         response.status(200).json({ primaryKeyID: request.params.filterID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), `put /filter/:filterID No Results`);
 
         response.status(200).json({ primaryKeyID: request.params.filterID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
@@ -1768,6 +1531,7 @@ router.put("/filter/:filterID", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), `put /filter/:filterID error`, error);
 
       addErrorLog(componentName, "put /filter/:filterID", { filterID: request.params.filterID, recordObject: request.body.recordObject }, error);

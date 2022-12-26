@@ -39,12 +39,10 @@ router.get("/", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(componentName, getDateTime(), `get / ${tableName}`, records);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
       } else {
-        // console.log(componentName, getDateTime(), "get / No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -52,6 +50,7 @@ router.get("/", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get / error", error);
 
       addErrorLog(componentName, "get /", {}, error);
@@ -93,9 +92,7 @@ router.get("/:termID", (request, response) => {
 
   };
 
-  let sqlQuery = `SELECT terms.termID, terms.term, terms.definition, terms.partOfSpeech, terms.parentTermID, termsParent.term AS termParent, termCategories.termCategoryID, termCategories.termCategory, GROUP_CONCAT(termsSynonyms.term) AS termsSynonym, GROUP_CONCAT(termsAlternateForms.term) AS termsAlternateForm, chapter, quotation, titles.titleID, titles.titleName, titles.titleSort, titles.titleURL, titles.authorFirstName, titles.authorLastName, titles.submissionDate, titles.publicationDate, titles.imageName, titles.categoryID, titles.shortDescription, titles.urlPKDWeb FROM terms LEFT OUTER JOIN terms AS termsParent ON terms.parentTermID = termsParent.termID LEFT OUTER JOIN termsCategories ON terms.termID = termsCategories.termID LEFT OUTER JOIN termCategories ON termsCategories.termCategoryID = termCategories.termCategoryID LEFT OUTER JOIN synonyms ON terms.termID = synonyms.termID LEFT OUTER JOIN terms AS termsSynonyms ON synonyms.synonymID = termsSynonyms.termID LEFT OUTER JOIN alternateForms ON terms.termID = alternateForms.termID LEFT OUTER JOIN terms AS termsAlternateForms ON alternateForms.alternateFormID = termsAlternateForms.termID LEFT OUTER JOIN termsTitles ON terms.termID = termsTitles.termID LEFT OUTER JOIN titles ON termsTitles.titleID = titles.titleID WHERE terms.termID = ${termID} GROUP BY terms.termID, terms.term, terms.definition, terms.partOfSpeech, terms.parentTermID, termsParent.term, termCategories.termCategoryID, termCategories.termCategory, chapter, quotation, titles.titleID, titles.titleName, titles.titleSort, titles.titleURL, titles.authorFirstName, titles.authorLastName, titles.submissionDate, titles.publicationDate, titles.imageName, titles.categoryID, titles.shortDescription, titles.urlPKDWeb ORDER BY termID, titleID, chapter`;
-
-  // console.log(`${ controllerName } - controller`, getDateTime(), "get /:termID sqlQuery", sqlQuery);
+  let sqlQuery = `SELECT terms.termID, terms.term, terms.definition, terms.partOfSpeech, terms.parentTermID, termsParent.term AS termParent, termCategories.termCategoryID, termCategories.termCategory, synonyms.synonymID, termsSynonyms.term AS termsSynonym, alternateForms.alternateFormID, termsAlternateForms.term AS termsAlternateForm, chapter, quotation, titles.titleID, titles.titleName, titles.titleSort, titles.titleURL, titles.authorFirstName, titles.authorLastName, titles.submissionDate, titles.publicationDate, titles.imageName, titles.categoryID, titles.shortDescription, titles.urlPKDWeb FROM terms LEFT OUTER JOIN terms AS termsParent ON terms.parentTermID = termsParent.termID LEFT OUTER JOIN termsCategories ON terms.termID = termsCategories.termID LEFT OUTER JOIN termCategories ON termsCategories.termCategoryID = termCategories.termCategoryID LEFT OUTER JOIN synonyms ON terms.termID = synonyms.termID LEFT OUTER JOIN terms AS termsSynonyms ON synonyms.synonymID = termsSynonyms.termID LEFT OUTER JOIN alternateForms ON terms.termID = alternateForms.termID LEFT OUTER JOIN terms AS termsAlternateForms ON alternateForms.alternateFormID = termsAlternateForms.termID LEFT OUTER JOIN termsTitles ON terms.termID = termsTitles.termID LEFT OUTER JOIN titles ON termsTitles.titleID = titles.titleID WHERE terms.termID = ${termID}`;
 
   // db.select(checklistColumnsList)
   //   .from(tableName)
@@ -121,12 +118,10 @@ router.get("/:termID", (request, response) => {
       records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
-        // console.log(`${ controllerName } - controller`, getDateTime(), "get /:termID records[0]", records[0]);
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 
       } else {
-        // console.log(`${ controllerName } - controller`, getDateTime(), "get /:termID No Results");
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -134,6 +129,7 @@ router.get("/:termID", (request, response) => {
 
     })
     .catch((error) => {
+
       console.error(componentName, getDateTime(), "get /:termID error", error);
 
       addErrorLog(componentName, "get /:termID", { termID: termID }, error);
