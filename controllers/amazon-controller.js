@@ -446,7 +446,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
       for (let i in itemsResponseList) {
 
-        if (itemsResponseList.hasOwnProperty(i)) {
+        if (itemsResponseList.hasOwnProperty(i) === true) {
 
           mappedResponse[itemsResponseList[i]["ASIN"]] = itemsResponseList[i];
 
@@ -478,7 +478,7 @@ router.get("/item/:arrayNumber", (request, response) => {
 
         for (let i in getItemsRequest["ItemIds"]) {
 
-          if (getItemsRequest["ItemIds"].hasOwnProperty(i)) {
+          if (getItemsRequest["ItemIds"].hasOwnProperty(i) === true) {
 
             let itemId = getItemsRequest["ItemIds"][i];
 

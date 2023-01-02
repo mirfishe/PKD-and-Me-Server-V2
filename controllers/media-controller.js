@@ -225,7 +225,7 @@ router.post("/", validateAdmin, (request, response) => {
     .first() // * Add this to get an object. -- 05/06/2021 MF
     .then((maxSortID) => {
 
-      if (isNaN(maxSortID)) {
+      if (isNaN(maxSortID) === true) {
 
         // newSortID = 1;
         return 1;
