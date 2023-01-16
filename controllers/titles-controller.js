@@ -655,11 +655,9 @@ router.get("/checklist", validateSession, (request, response) => {
 
       if (isEmpty(records) === false) {
 
-
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 
       } else {
-
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
 
@@ -800,11 +798,9 @@ router.post("/", validateAdmin, (request, response) => {
 
       if (isEmpty(records) === false) {
 
-
         response.status(200).json({ primaryKeyID: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully added.", records: records });
 
       } else {
-
 
         response.status(200).json({ primaryKeyID: null, transactionSuccess: false, errorOccurred: false, message: "Nothing to add." });
 
@@ -873,11 +869,9 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
       if (isEmpty(records) === false) {
 
-
         response.status(200).json({ primaryKeyID: request.params.titleID, transactionSuccess: true, errorOccurred: false, message: "Successfully updated.", records: records });
 
       } else {
-
 
         response.status(200).json({ primaryKeyID: request.params.titleID, transactionSuccess: false, errorOccurred: false, message: "Nothing to update." });
 
