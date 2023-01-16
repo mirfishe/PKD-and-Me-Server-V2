@@ -40,7 +40,7 @@ let records;
  ******************************/
 router.get("/", (request, response) => {
 
-  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'Amazon' ORDER BY createDate, authorName, titleName";
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'Amazon' ORDER BY viewed, createDate, authorName, titleName";
 
   // db.raw(sqlQuery).toSQL();
 
@@ -83,7 +83,7 @@ router.get("/", (request, response) => {
  ******************************/
 router.get("/all", (request, response) => {
 
-  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'All' ORDER BY createDate, authorName, titleName";
+  let sqlQuery = "SELECT * FROM amazon INNER JOIN (SELECT ASIN, GROUP_CONCAT(searchIndex) AS searchIndex FROM (SELECT DISTINCT ASIN, searchIndex FROM amazonImport WHERE searchIndex IS NOT NULL ORDER BY searchIndex) AS searchIndexDistinct GROUP BY ASIN) AS amazonSearchIndex ON amazon.ASIN = amazonSearchIndex.ASIN WHERE active = 1 AND merchant = 'All' ORDER BY viewed, createDate, authorName, titleName";
 
   // db.raw(sqlQuery).toSQL();
 
