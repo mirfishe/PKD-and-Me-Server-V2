@@ -1178,7 +1178,6 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     .update(recordObject)
     .then((records) => {
 
-
       // records = convertBitTrueFalse(records);
 
       if (isEmpty(records) === false) {
@@ -1226,7 +1225,6 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     // .returning(select)
     .update(recordObject)
     .then((records) => {
-
 
       // records = convertBitTrueFalse(records);
 
