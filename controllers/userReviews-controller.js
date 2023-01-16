@@ -87,10 +87,9 @@ let records;
  ***** Get User Reviews *********
  ******************************/
 // * Returns all user reviews active or not -- 06/01/2021 MF
-// router.get("/list", (request, response) => {
 router.get("/", (request, response) => {
 
-  // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
+  // * ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
   db.select(columnsList)
     .from(tableName)

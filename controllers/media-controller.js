@@ -23,7 +23,6 @@ let records;
  ***** Get Media *********
  ******************************/
 // * Returns all media active or not -- 03/28/2021 MF
-// router.get("/list", (request, response) => {
 router.get("/", (request, response) => {
 
   db.select(select)

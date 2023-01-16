@@ -48,7 +48,6 @@ let records;
  ***** Get Editions *********
  ******************************/
 // * Returns all editions active or not -- 03/28/2021 MF
-// router.get("/list", (request, response) => {
 router.get("/", (request, response) => {
 
   db.select(columnsList)

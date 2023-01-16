@@ -52,7 +52,6 @@ let records;
  ******************************/
 // * Returns all titles active or not -- 03/28/2021 MF
 // * Just the title data and not the related tables data -- 03/28/2021 MF
-// router.get("/list", (request, response) => {
 router.get("/", (request, response) => {
 
   db.select(columnsList)
