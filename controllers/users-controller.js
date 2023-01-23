@@ -216,7 +216,6 @@ router.post("/login", (request, response) => {
 /******************************
  ***** Get Users *****
  ******************************/
-// * Allows an admin to view all the users -- 03/28/2021 MF
 router.get("/admin", validateAdmin, (request, response) => {
 
   db.select(select)
@@ -252,7 +251,6 @@ router.get("/admin", validateAdmin, (request, response) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// * Returns User information for the logged in user -- 03/28/2021 MF
 router.get("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -319,7 +317,6 @@ router.get("/", validateSession, (request, response) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// Returns User information for the admin -- 03/28/2021 MF
 router.get("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -386,7 +383,6 @@ router.get("/:userID", validateAdmin, (request, response) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows an admin to update the user data including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/:userID", validateAdmin, (request, response) => {
 
@@ -494,7 +490,6 @@ router.put("/:userID", validateAdmin, (request, response) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows a user to update their own record including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/", validateSession, (request, response) => {
 
@@ -617,7 +612,6 @@ router.put("/", validateSession, (request, response) => {
 /***************************
  ******* Delete User *******
  ***************************/
-// * Allows an admin to hard delete a user -- 03/28/2021 MF
 router.delete("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF

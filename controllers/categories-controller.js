@@ -22,7 +22,6 @@ let records;
 /******************************
  ***** Get Categories *********
  ******************************/
-// * Returns all categories active or not -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(select)
@@ -53,46 +52,6 @@ router.get("/", (request, response) => {
     });
 
 });
-
-
-/******************************
- ***** Get Categories *********
- ******************************/
-// * Only returns categories that have titles linked to them -- 03/28/2021 MF
-// * Need to return all categories that are active for the add title function -- 03/28/2021 MF
-// router.get("/", (request, response) => {
-
-//   const where = { active: true };
-
-//   db.select(select)
-//     .from(tableName)
-//     .where(where)
-//     .orderBy(orderBy)
-//     .then((records) => {
-
-//       records = convertBitTrueFalse(records);
-
-//       if (isEmpty(records) === false) {
-
-//         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
-
-//       } else {
-
-//         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
-
-//       };
-
-//     })
-//     .catch((error) => {
-
-//       console.error(componentName, getDateTime(), "get / error", error);
-
-//       addErrorLog(componentName, "get /", {}, error);
-//       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
-
-//     });
-
-// });
 
 
 module.exports = router;

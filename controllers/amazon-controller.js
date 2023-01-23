@@ -125,7 +125,6 @@ router.get("/all", (request, response) => {
 /******************************
  ***** Get Amazon SDK *********
  ******************************/
-// * Returns Amazon listings -- 12/31/2021 MF
 router.get("/item/:arrayNumber", (request, response) => {
 
   let arrayNumber = isEmpty(request.params.arrayNumber) === false ? request.params.arrayNumber : "";
@@ -653,7 +652,6 @@ router.get("/item/:arrayNumber", (request, response) => {
 /******************************
  ***** Get Amazon SDK *********
  ******************************/
-// * Returns Amazon listings -- 12/31/2021 MF
 router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
   let searchItem = isEmpty(request.params.searchItem) === false ? request.params.searchItem : "";
@@ -1158,7 +1156,6 @@ router.get("/update", (request, response) => {
 /***************************
  ******* Active/Inactive Item *******
  ***************************/
-// * Allows the admin to mark an item as active/inactive. -- 01/03/2022 MF
 router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1206,7 +1203,6 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 /***************************
  ******* Viewed Item *******
  ***************************/
-// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
 router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
   const recordObject = {

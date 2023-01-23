@@ -22,7 +22,6 @@ let records;
 /******************************
  ***** Get Media *********
  ******************************/
-// * Returns all media active or not -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(select)
@@ -110,7 +109,6 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Media Admin *********
  ******************************/
-// * Return all categories to adminster them -- 03/28/2021 MF
 // router.get("/admin", validateAdmin, (request, response) => {
 
 //   db.select(select)
@@ -206,7 +204,6 @@ router.get("/", (request, response) => {
 /* ******************************
  *** Add Media ***************
 *********************************/
-// * Allows an admin to add a new media -- 03/28/2021 MF
 router.post("/", validateAdmin, (request, response) => {
 
   // ! Don't need this anymore; was trying to fix scoping issues -- 03/28/2021 MF
@@ -281,7 +278,6 @@ router.post("/", validateAdmin, (request, response) => {
 /***************************
  ******* Update Media *******
  ***************************/
-// * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
 router.put("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -341,7 +337,6 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete Media *******
  ***************************/
-// * Allows an admin to hard delete the media -- 03/28/2021 MF
 router.delete("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF

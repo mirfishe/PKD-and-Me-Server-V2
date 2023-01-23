@@ -47,7 +47,6 @@ let records;
 /******************************
  ***** Get Editions *********
  ******************************/
-// * Returns all editions active or not -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(columnsList)
@@ -85,7 +84,6 @@ router.get("/", (request, response) => {
 /******************************
  ***** Log Broken Amazon Link *********
  ******************************/
-// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:editionID", (request, response) => {
 
   // response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully logged broken image link. editionID ${request.params.editionID}` });
@@ -528,7 +526,6 @@ router.get("/ASIN/:ASIN", (request, response) => {
 /* ******************************
  *** Add Edition ***************
 *********************************/
-// * Allows an admin to add a new edition -- 03/28/2021 MF
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -598,7 +595,6 @@ router.post("/", validateAdmin, (request, response) => {
 /***************************
  ******* Update Edition *******
  ***************************/
-// * Allows the admin to update the edition including soft delete it -- 03/28/2021 MF
 router.put("/:editionID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -667,7 +663,6 @@ router.put("/:editionID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete Edition *******
  ***************************/
-// * Allows an admin to hard delete an edition -- 03/28/2021 MF
 router.delete("/:editionID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF

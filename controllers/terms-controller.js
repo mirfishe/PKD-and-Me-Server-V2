@@ -23,8 +23,7 @@ let records;
 /******************************
  ***** Get Terms *********
  ******************************/
-// * Returns all terms active or not -- 03/28/2021 MF
-// * Just the term data and not the related tables data -- 03/28/2021 MF
+// * Returns just the term data and not the related tables data. -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(select)

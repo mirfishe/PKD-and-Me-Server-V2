@@ -1297,7 +1297,6 @@ router.post("/filter", (request, response) => {
 /***************************
  ******* Hide Entry *******
  ***************************/
-// * Allows the admin to display or not display an entry. -- 08/13/2021 MF
 router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1343,7 +1342,6 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Posted Entry *******
  ***************************/
-// * Allows the admin to mark an entry as posted. -- 09/10/2021 MF
 router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1389,7 +1387,6 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Always Filter Entry *******
  ***************************/
-// * Allows the admin to mark an entry as always filter. -- 09/10/2021 MF
 router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1436,7 +1433,6 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Viewed Entry *******
  ***************************/
-// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
 router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1482,7 +1478,6 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Update Filter *******
  ***************************/
-// * Allows the admin to update a filter. -- 01/03/2022 MF
 router.put("/filter/:filterID", (request, response) => {
 
   const recordObject = {

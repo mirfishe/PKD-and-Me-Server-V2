@@ -62,7 +62,6 @@ router.get("/", validateAdmin, (request, response) => {
 /***************************
  *** Add Log *******
  ***************************/
-// * Enters a log entry from the data posted. -- 04/14/2021 MF
 router.post("/", (request, response) => {
 
   const recordObject = {

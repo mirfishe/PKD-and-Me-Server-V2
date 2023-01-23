@@ -101,7 +101,6 @@ router.get("/broken", validateAdmin, (request, response) => {
 /***************************
  *** Add Computer Log *******
  ***************************/
-// * Enters a log entry from the data posted. -- 08/13/2021 MF
 router.post("/", (request, response) => {
 
   db(tableName)

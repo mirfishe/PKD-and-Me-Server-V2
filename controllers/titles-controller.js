@@ -50,8 +50,6 @@ let records;
 /******************************
  ***** Get Titles *********
  ******************************/
-// * Returns all titles active or not -- 03/28/2021 MF
-// * Just the title data and not the related tables data -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(columnsList)
@@ -88,7 +86,6 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Title Text *********
  ******************************/
-// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/text/:titleID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -141,7 +138,6 @@ router.get("/text/:titleID", (request, response) => {
 /******************************
  ***** Log Image Links *********
  ******************************/
-// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:titleID", (request, response) => {
 
   // response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully logged broken image link. titleID ${request.params.titleID}` });
@@ -477,7 +473,6 @@ router.get("/broken/:titleID", (request, response) => {
 /**************************************
  ***** Get Titles By CategoryID Admin *****
 ***************************************/
-// * Return all titles to adminster them -- 03/28/2021 MF
 // router.get("/admin/category/:categoryID/:sort?", validateAdmin, (request, response) => {
 
 //   let orderByColumn = "titleSort";
@@ -768,7 +763,6 @@ router.get("/checklist", validateSession, (request, response) => {
 /* ******************************
  *** Add Title ***************
 *********************************/
-// * Allows an admin to add a new title -- 03/28/2021 MF
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -822,7 +816,6 @@ router.post("/", validateAdmin, (request, response) => {
 /***************************
  ******* Update Title *******
  ***************************/
-// * Allows the admin to update the title including soft delete it -- 03/28/2021 MF
 router.put("/:titleID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -893,7 +886,6 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete Title *******
  ***************************/
-// * Allows an admin to hard delete a title -- 03/28/2021 MF
 router.delete("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
