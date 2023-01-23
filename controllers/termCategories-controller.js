@@ -12,7 +12,7 @@ const addErrorLog = require("../utilities/addErrorLog");
 const controllerName = "termCategories";
 const tableName = "termCategories";
 const select = "*";
-const orderBy = [{ column: "sortID", order: "asc" }];
+// const orderBy = [{ column: "sortID", order: "asc" }];
 
 const componentName = `${controllerName}-controller`;
 
@@ -26,7 +26,7 @@ router.get("/", (request, response) => {
 
   db.select(select)
     .from(tableName)
-    .orderBy(orderBy)
+    // .orderBy(orderBy)
     .then((records) => {
 
       records = convertBitTrueFalse(records);
