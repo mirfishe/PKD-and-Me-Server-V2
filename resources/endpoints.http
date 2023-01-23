@@ -59,6 +59,10 @@ GET {{baseURL}}terms/4
 
 ###
 
+GET {{baseURL}}termCategories
+
+###
+
 GET {{baseURL}}logs
 
 ###
