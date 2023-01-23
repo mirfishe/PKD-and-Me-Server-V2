@@ -20,6 +20,7 @@ const comments = require("./controllers/comments-controller");
 const titleSuggestions = require("./controllers/titleSuggestions-controller");
 
 const terms = require("./controllers/terms-controller");
+const termCategories = require("./controllers/termCategories-controller");
 
 const fromthehomeopape = require("./controllers/fromthehomeopape-controller");
 
@@ -53,6 +54,7 @@ app.use("/comments", comments);
 app.use("/titleSuggestions", titleSuggestions);
 
 app.use("/terms", terms);
+app.use("/termCategories", termCategories);
 
 app.use("/fromthehomeopape", fromthehomeopape);
 
