@@ -595,7 +595,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
+// let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -665,7 +665,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
+// let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
