@@ -12,8 +12,8 @@ const addErrorLog = require("../utilities/addErrorLog");
 const controllerName = "titles";
 const tableName = "titles";
 const select = "*";
-// const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
-// const activeChecklist = { "titles.active": true, "userReviews.active": true, /*"users.active": true,*/ "categories.active": true };
+// const activeWhere = { "titles.active": true, /* "userReviews.active": true, "users.active": true, */ "categories.active": true, "editions.active": true, "media.active": true };
+// const activeChecklist = { "titles.active": true, "userReviews.active": true, /* "users.active": true, */ "categories.active": true };
 const orderBy = [{ column: "titleSort", order: "asc" }];
 
 
