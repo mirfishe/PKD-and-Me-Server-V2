@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -33,11 +33,11 @@ router.get("/", (request, response) => {
     // .leftOuterJoin("termCategories", "termsCategories.termCategoryID", "termCategories.termCategoryID")
     // .where(activeWhere)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -112,11 +112,11 @@ router.get("/:termID", (request, response) => {
   //   .orderBy(orderByDynamic)
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 

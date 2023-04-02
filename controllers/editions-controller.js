@@ -54,11 +54,11 @@ router.get("/", (request, response) => {
     .leftOuterJoin("titles", "titles.titleID", "editions.titleID")
     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -112,11 +112,11 @@ router.get("/broken/:editionID", (request, response) => {
     // .where("editions.active", true)
     // .where(activeDataWhere)
     // .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         const recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
@@ -131,7 +131,7 @@ router.get("/broken/:editionID", (request, response) => {
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning(select)
           .insert(recordObject)
-          .then((records) => {
+          .then((results) => {
 
           })
           .catch((error) => {
@@ -156,7 +156,7 @@ router.get("/broken/:editionID", (request, response) => {
 
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", { editionID: editionID }, error);
+      addErrorLog(componentName, `get /broken/:${controllerName}ID`, { editionID: editionID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -190,11 +190,11 @@ router.get("/broken/:editionID", (request, response) => {
 //     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -260,11 +260,11 @@ router.get("/broken/:editionID", (request, response) => {
 //     // .where("editions.active", true)
 //     .where(activeDataWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -322,11 +322,11 @@ router.get("/ASIN/:ASIN", (request, response) => {
     .where(where)
     // .where("editions.active", true)
     .where(activeDataWhere)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
         // response.status(200).json({
@@ -394,11 +394,11 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -449,11 +449,11 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -506,7 +506,9 @@ router.get("/ASIN/:ASIN", (request, response) => {
 //     }, order: [["publicationDate", "DESC"]]};
 
 //     Edition.findAll(query)
-//     .then((records) => {
+//     .then((results) => {
+
+//         records = convertBitTrueFalse(results);
 
 //         response.status(200).json({message: `Successfully retrieved ${tableName}.`, records: records });
 
@@ -547,9 +549,10 @@ router.post("/", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -633,9 +636,10 @@ router.put("/:editionID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -686,9 +690,10 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

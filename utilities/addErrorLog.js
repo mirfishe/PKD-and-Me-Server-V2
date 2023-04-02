@@ -2,7 +2,8 @@
 
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-const { isEmpty, getDateTime } = require("./sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("./sharedFunctions");
+// const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 
 const functionName = "addErrorLog";
 const tableName = "errorLogs";
@@ -22,7 +23,10 @@ const addErrorLog = (controllerName, operation, transactionData, errorData) => {
       errorData: JSON.stringify(errorData),
       createDate: getDateTime()
     })
-    .then((records) => {
+    .then((results) => {
+
+      // records = convertBitTrueFalse(results);
+      // records = results;
 
       // if (isEmpty(records) === false) {
 

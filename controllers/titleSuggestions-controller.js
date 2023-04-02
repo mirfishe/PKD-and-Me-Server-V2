@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "titleSuggestions";
@@ -27,9 +27,11 @@ router.get("/", validateAdmin, (request, response) => {
     .from(tableName)
     .leftOuterJoin("users", "users.userID", "titleSuggestions.userID")
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      if (isEmpty(records) === false) {
+      records = convertBitTrueFalse(results);
+
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -76,9 +78,11 @@ router.get("/", validateAdmin, (request, response) => {
 //   db.select(select)
 //     .from(tableName)
 //     .where(where)
-//     .then((records) => {
+//     .then((results) => {
 
-//       if (isEmpty(records) === false) {
+//       records = convertBitTrueFalse(results);
+
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -137,7 +141,9 @@ router.post("/", /* validateSession, */(request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning("*")
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
+
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

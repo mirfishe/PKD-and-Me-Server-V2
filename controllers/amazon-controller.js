@@ -52,11 +52,11 @@ router.get("/", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -95,11 +95,11 @@ router.get("/all", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -569,7 +569,7 @@ router.get("/item/:arrayNumber", (request, response) => {
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning("*")
           .insert(itemArray)
-          .then((records) => {
+          .then((results) => {
 
             addLog(componentName, "get / insert", { arrayNumber: arrayNumber });
 
@@ -960,7 +960,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
             // .returning("*")
             .insert(itemArray)
-            .then((records) => {
+            .then((results) => {
 
               addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
@@ -1086,9 +1086,10 @@ router.get("/insert", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1127,14 +1128,17 @@ router.get("/update", (request, response) => {
   // db.raw(sqlQueryElectronicMedia).toSQL();
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQuery", {});
 
       return db.raw(sqlQueryElectronicMedia);
 
     })
-    .then((records) => {
+    .then((results) => {
+
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       addLog(componentName, "get /update sqlQueryElectronicMedia", {});
 
@@ -1173,9 +1177,10 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1220,9 +1225,10 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

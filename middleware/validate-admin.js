@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = require("../jwtSecret");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
 

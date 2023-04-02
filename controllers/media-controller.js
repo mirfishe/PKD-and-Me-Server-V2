@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -27,25 +27,11 @@ router.get("/", (request, response) => {
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
-    // .then((records) => {
+    .then((results) => {
 
-    // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-    //   if (process.env.DATABASE_DIALECT == "mysql") {
+      records = convertBitTrueFalse(results);
 
-    //     return convertBitTrueFalse(records);
-
-    //   } else {
-
-    //     return records;
-
-    //   };
-
-    // })
-    .then((records) => {
-
-      records = convertBitTrueFalse(records);
-
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -79,11 +65,11 @@ router.get("/", (request, response) => {
 //     .from(tableName)
 //     .where(where)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -114,11 +100,11 @@ router.get("/", (request, response) => {
 //   db.select(select)
 //     .from(tableName)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -166,13 +152,13 @@ router.get("/", (request, response) => {
 //     .from(tableName)
 //     .where(where)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
 //       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne. -- 05/24/2021 MF
 //       // if (records === null) {
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -248,9 +234,9 @@ router.post("/", validateAdmin, (request, response) => {
         .insert(recordObject);
 
     })
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 
@@ -307,9 +293,9 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 
@@ -360,9 +346,9 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

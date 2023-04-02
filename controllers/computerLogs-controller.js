@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "computerLogs";
@@ -37,9 +37,9 @@ router.get("/", validateAdmin, (request, response) => {
     .orderBy(orderBy)
     .then((results) => {
 
-      records = results;
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -73,9 +73,9 @@ router.get("/broken", validateAdmin, (request, response) => {
     .orderBy(orderBy)
     .then((results) => {
 
-      records = results;
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 

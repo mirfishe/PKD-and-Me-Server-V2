@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatLowerCase, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatLowerCase, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -56,11 +56,11 @@ router.get("/", (request, response) => {
     .from(tableName)
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -107,12 +107,11 @@ router.get("/text/:titleID", (request, response) => {
   db.select("*")
     .from("titlesText")
     .where(where)
-    .orderBy([{ column: "sortID", order: "asc" }])
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -125,9 +124,9 @@ router.get("/text/:titleID", (request, response) => {
     })
     .catch((error) => {
 
-      console.error(componentName, getDateTime(), "get /text/:${controllerName}ID error", error);
+      console.error(componentName, getDateTime(), `get /text/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /text/:${controllerName}ID", {}, error);
+      addErrorLog(componentName, `get /text/:${controllerName}ID`, {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -170,11 +169,11 @@ router.get("/broken/:titleID", (request, response) => {
     .where(where)
     // .where(activeWhere)
     // .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         const recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
@@ -189,7 +188,7 @@ router.get("/broken/:titleID", (request, response) => {
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning(select)
           .insert(recordObject)
-          .then((records) => {
+          .then((results) => {
 
           })
           .catch((error) => {
@@ -214,7 +213,7 @@ router.get("/broken/:titleID", (request, response) => {
 
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", { titleID: titleID }, error);
+      addErrorLog(componentName, `get /broken/:${controllerName}ID`, { titleID: titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -239,11 +238,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -300,11 +299,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         // response.status(200).json({
 //         // titleID:   title.titleID,
@@ -380,7 +379,10 @@ router.get("/broken/:titleID", (request, response) => {
 //     }, order: [["titleSort", "DESC"]]};
 
 //     Title.findAll(query)
-//     .then((records) => {
+//     .then((results) => {
+
+//         records = convertBitTrueFalse(results);
+
 //         response.status(200).json({message: `Successfully retrieved ${ tableName }.`, records: records });
 //     })
 //         .catch((error) => {
@@ -443,11 +445,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -522,11 +524,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -644,11 +646,11 @@ router.get("/checklist", validateSession, (request, response) => {
   //   .orderBy(orderByDynamic)
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 
@@ -733,11 +735,11 @@ router.get("/checklist", validateSession, (request, response) => {
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -786,9 +788,10 @@ router.post("/", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -856,9 +859,10 @@ router.put("/:titleID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -909,9 +913,10 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

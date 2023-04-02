@@ -221,11 +221,11 @@ router.get("/admin", validateAdmin, (request, response) => {
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -272,11 +272,11 @@ router.get("/", validateSession, (request, response) => {
   db.select(select)
     .from(tableName)
     .where(where)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      // if (isEmpty(records) === false) {
+      // if (isNonEmptyArray(records) === true) {
       if (records != null) {
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
@@ -338,11 +338,11 @@ router.get("/:userID", validateAdmin, (request, response) => {
   db.select(select)
     .from(tableName)
     .where(where)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      // if (isEmpty(records) === false) {
+      // if (isNonEmptyArray(records) === true) {
       if (records != null) {
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
@@ -425,7 +425,9 @@ router.put("/:userID", validateAdmin, (request, response) => {
       // .returning(select)
       .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated. -- 03/28/2021 MF
-      .then((records) => {
+      .then((results) => {
+
+        records = results;
 
         if (isEmpty(records) === false) {
 
@@ -635,7 +637,9 @@ router.delete("/:userID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
+
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

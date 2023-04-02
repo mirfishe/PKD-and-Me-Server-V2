@@ -4,7 +4,7 @@ const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "errors";
@@ -34,9 +34,11 @@ router.get("/", validateAdmin, (request, response) => {
     .from(tableName)
     .limit(limit)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      if (isEmpty(records) === false) {
+      records = convertBitTrueFalse(results);
+
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -76,7 +78,9 @@ router.post("/", (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning("*")
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
+
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

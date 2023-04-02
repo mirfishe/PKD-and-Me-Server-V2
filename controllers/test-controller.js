@@ -4,7 +4,7 @@ const router = require("express").Router();
 const operatingSystem = require("os");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 // const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
@@ -72,13 +72,13 @@ router.get("/health", (request, response) => {
   db.select(select)
     .from(tableName)
     // .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = records;
+      records = results;
 
       // addLog(databaseName, `${componentName} Get ${tableName}`, { databaseVersion: databaseVersion });
 
-      if (isEmpty(records) === false && records.length > 0) {
+      if (isEmpty(records) === false) {
 
         healthcheck.databaseRecords = records.length;
 
