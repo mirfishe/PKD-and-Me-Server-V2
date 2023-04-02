@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -55,9 +55,11 @@ users
 //     }};
 
 //     UserReview.findAll(query)
-//     .then((records) => {
+//     .then((results) => {
 
-//         if (isEmpty(records) === false) {
+//       records = convertBitTrueFalse(results);
+
+//       if (isNonEmptyArray(records) === true) {
 
 //             return {hasReviewedTitle: true, transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."};
 
@@ -86,7 +88,6 @@ let records;
 /******************************
  ***** Get User Reviews *********
  ******************************/
-// * Returns all user reviews active or not -- 06/01/2021 MF
 router.get("/", (request, response) => {
 
   // * ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
@@ -99,11 +100,11 @@ router.get("/", (request, response) => {
     // .where("userReviews.active", true)
     // .where("users.active", true)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -139,11 +140,11 @@ router.get("/", (request, response) => {
 //     .leftOuterJoin("users", "users.userID", "userReviews.userID")
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -196,11 +197,11 @@ router.get("/", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -239,7 +240,6 @@ router.get("/", (request, response) => {
 /**************************************
  ***** Get Total Average Rating By TitleID *****
 ***************************************/
-// * Gets the overall rating for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -284,7 +284,6 @@ router.get("/", (request, response) => {
 /**************************************
  ***** Get User Review Count Rating By TitleID *****
 ***************************************/
-// * Gets the user review count for the title -- 03/28/2021 MF
 // * Don't need because the count comes back with the get user reviews by titleID -- 03/28/2021 MF
 // router.get("/count/:titleID", (request, response) => {
 
@@ -330,7 +329,6 @@ router.get("/", (request, response) => {
 /**************************************
  ***** Get User Review Rating Sum By TitleID *****
 ***************************************/
-// * Gets the sum of ratings for the title -- 03/28/2021 MF
 // * Don't need since the rating endpoint is working -- 03/28/2021 MF
 // router.get("/sum/:titleID", (request, response) => {
 
@@ -383,7 +381,6 @@ router.get("/", (request, response) => {
 /**************************************
  ***** Get User Review Ratings *****
 ***************************************/
-// * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/list", (request, response) => {
 router.get("/rating", (request, response) => {
 
@@ -420,11 +417,11 @@ router.get("/rating", (request, response) => {
     .whereNotNull("rating")
     .whereNot({ rating: 0 })
     .groupBy("titleID")
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved user ratings.", records: records });
 
@@ -449,7 +446,6 @@ router.get("/rating", (request, response) => {
 /**************************************
  ***** Get User Review Rating By TitleID *****
 ***************************************/
-// * Gets the sum and count of ratings for the title -- 03/28/2021 MF
 // router.get("/rating/:titleID", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -508,11 +504,11 @@ router.get("/rating", (request, response) => {
 //     .whereNotNull("rating")
 //     .whereNot({ rating: 0 })
 //     .groupBy("titleID")
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved user ratings.", records: records });
 
@@ -538,7 +534,6 @@ router.get("/rating", (request, response) => {
 /**************************************
  ***** Get User Reviews By TitleID *****
 ***************************************/
-// * Gets all user reviews by TitleID and the count -- 03/28/2021 MF
 // TODO: Would like to add the overall rating for the title -- 03/28/2021 MF
 // router.get("/title/:titleID", (request, response) => {
 
@@ -567,12 +562,12 @@ router.get("/rating", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
 //       // if (records.rows.length > 0) {
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -602,7 +597,7 @@ router.get("/rating", (request, response) => {
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
-// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
+// let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -625,11 +620,11 @@ router.get("/rating", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -672,7 +667,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// let commentID = isEmpty(request.params.commentID) === false ? request.params.commentID : "";
+// let userID = isEmpty(request.params.userID) === false ? request.params.userID : "";
 
 // if (isNaN(formatTrim(userID)) === true) {
 
@@ -698,11 +693,11 @@ router.get("/rating", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -728,7 +723,6 @@ router.get("/rating", (request, response) => {
 /* ******************************
  *** Add User Review  ***************
 *********************************/
-// * Allows a user to add a new user review -- 03/28/2021 MF
 router.post("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -764,9 +758,10 @@ router.post("/", validateSession, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -794,7 +789,6 @@ router.post("/", validateSession, (request, response) => {
 /***************************
  ******* Update User Review  *******
  ***************************/
-// * Allows the user to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/:reviewID", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -852,9 +846,10 @@ router.put("/:reviewID", validateSession, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -882,7 +877,6 @@ router.put("/:reviewID", validateSession, (request, response) => {
 /***************************
  ******* Update User Review  *******
  ***************************/
-// * Allows the admin to update the user review including soft delete it -- 03/28/2021 MF
 router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -941,9 +935,10 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -971,7 +966,6 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete User Review *******
  ***************************/
-// * Allows an admin to hard delete a review -- 03/28/2021 MF
 router.delete("/:reviewID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -995,9 +989,10 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

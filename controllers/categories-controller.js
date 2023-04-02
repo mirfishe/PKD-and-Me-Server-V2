@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 // const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -22,17 +22,16 @@ let records;
 /******************************
  ***** Get Categories *********
  ******************************/
-// * Returns all categories active or not -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -53,46 +52,6 @@ router.get("/", (request, response) => {
     });
 
 });
-
-
-/******************************
- ***** Get Categories *********
- ******************************/
-// * Only returns categories that have titles linked to them -- 03/28/2021 MF
-// * Need to return all categories that are active for the add title function -- 03/28/2021 MF
-// router.get("/", (request, response) => {
-
-//   const where = { active: true };
-
-//   db.select(select)
-//     .from(tableName)
-//     .where(where)
-//     .orderBy(orderBy)
-//     .then((records) => {
-
-//       records = convertBitTrueFalse(records);
-
-//       if (isEmpty(records) === false) {
-
-//         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
-
-//       } else {
-
-//         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
-
-//       };
-
-//     })
-//     .catch((error) => {
-
-//       console.error(componentName, getDateTime(), "get / error", error);
-
-//       addErrorLog(componentName, "get /", {}, error);
-//       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
-
-//     });
-
-// });
 
 
 module.exports = router;

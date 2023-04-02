@@ -5,15 +5,15 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatLowerCase, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatLowerCase, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "titles";
 const tableName = "titles";
 const select = "*";
-// const activeWhere = { "titles.active": true, /*"userReviews.active": true, "users.active": true,*/ "categories.active": true, "editions.active": true, "media.active": true };
-// const activeChecklist = { "titles.active": true, "userReviews.active": true, /*"users.active": true,*/ "categories.active": true };
+// const activeWhere = { "titles.active": true, /* "userReviews.active": true, "users.active": true, */ "categories.active": true, "editions.active": true, "media.active": true };
+// const activeChecklist = { "titles.active": true, "userReviews.active": true, /* "users.active": true, */ "categories.active": true };
 const orderBy = [{ column: "titleSort", order: "asc" }];
 
 
@@ -50,19 +50,17 @@ let records;
 /******************************
  ***** Get Titles *********
  ******************************/
-// * Returns all titles active or not -- 03/28/2021 MF
-// * Just the title data and not the related tables data -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(columnsList)
     .from(tableName)
     .leftOuterJoin("categories", "categories.categoryID", "titles.categoryID")
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -88,7 +86,6 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Title Text *********
  ******************************/
-// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/text/:titleID", (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -110,12 +107,11 @@ router.get("/text/:titleID", (request, response) => {
   db.select("*")
     .from("titlesText")
     .where(where)
-    .orderBy([{ column: "sortID", order: "asc" }])
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -128,9 +124,9 @@ router.get("/text/:titleID", (request, response) => {
     })
     .catch((error) => {
 
-      console.error(componentName, getDateTime(), "get /text/:${controllerName}ID error", error);
+      console.error(componentName, getDateTime(), `get /text/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /text/:${controllerName}ID", {}, error);
+      addErrorLog(componentName, `get /text/:${controllerName}ID`, {}, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -141,7 +137,6 @@ router.get("/text/:titleID", (request, response) => {
 /******************************
  ***** Log Image Links *********
  ******************************/
-// * Logs that a broken link was found on a page loaded. -- 08/13/2021 MF
 router.get("/broken/:titleID", (request, response) => {
 
   // response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: `Successfully logged broken image link. titleID ${request.params.titleID}` });
@@ -174,11 +169,11 @@ router.get("/broken/:titleID", (request, response) => {
     .where(where)
     // .where(activeWhere)
     // .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         const recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
@@ -193,7 +188,7 @@ router.get("/broken/:titleID", (request, response) => {
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning(select)
           .insert(recordObject)
-          .then((records) => {
+          .then((results) => {
 
           })
           .catch((error) => {
@@ -218,7 +213,7 @@ router.get("/broken/:titleID", (request, response) => {
 
       console.error(componentName, getDateTime(), `get /broken/:${controllerName}ID error`, error);
 
-      addErrorLog(componentName, "get /broken/:${controllerName}ID", { titleID: titleID }, error);
+      addErrorLog(componentName, `get /broken/:${controllerName}ID`, { titleID: titleID }, error);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
 
     });
@@ -243,11 +238,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .leftOuterJoin("media", "media.mediaID", "editions.mediaID")
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -304,11 +299,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         // response.status(200).json({
 //         // titleID:   title.titleID,
@@ -384,7 +379,10 @@ router.get("/broken/:titleID", (request, response) => {
 //     }, order: [["titleSort", "DESC"]]};
 
 //     Title.findAll(query)
-//     .then((records) => {
+//     .then((results) => {
+
+//         records = convertBitTrueFalse(results);
+
 //         response.status(200).json({message: `Successfully retrieved ${ tableName }.`, records: records });
 //     })
 //         .catch((error) => {
@@ -447,11 +445,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     .where(where)
 //     .where(activeWhere)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -477,7 +475,6 @@ router.get("/broken/:titleID", (request, response) => {
 /**************************************
  ***** Get Titles By CategoryID Admin *****
 ***************************************/
-// * Return all titles to adminster them -- 03/28/2021 MF
 // router.get("/admin/category/:categoryID/:sort?", validateAdmin, (request, response) => {
 
 //   let orderByColumn = "titleSort";
@@ -527,11 +524,11 @@ router.get("/broken/:titleID", (request, response) => {
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -649,11 +646,11 @@ router.get("/checklist", validateSession, (request, response) => {
   //   .orderBy(orderByDynamic)
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records[0] });
 
@@ -738,11 +735,11 @@ router.get("/checklist", validateSession, (request, response) => {
 //     // .where("editions.active", true)
 //     // .where("media.active", true)
 //     .orderBy(orderByDynamic)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -768,7 +765,6 @@ router.get("/checklist", validateSession, (request, response) => {
 /* ******************************
  *** Add Title ***************
 *********************************/
-// * Allows an admin to add a new title -- 03/28/2021 MF
 router.post("/", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -792,9 +788,10 @@ router.post("/", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -822,7 +819,6 @@ router.post("/", validateAdmin, (request, response) => {
 /***************************
  ******* Update Title *******
  ***************************/
-// * Allows the admin to update the title including soft delete it -- 03/28/2021 MF
 router.put("/:titleID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -863,9 +859,10 @@ router.put("/:titleID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -893,7 +890,6 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete Title *******
  ***************************/
-// * Allows an admin to hard delete a title -- 03/28/2021 MF
 router.delete("/:titleID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -917,9 +913,10 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
@@ -22,31 +22,16 @@ let records;
 /******************************
  ***** Get Media *********
  ******************************/
-// * Returns all media active or not -- 03/28/2021 MF
 router.get("/", (request, response) => {
 
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
-    // .then((records) => {
+    .then((results) => {
 
-    // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-    //   if (process.env.DATABASE_DIALECT == "mysql") {
+      records = convertBitTrueFalse(results);
 
-    //     return convertBitTrueFalse(records);
-
-    //   } else {
-
-    //     return records;
-
-    //   };
-
-    // })
-    .then((records) => {
-
-      records = convertBitTrueFalse(records);
-
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -80,11 +65,11 @@ router.get("/", (request, response) => {
 //     .from(tableName)
 //     .where(where)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -110,17 +95,16 @@ router.get("/", (request, response) => {
 /******************************
  ***** Get Media Admin *********
  ******************************/
-// * Return all categories to adminster them -- 03/28/2021 MF
 // router.get("/admin", validateAdmin, (request, response) => {
 
 //   db.select(select)
 //     .from(tableName)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -168,13 +152,13 @@ router.get("/", (request, response) => {
 //     .from(tableName)
 //     .where(where)
 //     .orderBy(orderBy)
-//     .then((records) => {
+//     .then((results) => {
 
-//       records = convertBitTrueFalse(records);
+//       records = convertBitTrueFalse(results);
 
 //       // ! If statement doesn't get the value to check because the code goes to the .catch block when the results are null using findOne. -- 05/24/2021 MF
 //       // if (records === null) {
-//       if (isEmpty(records) === false) {
+//       if (isNonEmptyArray(records) === true) {
 
 //         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 //         // response.status(200).json({
@@ -206,7 +190,6 @@ router.get("/", (request, response) => {
 /* ******************************
  *** Add Media ***************
 *********************************/
-// * Allows an admin to add a new media -- 03/28/2021 MF
 router.post("/", validateAdmin, (request, response) => {
 
   // ! Don't need this anymore; was trying to fix scoping issues -- 03/28/2021 MF
@@ -251,9 +234,9 @@ router.post("/", validateAdmin, (request, response) => {
         .insert(recordObject);
 
     })
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 
@@ -281,7 +264,6 @@ router.post("/", validateAdmin, (request, response) => {
 /***************************
  ******* Update Media *******
  ***************************/
-// * Allows an admin to update the media including soft delete it -- 03/28/2021 MF
 router.put("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -311,9 +293,9 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 
@@ -341,7 +323,6 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 /***************************
  ******* Delete Media *******
  ***************************/
-// * Allows an admin to hard delete the media -- 03/28/2021 MF
 router.delete("/:mediaID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -365,9 +346,9 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

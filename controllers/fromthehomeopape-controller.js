@@ -5,7 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 // const validateSession = require("../middleware/validate-session");
 const validateAdmin = require("../middleware/validate-admin");
-const { isEmpty, getDateTime, formatTrim } = require("../utilities/sharedFunctions");
+const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
@@ -278,11 +278,11 @@ router.get("/", (request, response) => {
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
     .orderBy(orderBy)
     // db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -323,11 +323,11 @@ router.get("/review", (request, response) => {
     // ! The Order By isn't sorting correctly because the data type of this column is text and not datetime due to issues with inserting into the datetime column on the productions server. -- 08/13/2021 MF
     .orderBy(orderBy)
     // db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -385,11 +385,11 @@ router.get("/top/:topNumber", (request, response) => {
     .limit(topNumber)
     .where(displayWhere)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -447,11 +447,11 @@ router.get("/posted/", (request, response) => {
     // .limit(topNumber)
     .where(postedWhere)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -563,9 +563,9 @@ router.get("/new", (request, response) => {
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
-        .then((records) => {
+        .then((results) => {
 
-          // records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(results);
 
           // addLog(componentName, `get /new ${url}`, { });
 
@@ -664,9 +664,9 @@ router.get("/new", (request, response) => {
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
-        .then((records) => {
+        .then((results) => {
 
-          // records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(results);
 
           // addLog(componentName, `get /new ${url}`, { });
 
@@ -765,9 +765,9 @@ router.get("/new", (request, response) => {
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
-        .then((records) => {
+        .then((results) => {
 
-          // records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(results);
 
           // addLog(componentName, `get /new ${url}`, { });
 
@@ -866,9 +866,9 @@ router.get("/new", (request, response) => {
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
-        .then((records) => {
+        .then((results) => {
 
-          // records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(results);
 
           // addLog(componentName, `get /new ${url}`, { });
 
@@ -967,9 +967,9 @@ router.get("/new", (request, response) => {
         // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
         // .returning(select)
         .insert(feedObject)
-        .then((records) => {
+        .then((results) => {
 
-          // records = convertBitTrueFalse(records);
+          // records = convertBitTrueFalse(results);
 
           // addLog(componentName, `get /new ${url}`, { });
 
@@ -1016,11 +1016,12 @@ router.get("/insert", (request, response) => {
   // db.raw(sqlQuery).toSQL();
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /insert", {});
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1082,28 +1083,28 @@ router.get("/update", (request, response) => {
   // db.raw(sqlQueryHideStories).toSQL();
 
   db.raw(sqlQueryUpdateItemLinkDomain)
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQueryUpdateItemLinkDomain", {});
 
       return db.raw(sqlQueryAlwaysFiltered);
 
     })
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQueryAlwaysFiltered", {});
 
       return db.raw(sqlQueryNeverDisplay);
 
     })
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQueryNeverDisplay", {});
 
       return db.raw(sqlQueryHideStories);
 
     })
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQueryHideStories", {});
 
@@ -1132,9 +1133,10 @@ router.get("/markviewed", (request, response) => {
   // db.raw(sqlQuery).toSQL();
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1167,11 +1169,11 @@ router.get("/filter", (request, response) => {
   db.select("*")
     .from("homeopapeFilter")
     .orderBy([{ column: "filterText", order: "asc" }, { column: "filterLink", order: "asc" }])
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -1223,9 +1225,10 @@ router.post("/", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1267,9 +1270,10 @@ router.post("/filter", (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1297,7 +1301,6 @@ router.post("/filter", (request, response) => {
 /***************************
  ******* Hide Entry *******
  ***************************/
-// * Allows the admin to display or not display an entry. -- 08/13/2021 MF
 router.put("/display/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1313,9 +1316,10 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1343,7 +1347,6 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Posted Entry *******
  ***************************/
-// * Allows the admin to mark an entry as posted. -- 09/10/2021 MF
 router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1359,9 +1362,10 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1389,7 +1393,6 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Always Filter Entry *******
  ***************************/
-// * Allows the admin to mark an entry as always filter. -- 09/10/2021 MF
 router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1406,9 +1409,10 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1436,7 +1440,6 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Viewed Entry *******
  ***************************/
-// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
 router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1452,9 +1455,10 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1482,7 +1486,6 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 /***************************
  ******* Update Filter *******
  ***************************/
-// * Allows the admin to update a filter. -- 01/03/2022 MF
 router.put("/filter/:filterID", (request, response) => {
 
   const recordObject = {
@@ -1515,9 +1518,10 @@ router.put("/filter/:filterID", (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

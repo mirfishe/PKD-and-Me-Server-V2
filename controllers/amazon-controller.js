@@ -52,11 +52,11 @@ router.get("/", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -95,11 +95,11 @@ router.get("/all", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -125,7 +125,6 @@ router.get("/all", (request, response) => {
 /******************************
  ***** Get Amazon SDK *********
  ******************************/
-// * Returns Amazon listings -- 12/31/2021 MF
 router.get("/item/:arrayNumber", (request, response) => {
 
   let arrayNumber = isEmpty(request.params.arrayNumber) === false ? request.params.arrayNumber : "";
@@ -570,7 +569,7 @@ router.get("/item/:arrayNumber", (request, response) => {
           // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
           // .returning("*")
           .insert(itemArray)
-          .then((records) => {
+          .then((results) => {
 
             addLog(componentName, "get / insert", { arrayNumber: arrayNumber });
 
@@ -653,7 +652,6 @@ router.get("/item/:arrayNumber", (request, response) => {
 /******************************
  ***** Get Amazon SDK *********
  ******************************/
-// * Returns Amazon listings -- 12/31/2021 MF
 router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
   let searchItem = isEmpty(request.params.searchItem) === false ? request.params.searchItem : "";
@@ -962,7 +960,7 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
             // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
             // .returning("*")
             .insert(itemArray)
-            .then((records) => {
+            .then((results) => {
 
               addLog(componentName, "get /:searchItem/:searchIndex/:sort/:merchant", { searchItem: request.params.searchItem, searchIndex: request.params.searchIndex, sort: request.params.sort, merchant: request.params.merchant, searchCategory: searchCategory, searchIndex: searchIndex, sortBy: sortBy });
 
@@ -1088,9 +1086,10 @@ router.get("/insert", (request, response) => {
   //   // .where(authorWhere)
   //   .orderBy(orderBy)
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1129,14 +1128,17 @@ router.get("/update", (request, response) => {
   // db.raw(sqlQueryElectronicMedia).toSQL();
 
   db.raw(sqlQuery)
-    .then((records) => {
+    .then((results) => {
 
       addLog(componentName, "get /update sqlQuery", {});
 
       return db.raw(sqlQueryElectronicMedia);
 
     })
-    .then((records) => {
+    .then((results) => {
+
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       addLog(componentName, "get /update sqlQueryElectronicMedia", {});
 
@@ -1158,7 +1160,6 @@ router.get("/update", (request, response) => {
 /***************************
  ******* Active/Inactive Item *******
  ***************************/
-// * Allows the admin to mark an item as active/inactive. -- 01/03/2022 MF
 router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1176,9 +1177,10 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 
@@ -1206,7 +1208,6 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 /***************************
  ******* Viewed Item *******
  ***************************/
-// * Allows the admin to mark an entry as viewed. -- 01/03/2022 MF
 router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
   const recordObject = {
@@ -1224,9 +1225,10 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .update(recordObject)
-    .then((records) => {
+    .then((results) => {
 
-      // records = convertBitTrueFalse(records);
+      // records = convertBitTrueFalse(results);
+      records = results;
 
       if (isEmpty(records) === false) {
 

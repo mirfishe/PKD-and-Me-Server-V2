@@ -216,17 +216,16 @@ router.post("/login", (request, response) => {
 /******************************
  ***** Get Users *****
  ******************************/
-// * Allows an admin to view all the users -- 03/28/2021 MF
 router.get("/admin", validateAdmin, (request, response) => {
 
   db.select(select)
     .from(tableName)
     .orderBy(orderBy)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      if (isEmpty(records) === false) {
+      if (isNonEmptyArray(records) === true) {
 
         response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records.", records: records });
 
@@ -252,7 +251,6 @@ router.get("/admin", validateAdmin, (request, response) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// * Returns User information for the logged in user -- 03/28/2021 MF
 router.get("/", validateSession, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -274,11 +272,11 @@ router.get("/", validateSession, (request, response) => {
   db.select(select)
     .from(tableName)
     .where(where)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      // if (isEmpty(records) === false) {
+      // if (isNonEmptyArray(records) === true) {
       if (records != null) {
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
@@ -319,7 +317,6 @@ router.get("/", validateSession, (request, response) => {
 /********************************
  ***** Get User By UserID *******
 *******************************/
-// Returns User information for the admin -- 03/28/2021 MF
 router.get("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -341,11 +338,11 @@ router.get("/:userID", validateAdmin, (request, response) => {
   db.select(select)
     .from(tableName)
     .where(where)
-    .then((records) => {
+    .then((results) => {
 
-      records = convertBitTrueFalse(records);
+      records = convertBitTrueFalse(results);
 
-      // if (isEmpty(records) === false) {
+      // if (isNonEmptyArray(records) === true) {
       if (records != null) {
 
         // response.status(200).json({records: records[0], transactionSuccess: true, errorOccurred: false, message: "Successfully retrieved records."});
@@ -386,7 +383,6 @@ router.get("/:userID", validateAdmin, (request, response) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows an admin to update the user data including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/:userID", validateAdmin, (request, response) => {
 
@@ -429,7 +425,9 @@ router.put("/:userID", validateAdmin, (request, response) => {
       // .returning(select)
       .update(recordObject)
       // ! Doesn't return the values of the updated record; the value passed to the function is the number of records updated. -- 03/28/2021 MF
-      .then((records) => {
+      .then((results) => {
+
+        records = results;
 
         if (isEmpty(records) === false) {
 
@@ -494,7 +492,6 @@ router.put("/:userID", validateAdmin, (request, response) => {
 /***************************
  ******* Update User *******
  ***************************/
-// * Allows a user to update their own record including soft delete it -- 03/28/2021 MF
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/", validateSession, (request, response) => {
 
@@ -617,7 +614,6 @@ router.put("/", validateSession, (request, response) => {
 /***************************
  ******* Delete User *******
  ***************************/
-// * Allows an admin to hard delete a user -- 03/28/2021 MF
 router.delete("/:userID", validateAdmin, (request, response) => {
 
   // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
@@ -641,7 +637,9 @@ router.delete("/:userID", validateAdmin, (request, response) => {
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .del()
-    .then((records) => {
+    .then((results) => {
+
+      records = convertBitTrueFalse(results);
 
       if (isEmpty(records) === false) {
 

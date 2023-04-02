@@ -7,6 +7,26 @@
 
 ###
 
+GET {{baseURL}}amazon/
+
+###
+
+GET {{baseURL}}amazon/all
+
+###
+
+GET {{baseURL}}amazon/item
+
+###
+
+GET {{baseURL}}amazon/insert
+
+###
+
+GET {{baseURL}}amazon/update
+
+###
+
 GET {{baseURL}}amazon/authorPhilipKDick/All/AvgCustomerReviews/Amazon
 
 ###
