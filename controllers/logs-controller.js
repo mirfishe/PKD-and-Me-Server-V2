@@ -5,6 +5,7 @@ const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
 const validateAdmin = require("../middleware/validate-admin");
 const { isEmpty, getDateTime, isNonEmptyArray } = require("../utilities/sharedFunctions");
+const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
 
 const controllerName = "log";
