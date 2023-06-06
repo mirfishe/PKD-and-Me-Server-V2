@@ -25,7 +25,7 @@ const validateSession = (request, response, next) => {
 
     if (isEmpty(error) === true && isEmpty(decoded) === false) {
 
-      const where = { userID: decoded.userID, active: true };
+      let where = { userID: decoded.userID, active: true };
 
       db.select(select)
         .from(tableName)

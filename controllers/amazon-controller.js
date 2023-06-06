@@ -146,8 +146,8 @@ router.get("/item/:arrayNumber", (request, response) => {
 
   };
 
-  // const numberOfResultsPages = 11;
-  // const numberOfResultsPages = 2;
+  // let numberOfResultsPages = 11;
+  // let numberOfResultsPages = 2;
 
   // let waitTime = 10000; // * 10 seconds -- 01/09/2022 MF
 
@@ -754,8 +754,8 @@ router.get("/:searchItem/:searchIndex/:sort/:merchant", (request, response) => {
 
   };
 
-  const numberOfResultsPages = 11;
-  // const numberOfResultsPages = 2;
+  let numberOfResultsPages = 11;
+  // let numberOfResultsPages = 2;
 
   // let waitTime = 10000; // * 10 seconds -- 01/09/2022 MF
   // let waitTime = 20000; // * 20 seconds -- 01/09/2022 MF
@@ -1162,7 +1162,7 @@ router.get("/update", (request, response) => {
  ***************************/
 router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     active: request.body.recordObject.active
   };
 
@@ -1170,7 +1170,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
 
   let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
-  const where = { ASIN: ASIN };
+  let where = { ASIN: ASIN };
 
   db(tableName)
     .where(where)
@@ -1210,7 +1210,7 @@ router.put("/active/:ASIN", validateAdmin, (request, response) => {
  ***************************/
 router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     viewed: request.body.recordObject.viewed
   };
 
@@ -1218,7 +1218,7 @@ router.put("/viewed/:ASIN", validateAdmin, (request, response) => {
 
   let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
-  const where = { ASIN: ASIN };
+  let where = { ASIN: ASIN };
 
   db(tableName)
     .where(where)

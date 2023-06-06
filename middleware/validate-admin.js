@@ -25,7 +25,7 @@ const validateAdmin = (request, response, next) => {
 
     if (isEmpty(error) === true && isEmpty(decoded) === false) {
 
-      const where = { userID: decoded.userID, admin: true, active: true };
+      let where = { userID: decoded.userID, admin: true, active: true };
 
       db.select(select)
         .from(tableName)

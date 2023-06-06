@@ -46,7 +46,7 @@ users
 // ! Function doesn't work because it needs to wait on the results of the query -- 03/28/2021 MF
 // const hasReviewedTitle = (userID, titleID) => {
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //         {userID: {[Op.eq]: userID}},
 //         {titleID: {[Op.eq]: titleID}},
@@ -186,7 +186,7 @@ router.get("/", (request, response) => {
 
 // };
 
-// const where = { "userReviews.reviewID": reviewID };
+// let where = { "userReviews.reviewID": reviewID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -256,7 +256,7 @@ router.get("/", (request, response) => {
 
 // };
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
@@ -301,7 +301,7 @@ router.get("/", (request, response) => {
 
 // };
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
@@ -346,7 +346,7 @@ router.get("/", (request, response) => {
 
 // };
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //         {titleID: {[Op.eq]: titleID}},
 //         {active: {[Op.eq]: true}}
@@ -493,7 +493,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// const where = { "userReviews.titleID": titleID };
+// let where = { "userReviews.titleID": titleID };
 
 //   db.select("titleID")
 //     .from(tableName)
@@ -551,7 +551,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// const where = { "userReviews.titleID": titleID };
+// let where = { "userReviews.titleID": titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -609,7 +609,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-// const where = { "userReviews.userID": userID };
+// let where = { "userReviews.userID": userID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -679,7 +679,7 @@ router.get("/rating", (request, response) => {
 
 // };
 
-//   const where = { "userReviews.titleID": titleID, "userReviews.userID": userID };
+//   let where = { "userReviews.titleID": titleID, "userReviews.userID": userID };
 
 //   // ! Function doesn't work because it needs to wait on the results of the query -- 05/24/2021 MF
 //   // console.log("hasReviewedTitle", hasReviewedTitle(request.params.userID, request.params.titleID));
@@ -739,7 +739,7 @@ router.post("/", validateSession, (request, response) => {
 
   };
 
-  const recordObject = {
+  let recordObject = {
     userID: userID,
     updatedBy: userID,
     titleID: request.body.recordObject.titleID,
@@ -806,7 +806,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
   };
 
 
-  const recordObject = {
+  let recordObject = {
     userID: userID,
     updatedBy: userID,
     titleID: request.body.recordObject.titleID,
@@ -833,7 +833,7 @@ router.put("/:reviewID", validateSession, (request, response) => {
 
   };
 
-  const where = { reviewID: reviewID, userID: userID };
+  let where = { reviewID: reviewID, userID: userID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -893,7 +893,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   };
 
-  const recordObject = {
+  let recordObject = {
     userID: request.body.recordObject.userID,
     updatedBy: userID,
     titleID: request.body.recordObject.titleID,
@@ -922,7 +922,7 @@ router.put("/admin/:reviewID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { reviewID: reviewID };
+  let where = { reviewID: reviewID };
 
   // let sqlQuery = db(tableName)
   //   .where(where)
@@ -982,7 +982,7 @@ router.delete("/:reviewID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { reviewID: reviewID };
+  let where = { reviewID: reviewID };
 
   db(tableName)
     .where(where)

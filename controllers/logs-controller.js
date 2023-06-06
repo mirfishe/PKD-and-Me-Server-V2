@@ -67,7 +67,7 @@ router.get("/", validateAdmin, (request, response) => {
  ***************************/
 router.post("/", (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     operation: request.body.recordObject.operation,
     componentName: request.body.recordObject.componentName,
     transactionData: JSON.stringify(request.body.recordObject.transactionData),
