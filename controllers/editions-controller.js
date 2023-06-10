@@ -102,7 +102,7 @@ router.get("/broken/:editionID", (request, response) => {
 
   };
 
-  const where = { editionID: editionID };
+  let where = { editionID: editionID };
 
   db.select(select)
     .from(tableName)
@@ -118,7 +118,7 @@ router.get("/broken/:editionID", (request, response) => {
 
       if (isNonEmptyArray(records) === true) {
 
-        const recordObject = {
+        let recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
           editionID: records[0].editionID,
           titleID: records[0].titleID,
@@ -236,7 +236,7 @@ router.get("/broken/:editionID", (request, response) => {
 
 // };
 
-// const where = { editionID: editionID };
+// let where = { editionID: editionID };
 
 //   // let sqlQuery = db.select(select)
 //   //   .from(tableName)
@@ -313,7 +313,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
   let ASIN = isEmpty(request.params.ASIN) === false ? request.params.ASIN : "";
 
-  const where = { ASIN: ASIN };
+  let where = { ASIN: ASIN };
 
   db.select(columnsList)
     .from(tableName)
@@ -385,7 +385,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // };
 
-// const where = { "editions.titleID": titleID };
+// let where = { "editions.titleID": titleID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -440,7 +440,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // };
 
-// const where = { "editions.mediaID": mediaID };
+// let where = { "editions.mediaID": mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -498,7 +498,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 
 // };
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //             {categoryID: {[Op.eq]: categoryID}},
 //             {active: {[Op.eq]: true}}
@@ -530,7 +530,7 @@ router.get("/ASIN/:ASIN", (request, response) => {
 *********************************/
 router.post("/", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     titleID: request.body.recordObject.titleID,
     mediaID: request.body.recordObject.mediaID,
     publicationDate: request.body.recordObject.publicationDate,
@@ -600,7 +600,7 @@ router.post("/", validateAdmin, (request, response) => {
  ***************************/
 router.put("/:editionID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     titleID: request.body.recordObject.titleID,
     mediaID: request.body.recordObject.mediaID,
     publicationDate: request.body.recordObject.publicationDate,
@@ -629,7 +629,7 @@ router.put("/:editionID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { editionID: editionID };
+  let where = { editionID: editionID };
 
   db(tableName)
     .where(where)
@@ -683,7 +683,7 @@ router.delete("/:editionID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { editionID: editionID };
+  let where = { editionID: editionID };
 
   db(tableName)
     .where(where)

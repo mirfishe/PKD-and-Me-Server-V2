@@ -1201,7 +1201,7 @@ router.get("/filter", (request, response) => {
 ****************************/
 router.post("/", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     feedID: request.body.recordObject.feedID,
     feedTitle: request.body.recordObject.feedTitle,
     feedLink: request.body.recordObject.feedLink,
@@ -1258,7 +1258,7 @@ router.post("/", validateAdmin, (request, response) => {
 ****************************/
 router.post("/filter", (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     filterLink: request.body.recordObject.filterLink,
     filterText: request.body.recordObject.filterText,
     viewed: request.body.recordObject.viewed,
@@ -1303,13 +1303,13 @@ router.post("/filter", (request, response) => {
  ***************************/
 router.put("/display/:itemID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     display: request.body.recordObject.display
   };
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  const where = { itemID: itemID };
+  let where = { itemID: itemID };
 
   db(tableName)
     .where(where)
@@ -1349,13 +1349,13 @@ router.put("/display/:itemID", validateAdmin, (request, response) => {
  ***************************/
 router.put("/posted/:itemID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     posted: request.body.recordObject.posted
   };
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  const where = { itemID: itemID };
+  let where = { itemID: itemID };
 
   db(tableName)
     .where(where)
@@ -1395,13 +1395,13 @@ router.put("/posted/:itemID", validateAdmin, (request, response) => {
  ***************************/
 router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     alwaysFilter: request.body.recordObject.alwaysFilter
   };
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  const where = { itemID: itemID };
+  let where = { itemID: itemID };
 
 
   db(tableName)
@@ -1442,13 +1442,13 @@ router.put("/alwaysFilter/:itemID", validateAdmin, (request, response) => {
  ***************************/
 router.put("/viewed/:itemID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     viewed: request.body.recordObject.viewed
   };
 
   let itemID = `tag:google.com,2013:googlealerts/feed:${request.params.itemID}`;
 
-  const where = { itemID: itemID };
+  let where = { itemID: itemID };
 
   db(tableName)
     .where(where)
@@ -1488,7 +1488,7 @@ router.put("/viewed/:itemID", validateAdmin, (request, response) => {
  ***************************/
 router.put("/filter/:filterID", (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     filterLink: request.body.recordObject.filterLink,
     filterText: request.body.recordObject.filterText,
     viewed: request.body.recordObject.viewed,
@@ -1511,7 +1511,7 @@ router.put("/filter/:filterID", (request, response) => {
 
   };
 
-  const where = { filterID: filterID };
+  let where = { filterID: filterID };
 
   db("homeopapeFilter")
     .where(where)

@@ -30,7 +30,7 @@ let records;
 *********************************** */
 router.post("/register", (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     firstName: request.body.recordObject.firstName,
     lastName: request.body.recordObject.lastName,
     email: request.body.recordObject.email,
@@ -138,7 +138,7 @@ router.post("/login", (request, response) => {
 
   };
 
-  const where = { email: email, active: true };
+  let where = { email: email, active: true };
 
   db.select(select)
     .from(tableName)
@@ -267,7 +267,7 @@ router.get("/", validateSession, (request, response) => {
 
   };
 
-  const where = { userID: userID };
+  let where = { userID: userID };
 
   db.select(select)
     .from(tableName)
@@ -333,7 +333,7 @@ router.get("/:userID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { userID: userID };
+  let where = { userID: userID };
 
   db.select(select)
     .from(tableName)
@@ -400,7 +400,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
   };
 
-  const recordObject = {
+  let recordObject = {
     firstName: request.body.recordObject.firstName,
     lastName: request.body.recordObject.lastName,
     email: request.body.recordObject.email,
@@ -415,7 +415,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { userID: userID };
+  let where = { userID: userID };
 
   if (request.body.recordObject.email.match(emailRegExp)) {
 
@@ -509,7 +509,7 @@ router.put("/", validateSession, (request, response) => {
 
   };
 
-  const recordObject = {
+  let recordObject = {
     firstName: request.body.recordObject.firstName,
     lastName: request.body.recordObject.lastName,
     email: request.body.recordObject.email,
@@ -524,7 +524,7 @@ router.put("/", validateSession, (request, response) => {
 
   };
 
-  const where = { userID: userID };
+  let where = { userID: userID };
 
   if (request.body.recordObject.email.match(emailRegExp)) {
 
@@ -630,7 +630,7 @@ router.delete("/:userID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { userID: userID };
+  let where = { userID: userID };
 
   db(tableName)
     .where(where)

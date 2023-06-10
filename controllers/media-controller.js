@@ -59,7 +59,7 @@ router.get("/", (request, response) => {
  ******************************/
 // router.get("/", (request, response) => {
 
-//   const where = { active: true };
+//   let where = { active: true };
 
 //   db.select(select)
 //     .from(tableName)
@@ -146,7 +146,7 @@ router.get("/", (request, response) => {
 
 // };
 
-// const where = { mediaID: mediaID };
+// let where = { mediaID: mediaID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -196,7 +196,7 @@ router.post("/", validateAdmin, (request, response) => {
   // let newSortID = 0;
 
   // * Moved this inside the function for scoping issues with newSortID -- 03/28/2021 MF
-  // const createMedia = {
+  // let createMedia = {
   //     media:      request.body.recordObject.media,
   //     sortID:     newSortID
   //   };
@@ -222,7 +222,7 @@ router.post("/", validateAdmin, (request, response) => {
     })
     .then((newSortID) => {
 
-      const recordObject = {
+      let recordObject = {
         media: request.body.recordObject.media,
         electronic: request.body.recordObject.electronic,
         sortID: newSortID
@@ -280,9 +280,9 @@ router.put("/:mediaID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { mediaID: mediaID };
+  let where = { mediaID: mediaID };
 
-  const recordObject = {
+  let recordObject = {
     media: request.body.recordObject.media,
     sortID: request.body.recordObject.sortID,
     active: request.body.recordObject.active
@@ -339,7 +339,7 @@ router.delete("/:mediaID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { mediaID: mediaID };
+  let where = { mediaID: mediaID };
 
   db(tableName)
     .where(where)

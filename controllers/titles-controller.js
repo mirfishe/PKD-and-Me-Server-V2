@@ -102,7 +102,7 @@ router.get("/text/:titleID", (request, response) => {
 
   };
 
-  const where = { "titleID": titleID };
+  let where = { "titleID": titleID };
 
   db.select("*")
     .from("titlesText")
@@ -155,7 +155,7 @@ router.get("/broken/:titleID", (request, response) => {
 
   };
 
-  const where = { "titles.titleID": titleID };
+  let where = { "titles.titleID": titleID };
 
   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -175,7 +175,7 @@ router.get("/broken/:titleID", (request, response) => {
 
       if (isNonEmptyArray(records) === true) {
 
-        const recordObject = {
+        let recordObject = {
           endpoint: `get /broken/:${controllerName}ID records`,
           // editionID: records[0].editionID,
           titleID: records[0].titleID,
@@ -285,7 +285,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // };
 
-// const where = { "titles.titleID": titleID };
+// let where = { "titles.titleID": titleID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -363,7 +363,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // };
 
-//     // const attributes = {
+//     // let attributes = {
 //     //     attributes: [
 //     //     "reviewID", "userID", "updatedBy", "titleID", "read", "dateRead:   userReviews.dateRead", "rating", "shortReview", "longReview", "active", 
 //     //     [sequelize.fn("count", sequelize.col("reviewID")), "userReviewCount"],
@@ -371,7 +371,7 @@ router.get("/broken/:titleID", (request, response) => {
 //     //     ]
 //     // };
 
-//     const query = {where: {
+//     let query = {where: {
 //         [Op.and]: [
 //             {mediaID: {[Op.eq]: mediaID}},
 //             {active: {[Op.eq]: true}}
@@ -415,7 +415,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 //   };
 
-//   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+//   let orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
@@ -431,7 +431,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // };
 
-// const where = { "titles.categoryID": categoryID };
+// let where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -489,7 +489,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 //   };
 
-//   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+//   let orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
 // // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
 
@@ -505,7 +505,7 @@ router.get("/broken/:titleID", (request, response) => {
 
 // };
 
-// const where = { "titles.categoryID": categoryID };
+// let where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -593,7 +593,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
   };
 
-  // const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+  // let orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
   // // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -704,7 +704,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
 //   };
 
-//   const orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
+//   let orderByDynamic = [{ column: orderByColumn, order: "asc" }, { column: "titleSort", order: "asc" }];
 
 // let categoryID = isEmpty(request.params.categoryID) === false ? request.params.categoryID : "";
 
@@ -718,7 +718,7 @@ router.get("/checklist", validateSession, (request, response) => {
 
 // };
 
-// const where = { "titles.categoryID": categoryID };
+// let where = { "titles.categoryID": categoryID };
 
 //   // ! ["userID", "firstName", "lastName", "email", "updatedBy", "admin", "active"]
 
@@ -767,7 +767,7 @@ router.get("/checklist", validateSession, (request, response) => {
 *********************************/
 router.post("/", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     titleName: request.body.recordObject.titleName,
     titleSort: formatLowerCase(request.body.recordObject.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
     titleURL: request.body.recordObject.titleURL,
@@ -821,7 +821,7 @@ router.post("/", validateAdmin, (request, response) => {
  ***************************/
 router.put("/:titleID", validateAdmin, (request, response) => {
 
-  const recordObject = {
+  let recordObject = {
     titleName: request.body.recordObject.titleName,
     titleSort: formatLowerCase(request.body.recordObject.titleName).replace(/^(an?|the) (.*)$/i, '$2, $1'),
     titleURL: request.body.recordObject.titleURL,
@@ -852,7 +852,7 @@ router.put("/:titleID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { titleID: titleID };
+  let where = { titleID: titleID };
 
   db(tableName)
     .where(where)
@@ -906,7 +906,7 @@ router.delete("/:titleID", validateAdmin, (request, response) => {
 
   };
 
-  const where = { titleID: titleID };
+  let where = { titleID: titleID };
 
   db(tableName)
     .where(where)

@@ -74,7 +74,7 @@ router.get("/", validateAdmin, (request, response) => {
 
 //   };
 
-//   const where = { commentID: commentID };
+//   let where = { commentID: commentID };
 
 //   db.select(select)
 //     .from(tableName)
@@ -125,7 +125,7 @@ router.post("/", /* validateSession, */(request, response) => {
 
   // };
 
-  const recordObject = {
+  let recordObject = {
     // userID: .userID,
     userID: request.body.recordObject.userID,
     email: request.body.recordObject.email,
