@@ -490,7 +490,7 @@ router.get("/new", (request, response) => {
       item: ["updated", "contentSnippet", "isoDate", "author"], // , "author.name", "name"
     },
     xml2js: {
-      emptyTag: '--EMPTY--',
+      emptyTag: '--EMPTY--'
     }
   });
 
