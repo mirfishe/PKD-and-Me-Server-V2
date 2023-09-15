@@ -95,8 +95,8 @@ router.get("/health", (request, response) => {
 
         records = healthcheck;
 
-        // addLog(databaseName, `${componentName}`, {});
-        addErrorLog(databaseName, `${componentName}`, "/health", {}, "No records found.", false, false);
+        // addLog(databaseName, componentName, {});
+        addErrorLog(databaseName, componentName, "/health", {}, "No records found.", false, false);
 
         response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found.", records });
 
@@ -105,14 +105,14 @@ router.get("/health", (request, response) => {
     })
     .catch((error) => {
 
-      console.error(`${componentName}`, getDateTime(), "/health error", error);
+      console.error(componentName, getDateTime(), "/health error", error);
 
       healthcheck.databaseRecords = 0;
       healthcheck.message = "Internal Server Error";
 
       records = healthcheck;
 
-      addErrorLog(databaseName, `${componentName}`, "/health", {}, error, false, false);
+      addErrorLog(databaseName, componentName, "/health", {}, error, false, false);
       response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found.", records, error });
 
     });
