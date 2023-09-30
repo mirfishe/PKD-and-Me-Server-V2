@@ -7,11 +7,11 @@ const db = require("knex")(databaseConfig.config);
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../jwtSecret");
-const validateSession = require("../middleware/validate-session");
-const validateAdmin = require("../middleware/validate-admin");
 const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
+const validateSession = require("../middleware/validate-session");
+const validateAdmin = require("../middleware/validate-admin");
 
 const emailRegExp = /^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 
@@ -23,6 +23,7 @@ const orderBy = [{ column: "lastName", order: "desc" }, { column: "firstName", o
 const componentName = `${controllerName}-controller`;
 
 let records;
+// let loginSuccess;
 
 
 /* ***********************************
@@ -253,8 +254,6 @@ router.get("/admin", validateAdmin, (request, response) => {
 *******************************/
 router.get("/", validateSession, (request, response) => {
 
-  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
-
   let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
   if (isNaN(formatTrim(userID)) === true) {
@@ -408,7 +407,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
     active: request.body.recordObject.active
   };
 
-  // If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
+  // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
   if (request.body.recordObject.password) {
 
     Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });

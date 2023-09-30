@@ -3,11 +3,11 @@
 const router = require("express").Router();
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-// const validateSession = require("../middleware/validate-session");
-const validateAdmin = require("../middleware/validate-admin");
 const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addErrorLog = require("../utilities/addErrorLog");
+// const validateSession = require("../middleware/validate-session");
+const validateAdmin = require("../middleware/validate-admin");
 
 const controllerName = "comments";
 const tableName = "comments";

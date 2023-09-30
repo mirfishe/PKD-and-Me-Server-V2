@@ -4,12 +4,12 @@ const router = require("express").Router();
 // const axios = require("axios");
 const databaseConfig = require("../database");
 const db = require("knex")(databaseConfig.config);
-// const validateSession = require("../middleware/validate-session");
-const validateAdmin = require("../middleware/validate-admin");
 const { isEmpty, getDateTime, isNonEmptyArray, formatTrim } = require("../utilities/sharedFunctions");
 const { convertBitTrueFalse } = require("../utilities/applicationFunctions");
 const addLog = require("../utilities/addLog");
 const addErrorLog = require("../utilities/addErrorLog");
+// const validateSession = require("../middleware/validate-session");
+const validateAdmin = require("../middleware/validate-admin");
 
 const controllerName = "amazon";
 const tableName = "amazon";
