@@ -35,24 +35,24 @@
     }
   },
   "dependencies": {
-    "axios": "^1.5.0",
+    "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "knex": "^2.5.1",
-    "mysql2": "^3.6.1",
+    "knex": "^3.0.1",
+    "mysql2": "^3.6.2",
     "pg": "^8.11.3",
     "rss-parser": "^3.13.0",
     "superagent": "8.1.2",
-    "tedious": "^16.4.0"
+    "tedious": "^16.5.0"
   },
   "devDependencies": {
-    "eslint": "^8.49.0",
+    "eslint": "^8.52.0",
     "expect.js": "~0.3.1",
     "mocha": "~10.2.0",
     "nodemon": "^3.0.1",
-    "sinon": "15.2.0"
+    "sinon": "17.0.0"
   }
 }
