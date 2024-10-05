@@ -104,13 +104,21 @@ router.get("/broken", validateAdmin, (request, response) => {
  ***************************/
 router.post("/", (request, response) => {
 
+  let hrefLog = request.body.recordObject.href;
+
+  if (isEmpty(hrefLog) === false) {
+
+    hrefLog = hrefLog.substring(0, 499);
+
+  };
+
   db(tableName)
     // * .returning() is not supported by mysql and will not have any effect. -- 08/13/2021 MF
     // .returning(select)
     .insert({
 
       title: request.body.recordObject.title,
-      href: request.body.recordObject.href,
+      href: hrefLog,
       applicationVersion: request.body.recordObject.applicationVersion,
 
       ipAddress: request.body.recordObject.ipAddress,

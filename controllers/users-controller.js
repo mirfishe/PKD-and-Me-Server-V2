@@ -53,8 +53,8 @@ router.post("/register", (request, response) => {
           recordObject.userID = records[0];
 
           // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-          // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
-          let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "1d" });
+          // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "30d" });
+          let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "30d" });
 
           response.json({
             // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
@@ -156,8 +156,8 @@ router.post("/login", (request, response) => {
             if (matches) {
 
               // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-              // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "1d" });
-              let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "1d" });
+              // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "30d" });
+              let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "30d" });
 
               response.status(200).json({
                 // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
@@ -179,8 +179,9 @@ router.post("/login", (request, response) => {
 
             } else {
 
-              addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
-              response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
+              // addErrorLog(componentName, "post /login Login failed. 401", { username: request.body.recordObject.username }, null);
+
+              // response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Login failed.", error: "Login failed." });
 
             };
 
@@ -188,17 +189,18 @@ router.post("/login", (request, response) => {
 
         } else {
 
-          addErrorLog(componentName, "post /login Login failed. 401", { user: request.body.recordObject }, null);
-          response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
+          // addErrorLog(componentName, "post /login Login failed. 401", { username: request.body.recordObject.username }, null);
+
+          // response.status(401).json({ transactionSuccess: true, errorOccurred: false, isLoggedIn: false, isAdmin: false, message: "Failed to authenticate.", error: "Failed to authenticate." });
 
         };
 
       },
       error => {
 
-        console.log(componentName, getDateTime(), "post /login Failed to process. 501 error", error);
+        console.error(componentName, getDateTime(), "post /login Failed to process. 501 error", error);
 
-        addErrorLog(componentName, "post /login Login failed. 501", { user: request.body.recordObject }, error);
+        addErrorLog(componentName, "post /login Login failed. 501", { username: request.body.recordObject.username }, error);
         response.status(501).send({ transactionSuccess: false, errorOccurred: true, isLoggedIn: false, isAdmin: false, message: "Failed to process.", error: "Failed to process." });
 
       }
@@ -408,7 +410,7 @@ router.put("/:userID", validateAdmin, (request, response) => {
   };
 
   // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.recordObject.password) {
+  if (isEmpty(request.body.recordObject.password) === false) {
 
     Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
@@ -494,19 +496,17 @@ router.put("/:userID", validateAdmin, (request, response) => {
 // * The admin column is not included here as an extra security feature -- 03/28/2021 MF
 router.put("/", validateSession, (request, response) => {
 
-  // * Check the parameters for SQL injection before creating the SQL statement. -- 08/09/2021 MF
-
   let userID = isEmpty(request.user.userID) === false ? request.user.userID : "";
 
-  if (isNaN(formatTrim(userID)) === true) {
+  // if (isNaN(formatTrim(userID)) === true) {
 
-    userID = 0;
+  //   userID = 0;
 
-  } else {
+  // } else {
 
-    userID = parseInt(userID);
+  //   userID = parseInt(userID);
 
-  };
+  // };
 
   let recordObject = {
     firstName: request.body.recordObject.firstName,
@@ -517,7 +517,7 @@ router.put("/", validateSession, (request, response) => {
   };
 
   // * If the user doesn't enter a password, then it isn't updated -- 03/28/2021 MF
-  if (request.body.recordObject.password) {
+  if (isEmpty(request.body.recordObject.password) === false) {
 
     Object.assign(recordObject, { password: bcrypt.hashSync(request.body.recordObject.password) });
 
@@ -539,7 +539,7 @@ router.put("/", validateSession, (request, response) => {
           if (isEmpty(records) === false) {
 
             // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
-            // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            // let token = jwt.sign({userID: recordObject.userID}, process.env.JWT_SECRET, {expiresIn: "30d"});
             response.json({
               // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
               // user:   recordObject,

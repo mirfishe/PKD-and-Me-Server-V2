@@ -6,7 +6,7 @@ const { isEmpty, getDateTime, isNonEmptyArray } = require("./sharedFunctions");
 
 const convertBitTrueFalse = (records) => {
 
-  // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF -- 08/13/2021 MF
+  // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
   // ? Need to limit this function to only MySQL? -- 08/13/2021 MF
   // if (process.env.DATABASE_DIALECT == "mysql") {
 
