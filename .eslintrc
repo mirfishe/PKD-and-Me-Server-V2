@@ -26,7 +26,12 @@
   },
   "ignorePatterns": [
     "amazon/",
+    "build/",
+    "dist/",
     "logs/",
-    "node_modules/"
+    "node_modules/",
+    "resources/",
+    "sql/",
+    "src/"
   ]
 }
