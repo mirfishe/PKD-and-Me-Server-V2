@@ -25,11 +25,13 @@ const validateAdmin = (request, response, next) => {
 
     if (isEmpty(error) === true && isEmpty(decoded) === false) {
 
-      let where = { userID: decoded.userID, admin: true, active: true };
+      // let where = { userID: decoded.userID, admin: true, active: true };
+      let where = { userID: decoded.userID, email: decoded.email, active: true };
 
       db.select(select)
         .from(tableName)
         .where(where)
+        .where({ admin: true })
         .then(records => {
 
           // if (isEmpty(records) === true) throw {isAdmin: false, message: "Unauthorized."} // "Unauthorized."; // "error";

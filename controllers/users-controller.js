@@ -54,7 +54,8 @@ router.post("/register", (request, response) => {
 
           // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
           // let token = jwt.sign({ userID: recordObject.userID }, process.env.JWT_SECRET, { expiresIn: "30d" });
-          let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "30d" });
+          // let token = jwt.sign({ userID: recordObject.userID }, jwtSecret, { expiresIn: "30d" });
+          let token = jwt.sign({ userID: records[0].userID, email: records[0].email }, jwtSecret, { expiresIn: "30d" });
 
           response.json({
             // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
@@ -157,7 +158,8 @@ router.post("/login", (request, response) => {
 
               // ! pm2 doesn't see the .env variables being used here. -- 08/13/2021 MF
               // let token = jwt.sign({ userID: records[0].userID }, process.env.JWT_SECRET, { expiresIn: "30d" });
-              let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "30d" });
+              // let token = jwt.sign({ userID: records[0].userID }, jwtSecret, { expiresIn: "30d" });
+              let token = jwt.sign({ userID: records[0].userID, email: records[0].email }, jwtSecret, { expiresIn: "30d" });
 
               response.status(200).json({
                 // ? Need to return all the properties of the user to the browser? -- 03/28/2021 MF
